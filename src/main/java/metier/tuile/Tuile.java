@@ -22,4 +22,8 @@ public class Tuile {
 		return couleur;
 	}
 
+	public String afficher() {
+		return couleur.colorier(symbole.symbole());
+	}
+
 }
