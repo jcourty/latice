@@ -1,5 +1,7 @@
 package metier.joueur;
 
+import java.util.List;
+
 import metier.tuile.Tuile;
 
 public class Joueur {
@@ -24,6 +26,10 @@ public class Joueur {
 
 	public TasDeTuile main() {
 		return main;
+	}
+	
+	public List<Tuile> chevalet() {
+		return chevalet.listeTuiles();
 	}
 	
 	public void ajouterDansChevalet(Tuile tuile) {
@@ -57,7 +63,13 @@ public class Joueur {
 	public int tailleChevalet() {
 		return chevalet.taillePioche();
 	}
-	
+
+	public void remplirChevalet() {
+		while (chevalet.taillePioche() < 5) {
+			Tuile tuile = piocherDansMain();
+			ajouterDansChevalet(tuile);
+		}
+	}
 	
 }
 
