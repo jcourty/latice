@@ -16,7 +16,7 @@ public enum Couleur {
 	}
 	
 	public String colorier(String text) {
-		return color+text+RESET;
+		return color+text+RESET.color;
 	}
 	
 }

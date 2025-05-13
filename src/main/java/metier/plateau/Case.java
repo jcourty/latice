@@ -2,16 +2,14 @@ package metier.plateau;
 
 import java.util.Objects;
 
-import metier.tuile.Symbole;
-
 public class Case {
 
 	private final Coordonnee coordonnee;
-	private final Symbole symbole;
+	private final Type type;
 
-	public Case(Coordonnee coordonnee, Symbole symbole) {
+	public Case(Coordonnee coordonnee, Type type) {
 		this.coordonnee = coordonnee;
-		this.symbole = symbole;
+		this.type = type;
 	}
 
 	public Case(Coordonnee coordonne) {
@@ -22,13 +20,13 @@ public class Case {
 		return coordonnee;
 	}
 
-	public Symbole symbole() {
-		return symbole;
+	public Type type() {
+		return type;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(coordonnee, symbole);
+		return Objects.hash(coordonnee, type);
 	}
 
 	@Override
@@ -40,7 +38,7 @@ public class Case {
 		if (getClass() != obj.getClass())
 			return false;
 		Case other = (Case) obj;
-		return Objects.equals(coordonnee, other.coordonnee) && symbole == other.symbole;
+		return Objects.equals(coordonnee, other.coordonnee) && type == other.type;
 	}
 
 	public boolean coordonneEgal(Case uneCase) {

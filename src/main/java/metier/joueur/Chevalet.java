@@ -8,18 +8,11 @@ public class Chevalet extends TasDeTuile {
 		super();
 	}
 	
-	public void afficher() {
-		for (Tuile tuiles: listeTuiles)
-			System.out.println(tuiles);
-	}
-	
 	public Tuile piocherTuileAvecIndice(Integer rangTuile) {
 		Tuile tuile = listeTuiles.get(rangTuile);
-		listeTuiles.remove(rangTuile);
+		listeTuiles.remove(tuile);
 		return tuile;
 	}
 	
-	public void ajouterTuile(Tuile tuileAjouter) {
-		listeTuiles.add(tuileAjouter);
-	}
 }
+
