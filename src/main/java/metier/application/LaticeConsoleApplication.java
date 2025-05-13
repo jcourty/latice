@@ -5,6 +5,11 @@ import java.util.List;
 
 import metier.joueur.Joueur;
 import metier.joueur.TasDeTuile;
+import metier.plateau.Case;
+import metier.plateau.Coordonnee;
+import metier.plateau.PlateauDeJeu;
+import metier.tuile.Couleur;
+import metier.tuile.Symbole;
 import metier.tuile.Tuile;
 
 public class LaticeConsoleApplication {
@@ -13,6 +18,7 @@ public class LaticeConsoleApplication {
 
 	public static void main(String[] args) {
 		
+		// Main V1
 		System.out.println(SEPARATEUR);
 		System.out.println("-- Bienvenue dans notre magnifique jeu de latice --");
 		System.out.println(SEPARATEUR);
@@ -42,6 +48,14 @@ public class LaticeConsoleApplication {
 		joueursAfficherMain(joueurs);
 		System.out.println("Chevalet joueurs après mise dans chevalet :");
 		joueursAfficherChevalet(joueurs);
+		
+		// Main V2
+		
+		PlateauDeJeu plateau = new PlateauDeJeu();
+		
+		//remplissagePlateau(plateau);
+
+		System.out.println(plateau.afficherConsole());
 
 	}
 
@@ -75,5 +89,21 @@ public class LaticeConsoleApplication {
 				joueur.ajouterDansMain(tuile);
 			}
 		}
-	}	
+	}
+	
+	public static void remplissagePlateau(PlateauDeJeu plateau) {
+		Couleur[] couleurs = {Couleur.BLEU, Couleur.CYAN, Couleur.JAUNE, Couleur.MAGENTA, Couleur.ROUGE, Couleur.VERT};
+		Symbole[] symboles = {Symbole.DAUPHIN, Symbole.FLEUR, Symbole.GECKO, Symbole.OISEAU, Symbole.PLUME, Symbole.TORTUE};
+		
+        for (int row = 1; row <= 9; row++) {
+            for (int col = 1; col <= 9; col++) {
+                Coordonnee coordonnee = new Coordonnee(row, col);
+                Tuile tuile = new Tuile(symboles[(int) (Math.random() * symboles.length)], couleurs[(int) (Math.random() * couleurs.length)]);
+
+                Case c = plateau.caseSur(coordonnee);
+                plateau.poserTuile(c, tuile); 
+             
+            }
+        }
+    }
 }

@@ -18,4 +18,8 @@ public enum Couleur {
 		return couleur+text+"\u001B[0m";
 	}
 	
+	public String couleur() {
+		return couleur;
+	}
+	
 }

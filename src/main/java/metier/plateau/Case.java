@@ -26,7 +26,7 @@ public class Case {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(coordonnee, type);
+		return Objects.hash(coordonnee);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class Case {
 		if (getClass() != obj.getClass())
 			return false;
 		Case other = (Case) obj;
-		return Objects.equals(coordonnee, other.coordonnee) && type == other.type;
+		return Objects.equals(coordonnee, other.coordonnee);
 	}
 
 	public boolean coordonneEgal(Case uneCase) {

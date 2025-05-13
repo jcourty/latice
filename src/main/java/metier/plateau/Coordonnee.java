@@ -13,17 +13,12 @@ public class Coordonnee {
 		this.y = y;
 	}
 	
-	public int getX() {
+	public int x() {
 		return x;
 	}
-	public void setX(int x) {
-		this.x = x;
-	}
-	public int getY() {
+	
+	public int y() {
 		return y;
-	}
-	public void setY(int y) {
-		this.y = y;
 	}
 
 	@Override
@@ -41,6 +36,11 @@ public class Coordonnee {
 			return false;
 		Coordonnee other = (Coordonnee) obj;
 		return x == other.x && y == other.y;
+	}
+	
+	@Override
+	public String toString() {
+		return "Coordonnee [x=" + x + ", y=" + y + "]";
 	}
 	
 
