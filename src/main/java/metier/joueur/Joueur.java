@@ -18,11 +18,11 @@ public class Joueur {
 		this(pseudo,new Chevalet(),new TasDeTuile());
 	}
 	
-	public String getPseudo() {
+	public String pseudo() {
 		return pseudo;
 	}
 
-	public TasDeTuile getMain() {
+	public TasDeTuile main() {
 		return main;
 	}
 	

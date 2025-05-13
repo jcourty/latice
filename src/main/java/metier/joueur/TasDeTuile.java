@@ -64,6 +64,7 @@ public class TasDeTuile {
 		for (Tuile tuile : listeTuiles) {
 			System.out.print(tuile.afficher());
 		}
+		System.out.println("");
 	}
 	
 	public int taillePioche() {

@@ -1,6 +1,7 @@
 package metier.plateau;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import metier.tuile.Tuile;
 
@@ -12,7 +13,7 @@ public class PlateauDeJeu {
 		plateau = new HashMap<>();
 	}
 
-	public HashMap<Case, Tuile> plateau() {
+	public Map<Case, Tuile> plateau() {
 		return plateau;
 	}
 

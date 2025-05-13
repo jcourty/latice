@@ -6,17 +6,16 @@ public enum Couleur {
 	MAGENTA("\u001B[35m"), 
 	ROUGE("\u001B[31m"), 
 	VERT("\u001B[32m"), 
-	CYAN("\u001B[36m"),
-	RESET("\u001B[0m");
+	CYAN("\u001B[36m");
 	
-	private String color;
+	private String couleur;
 	
-	private Couleur(String color) {
-		this.color=color;
+	private Couleur(String couleur) {
+		this.couleur=couleur;
 	}
 	
 	public String colorier(String text) {
-		return color+text+RESET.color;
+		return couleur+text+"\u001B[0m";
 	}
 	
 }
