@@ -20,7 +20,7 @@ class JoueurTest {
 	TasDeTuile pioche;
 
 	@BeforeEach
-	private void initialiser() {
+	void initialiser() {
 		pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
 		pioche.melanger();

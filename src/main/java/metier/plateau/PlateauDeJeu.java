@@ -26,8 +26,8 @@ public class PlateauDeJeu {
 	}
 
 	public boolean estVide() {
-		return plateau.isEmpty();
-	}
+        return plateau.values().stream().allMatch(tuile -> tuile == null);
+    }
 
 	public boolean poserTuile(Case uneCase, Tuile uneTuile) {
 		if (!contientTuile(uneCase)) {
@@ -40,8 +40,8 @@ public class PlateauDeJeu {
 	}
 	
 	public int nombreTuileSurPlateau() {
-		return this.plateau.size();
-	}
+        return (int) plateau.values().stream().filter(tuile -> tuile != null).count();
+    }
 
 	public void vider() {
 		plateau.clear();
