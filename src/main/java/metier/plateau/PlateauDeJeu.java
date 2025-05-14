@@ -10,8 +10,8 @@ import metier.tuile.Tuile;
 public class PlateauDeJeu {
 
 	private HashMap<Case, Tuile> plateau;
-	private String soleil = " \u2600 ";
-	private String lune = " \uD83C\uDF19 ";
+	private String soleil = Type.SOLEIL.type();
+	private String lune = Type.LUNE.type();
 
 	public PlateauDeJeu() {
 		plateau = new HashMap<>();
