@@ -9,8 +9,8 @@ import metier.tuile.Tuile;
 public class PlateauDeJeu {
 
 	private HashMap<Case, Tuile> plateau;
-	private String soleil = "\u2600";
-	private String lune="\uD83C\uDF19";
+	private String soleil=" \u2600 ";
+	private String lune=" \uD83C\uDF19 ";
 	
 	public PlateauDeJeu() {
 		plateau = new HashMap<>();
@@ -102,14 +102,14 @@ public class PlateauDeJeu {
 	public String afficherConsole() {
 	    StringBuilder plateauConsole = new StringBuilder();
 
-	    plateauConsole.append("    "); 
+	    plateauConsole.append("   "); 
 	    for (int col = 1; col <= 9; col++) {
 	        plateauConsole.append("  " + col + "  ");
 	    }
 	    plateauConsole.append("\n");
 
 	    plateauConsole.append("   "); 
-	    plateauConsole.append(generationMultiple(Couleur.BLEU.couleur()+"+----", 9)+"\n\u001B[0m");
+	    plateauConsole.append(generationMultiple(Couleur.BLEU.couleur()+"-----", 9)+"\n\u001B[0m");
 
 	    for (int row = 1; row <= 9; row++) {
 	        plateauConsole.append(" " + row + " \u001B[34m|");
@@ -123,9 +123,9 @@ public class PlateauDeJeu {
 	                plateauConsole.append(" " + tuile.afficher() + " \u001B[34m|");
 	            } else {
 	                if (c.type() == Type.SOLEIL) {
-	                    plateauConsole.append(Couleur.JAUNE.couleur()+soleil+ Couleur.BLEU.couleur()+" |"  );
+	                	plateauConsole.append(Couleur.JAUNE.couleur()+soleil+ Couleur.BLEU.couleur()+"|"  );
 	                } else if (c.type() == Type.LUNE) {
-	                    plateauConsole.append(Couleur.JAUNE.couleur()+lune+ Couleur.BLEU.couleur()+" |" );
+	                	plateauConsole.append(Couleur.JAUNE.couleur()+lune+ Couleur.BLEU.couleur()+"|" );
 	                } else {
 	                    plateauConsole.append("    |");
 	                }
@@ -133,7 +133,7 @@ public class PlateauDeJeu {
 	        }
 	        plateauConsole.append("\n");
 	        plateauConsole.append("   "); 
-	        plateauConsole.append(generationMultiple(Couleur.BLEU.couleur()+"+----", 9)+"\n\u001B[0m");
+	        plateauConsole.append(generationMultiple(Couleur.BLEU.couleur()+"-----", 9)+"\n\u001B[0m");
 	    }
 
 	    return plateauConsole.toString();
