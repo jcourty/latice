@@ -41,10 +41,10 @@ public class Case {
 		return Objects.equals(coordonnee, other.coordonnee);
 	}
 
-	public boolean coordonneEgal(Case uneCase) {
+	public boolean coordonneeEgal(Case uneCase) {
 		return coordonnee.equals(uneCase.coordonnee);
 	}
-
+	
 	public int coordonneeX() {
 		return coordonnee.x();
 	}
