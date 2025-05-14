@@ -27,25 +27,26 @@ class PlateauDeJeuTest {
 
     @Test
     void poserTuile_sur_case_vide() {
-        Case uneCase = plateau.caseSur(new Coordonnee(1, 1));
+		Case uneCase = plateau.caseSur(new Coordonnee(1, 1));
         Tuile tuile = new Tuile(Symbole.DAUPHIN, Couleur.BLEU);
-        assertTrue(plateau.poserTuile(uneCase, tuile));
+        assertTrue(plateau.peutPoserTuile(uneCase, tuile));
+        plateau.poserTuile(uneCase, tuile);
         assertEquals(tuile, plateau.tuileSur(uneCase));
     }
 
     @Test
     void ne_peut_pas_poser_tuile_sur_case_occupee() {
-        Case uneCase = plateau.caseSur(new Coordonnee(1, 1));
+		Case uneCase = plateau.caseSur(new Coordonnee(1, 1));
         Tuile tuile1 = new Tuile(Symbole.GECKO, Couleur.VERT);
         Tuile tuile2 = new Tuile(Symbole.OISEAU, Couleur.CYAN);
         plateau.poserTuile(uneCase, tuile1);
-        assertFalse(plateau.poserTuile(uneCase, tuile2));
+        assertFalse(plateau.peutPoserTuile(uneCase, tuile2));
         assertEquals(tuile1, plateau.tuileSur(uneCase));
     }
 
     @Test
     void retirerTuile_retourne_la_bonne_tuile_et_la_retire() {
-        Case uneCase = plateau.caseSur(new Coordonnee(2, 2));
+		Case uneCase = plateau.caseSur(new Coordonnee(2, 2));
         Tuile tuile = new Tuile(Symbole.FLEUR, Couleur.MAGENTA);
         plateau.poserTuile(uneCase, tuile);
         assertEquals(tuile, plateau.retirerTuileSur(uneCase));
@@ -55,9 +56,9 @@ class PlateauDeJeuTest {
     @Test
     void nombre_tuiles_sur_plateau_apres_ajout_et_retrait() {
         Case case1 = plateau.caseSur(new Coordonnee(1, 1));
-        Case case2 = plateau.caseSur(new Coordonnee(3, 3));
+        Case case2 = plateau.caseSur(new Coordonnee(1, 2));
         Tuile tuile1 = new Tuile(Symbole.PLUME, Couleur.VERT);
-        Tuile tuile2 = new Tuile(Symbole.TORTUE, Couleur.ROUGE);
+        Tuile tuile2 = new Tuile(Symbole.PLUME, Couleur.ROUGE);
         
         plateau.poserTuile(case1, tuile1);
         plateau.poserTuile(case2, tuile2);

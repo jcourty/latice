@@ -17,44 +17,34 @@ public class LaticeConsoleApplication {
 	private static final String SEPARATEUR = "---------------------------------------------------";
 
 	public static void main(String[] args) {
-		
-		// Main V1
+
 		System.out.println(SEPARATEUR);
 		System.out.println("-- Bienvenue dans notre magnifique jeu de latice --");
 		System.out.println(SEPARATEUR);
 		System.out.println("");
-		
+
 		List<Joueur> joueurs = new ArrayList<>();
 		TasDeTuile pioche = new TasDeTuile();
-		
-		pioche.creerTasDeTuile();
-		System.out.println("Pioche du jeu avant mélange :");
-		pioche.afficherTuiles();
-		pioche.melanger();
-		System.out.println("Pioche du jeu après mélange :");
-		pioche.afficherTuiles();
-		System.out.println(pioche.taillePioche());
-		joueurs.add(new Joueur("Didier"));
-		joueurs.add(new Joueur("Pedro"));
-		System.out.println("Main joueurs avant distribution :");
-		joueursAfficherMain(joueurs);
-		joueursAfficherChevalet(joueurs);
-		distribuerTuile(pioche, joueurs);
-		System.out.println("Main joueurs avant mise dans chevalet :");
-		joueursAfficherMain(joueurs);
-		joueursAfficherChevalet(joueurs);
-		distribuerDansChevalet(joueurs);
-		System.out.println("Main joueurs après mise dans chevalet :");
-		joueursAfficherMain(joueurs);
-		System.out.println("Chevalet joueurs après mise dans chevalet :");
-		joueursAfficherChevalet(joueurs);
-		
-		// Main V2
-		
 		PlateauDeJeu plateau = new PlateauDeJeu();
-		
-		//remplissagePlateau(plateau);
-
+		/*
+		 * pioche.creerTasDeTuile();
+		 * System.out.println("Pioche du jeu avant mélange :"); pioche.afficherTuiles();
+		 * pioche.melanger(); System.out.println("Pioche du jeu après mélange :");
+		 * pioche.afficherTuiles(); System.out.println(pioche.taillePioche());
+		 * joueurs.add(new Joueur("Didier")); joueurs.add(new Joueur("Pedro"));
+		 * System.out.println("Main joueurs avant distribution :");
+		 * joueursAfficherMain(joueurs); joueursAfficherChevalet(joueurs);
+		 * distribuerTuile(pioche, joueurs);
+		 * System.out.println("Main joueurs avant mise dans chevalet :");
+		 * joueursAfficherMain(joueurs); joueursAfficherChevalet(joueurs);
+		 * distribuerDansChevalet(joueurs);
+		 * System.out.println("Main joueurs après mise dans chevalet :");
+		 * joueursAfficherMain(joueurs);
+		 * System.out.println("Chevalet joueurs après mise dans chevalet :");
+		 * joueursAfficherChevalet(joueurs);
+		 */
+		// [TEST] à décommenter pour remplir le plateau de symboles aléatoires
+		remplissagePlateau(plateau);
 		System.out.println(plateau.afficherConsole());
 
 	}
@@ -90,20 +80,54 @@ public class LaticeConsoleApplication {
 			}
 		}
 	}
-	
-	public static void remplissagePlateau(PlateauDeJeu plateau) {
-		Couleur[] couleurs = {Couleur.BLEU, Couleur.CYAN, Couleur.JAUNE, Couleur.MAGENTA, Couleur.ROUGE, Couleur.VERT};
-		Symbole[] symboles = {Symbole.DAUPHIN, Symbole.FLEUR, Symbole.GECKO, Symbole.OISEAU, Symbole.PLUME, Symbole.TORTUE};
-		
-        for (int row = 1; row <= 9; row++) {
-            for (int col = 1; col <= 9; col++) {
-                Coordonnee coordonnee = new Coordonnee(row, col);
-                Tuile tuile = new Tuile(symboles[(int) (Math.random() * symboles.length)], couleurs[(int) (Math.random() * couleurs.length)]);
 
-                Case c = plateau.caseSur(coordonnee);
-                plateau.poserTuile(c, tuile); 
-             
-            }
-        }
-    }
+	public static void remplissagePlateau(PlateauDeJeu plateau) {
+		Couleur[] couleurs = { Couleur.BLEU, Couleur.CYAN, Couleur.JAUNE, Couleur.MAGENTA, Couleur.ROUGE,
+				Couleur.VERT };
+		Symbole[] symboles = { Symbole.DAUPHIN, Symbole.FLEUR, Symbole.GECKO, Symbole.OISEAU, Symbole.PLUME,
+				Symbole.TORTUE };
+
+		for (int row = 1; row <= 9; row++) {
+			for (int col = 1; col <= 9; col++) {
+				Coordonnee coordonnee = new Coordonnee(row, col);
+				Symbole symbole = symboles[(int) (Math.random() * symboles.length)];
+				Couleur couleur = couleurs[(int) (Math.random() * couleurs.length)];
+				Tuile tuile = new Tuile(symbole, couleur);
+				Case uneCase = new Case(coordonnee, null);
+
+				if (plateau.estVide()) {
+					plateau.poserTuile(uneCase, tuile);
+				} else {
+					uneCase = plateau.caseSur(coordonnee);
+					boolean booleanAleatoire = Math.random() < 0.5;
+					Coordonnee coordonneePrecedente;
+					if (row <= 1) {
+						coordonneePrecedente = new Coordonnee(row, col - 1);
+					} else {
+						coordonneePrecedente = new Coordonnee(row - 1, col);
+					}
+
+					Case casePrecedente = plateau.caseSur(coordonneePrecedente);
+					if (booleanAleatoire) {
+						symbole = plateau.tuileSur(casePrecedente).symbole();
+						while (!plateau.tuileAdjacenteSimilaire(uneCase, tuile)) {
+							couleur = couleurs[(int) (Math.random() * couleurs.length)];
+							tuile = new Tuile(symbole, couleur);
+						}
+					} else {
+						couleur = plateau.tuileSur(casePrecedente).couleur();
+						while (!plateau.tuileAdjacenteSimilaire(uneCase, tuile)) {
+							symbole = symboles[(int) (Math.random() * symboles.length)];
+							tuile = new Tuile(symbole, couleur);
+						}
+					}
+
+					uneCase = new Case(coordonnee, null);
+					plateau.poserTuile(uneCase, tuile);
+				}
+
+			}
+		}
+	}
 }
+

@@ -44,5 +44,12 @@ public class Case {
 	public boolean coordonneEgal(Case uneCase) {
 		return coordonnee.equals(uneCase.coordonnee);
 	}
+	
+	public int coordonneX() {
+		return coordonnee.x();
+	}
+	public int coordonneY() {
+		return coordonnee.y();
+	}
 
 }

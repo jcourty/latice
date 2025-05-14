@@ -26,4 +26,9 @@ public class Tuile {
 		return couleur.colorier(symbole.symbole());
 	}
 
+	public boolean estSimilaire(Tuile tuile) {
+		return couleur == tuile.couleur || symbole == tuile.symbole;
+		
+	}
+
 }
