@@ -13,7 +13,10 @@ public class Console {
 	public static void sautLigne () {
 		System.out.println("");
 	}
-
+	
+	public static void ligne (String text) {
+		System.out.print(text);
+	}
 
 	public static final String SEPARATOR_LINE = "---------------------------------------------------";
 

@@ -7,6 +7,7 @@ import java.util.List;
 import metier.tuile.Couleur;
 import metier.tuile.Symbole;
 import metier.tuile.Tuile;
+import vue.Console;
 
 public class TasDeTuile {
 	protected List<Tuile> listeTuiles;
@@ -65,7 +66,7 @@ public class TasDeTuile {
 
 	public void afficherTuiles() {
 		for (Tuile tuile : listeTuiles) {
-			System.out.print(tuile.afficher());
+			Console.ligne(tuile.afficher());
 		}
 		System.out.println("");
 	}

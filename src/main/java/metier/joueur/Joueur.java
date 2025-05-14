@@ -37,7 +37,7 @@ public class Joueur {
 	}
 	
 	public Tuile piocherDansChevalet(int rang) {
-		return chevalet.piocherTuileAvecIndice(rang);
+		return chevalet.piocherTuile(rang);
 	}
 	
 	public Tuile piocherDansMain() {

@@ -2,7 +2,6 @@ package metier.plateau;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import metier.tuile.Couleur;
 import metier.tuile.Tuile;
@@ -30,7 +29,12 @@ public class PlateauDeJeu {
 	}
 
 	public boolean estVide() {
-		return plateau.values().stream().allMatch(Objects::isNull);
+	    for (Tuile tuile : plateau.values()) {
+	        if (tuile != null) {
+	            return false;
+	        }
+	    }
+	    return true;
 	}
 
 	public boolean tuileAdjacenteSimilaire(Case uneCase, Tuile uneTuile) {
@@ -83,7 +87,13 @@ public class PlateauDeJeu {
 	}
 
 	public int nombreTuileSurPlateau() {
-		return (int) plateau.values().stream().filter(Objects::nonNull).count();
+	    int count = 0;
+	    for (Tuile tuile : plateau.values()) {
+	        if (tuile != null ) {
+	            count++;
+	        }
+	    }
+	    return count;
 	}
 
 	public void vider() {

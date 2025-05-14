@@ -8,7 +8,7 @@ public class Chevalet extends TasDeTuile {
 		super();
 	}
 	
-	public Tuile piocherTuileAvecIndice(Integer rangTuile) {
+	public Tuile piocherTuile(Integer rangTuile) {
 		Tuile tuile = listeTuiles.get(rangTuile);
 		listeTuiles.remove(tuile);
 		return tuile;

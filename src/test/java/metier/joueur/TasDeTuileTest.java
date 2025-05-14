@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import metier.tuile.Tuile;
 
 class TasDeTuileTest {
+	private static final int NB_TUILE_MAX = 72;
 	TasDeTuile pioche ;
 	
 	@BeforeEach
@@ -28,7 +29,7 @@ class TasDeTuileTest {
 	@Test
 	void pioche_pleine() {
 		pioche.creerTasDeTuile();
-		assertEquals(72,pioche.taillePioche());
+		assertEquals(NB_TUILE_MAX,pioche.taillePioche());
 		assertFalse(pioche.estVide());
 	}
 
