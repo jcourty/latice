@@ -34,8 +34,8 @@ public class PlateauDeJeu {
 	}
 
 	public boolean tuileAdjacenteSimilaire(Case uneCase, Tuile uneTuile) {
-		int x = uneCase.coordonneX();
-		int y = uneCase.coordonneY();
+		int x = uneCase.coordonneeX();
+		int y = uneCase.coordonneeY();
 		int nombreCaseSimilaire = 0;
 		int nombreCaseAdjacente = 0;
 		int taille = 9;
@@ -67,14 +67,13 @@ public class PlateauDeJeu {
 	}
 
 	public boolean peutPoserTuile(Case uneCase, Tuile uneTuile) {
-		if (!contientTuile(uneCase)) {
-			if (estVide()) {
-				return true;
-			} else if (tuileAdjacenteSimilaire(uneCase, uneTuile)) {
-				return true;
-			}
+		if (estVide() && uneCase.coordonneeX() == 5 && uneCase.coordonneeY() == 5) {
+			return true ;
 		}
-		return false;
+		if (contientTuile(uneCase)) {
+			return false ;
+		}
+		return tuileAdjacenteSimilaire(uneCase, uneTuile);
 	}
 
 	public void poserTuile(Case uneCase, Tuile uneTuile) {
@@ -175,7 +174,6 @@ public class PlateauDeJeu {
 			plateauConsole.append("   ");
 			plateauConsole.append(generationMultiple(Couleur.BLEU.couleur() + "-----", 9) + "\n\u001B[0m");
 		}
-
 		return plateauConsole.toString();
 	}
 

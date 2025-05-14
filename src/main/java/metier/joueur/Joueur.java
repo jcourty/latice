@@ -63,13 +63,14 @@ public class Joueur {
 	public int tailleChevalet() {
 		return chevalet.taillePioche();
 	}
-
-	public void remplirChevalet() {
-		while (chevalet.taillePioche() < 5) {
+	
+	public void distribuerDansChevalet() {
+		for (int i = 0; i < 5; i++) {
 			Tuile tuile = piocherDansMain();
 			ajouterDansChevalet(tuile);
 		}
 	}
+
+	
 	
 }
-

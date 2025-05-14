@@ -13,30 +13,29 @@ import org.junit.jupiter.api.Test;
 import metier.tuile.Tuile;
 
 class TasDeTuileTest {
-	private static final int TAILLE_PIOCHE = 72;
-	TasDeTuile pioche;
-
+	TasDeTuile pioche ;
+	
 	@BeforeEach
 	void initialiser() {
 		pioche = new TasDeTuile();
 	}
-
+	
 	@Test
 	void nouvelle_pioche_vide() {
-		assertEquals(pioche.taillePioche(), 0);
+		assertEquals(0, pioche.taillePioche());
 	}
-
+	
 	@Test
 	void pioche_pleine() {
 		pioche.creerTasDeTuile();
-		assertEquals(pioche.taillePioche(), TAILLE_PIOCHE);
+		assertEquals(72,pioche.taillePioche());
 		assertFalse(pioche.estVide());
 	}
 
 	@Test
 	void pioche_est_melanger() {
 		pioche.creerTasDeTuile();
-		TasDeTuile deuxiemePioche = new TasDeTuile(pioche);
+		TasDeTuile deuxiemePioche = new TasDeTuile(pioche) ;
 		pioche.melanger();
 		assertFalse(pioche.equals(deuxiemePioche));
 	}
@@ -44,23 +43,23 @@ class TasDeTuileTest {
 	@Test
 	void piocherTuile_aleatoire() {
 		pioche.creerTasDeTuile();
-		TasDeTuile deuxiemePioche = new TasDeTuile(pioche);
-		List<Tuile> listeTuilesPremiere = new ArrayList<>();
-		List<Tuile> listeTuilesSeconde = new ArrayList<>();
-		for (int i = 0; i < TAILLE_PIOCHE; i++) {
+		TasDeTuile deuxiemePioche = new TasDeTuile(pioche) ;
+		List<Tuile> listeTuilesPremiere = new ArrayList<>() ;
+		List<Tuile> listeTuilesSeconde = new ArrayList<>() ;
+		for (int i = 0; i < 72; i++) {
 			Tuile tuilePioche = pioche.piocherTuile();
 			Tuile tuileDeuxiemePioche = deuxiemePioche.piocherTuile();
 			listeTuilesPremiere.add(tuilePioche);
 			listeTuilesSeconde.add(tuileDeuxiemePioche);
 		}
-
+		
 		assertFalse(listeTuilesPremiere.equals(listeTuilesSeconde));
 	}
-
+	
 	@Test
 	void piocherTuile_null_quand_pioche_vide() {
 		Tuile tuilePioche = pioche.piocherTuile();
-		assertEquals(tuilePioche, null);
+		assertEquals(null,tuilePioche);
 	}
 	
 	@Test
@@ -74,5 +73,5 @@ class TasDeTuileTest {
 	    pioche.distribuerTuile(joueurs);
 	    assertTrue(pioche.estVide());
 	}
-
+	
 }

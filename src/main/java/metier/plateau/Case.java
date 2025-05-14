@@ -12,8 +12,8 @@ public class Case {
 		this.type = type;
 	}
 
-	public Case(Coordonnee coordonne) {
-		this(coordonne, null);
+	public Case(Coordonnee coordonnee) {
+		this(coordonnee, null);
 	}
 
 	public Coordonnee coordonnee() {
@@ -44,11 +44,11 @@ public class Case {
 	public boolean coordonneEgal(Case uneCase) {
 		return coordonnee.equals(uneCase.coordonnee);
 	}
-	
-	public int coordonneX() {
+
+	public int coordonneeX() {
 		return coordonnee.x();
 	}
-	public int coordonneY() {
+	public int coordonneeY() {
 		return coordonnee.y();
 	}
 
