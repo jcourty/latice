@@ -3,11 +3,14 @@ package metier.plateau;
 import java.util.HashMap;
 import java.util.Map;
 
+import metier.tuile.Couleur;
 import metier.tuile.Tuile;
 
 public class PlateauDeJeu {
 
 	private HashMap<Case, Tuile> plateau;
+	private String soleil = "\u2600";
+	private String lune="\uD83C\uDF19";
 	
 	public PlateauDeJeu() {
 		plateau = new HashMap<>();
@@ -24,7 +27,7 @@ public class PlateauDeJeu {
 		}
 		return plateau.containsKey(uneCase);
 	}
-
+	
 	public boolean estVide() {
         return plateau.values().stream().allMatch(tuile -> tuile == null);
     }
@@ -50,18 +53,18 @@ public class PlateauDeJeu {
 	public Tuile retirerTuileSur(Case c) {
 		return plateau.remove(c);
 	}
-	
+
 	public Tuile tuileSur(Case uneCase) {
 		return plateau.get(uneCase);
 	}
 
 	public Case caseSur(Coordonnee coordonnee) {
-		for (Case uneCase : plateau.keySet()) {
+	    for (Case uneCase : plateau.keySet()) {
 	        if (uneCase.coordonnee().equals(coordonnee)) {
 	            return uneCase;
 	        }
 	    }
-	    return null;
+	    return null; 
 	}
 	
 	public void creationPlateau() {
@@ -106,7 +109,7 @@ public class PlateauDeJeu {
 	    plateauConsole.append("\n");
 
 	    plateauConsole.append("   "); 
-	    plateauConsole.append(generationMultiple("\u001B[34m+----", 9) + "+\n\u001B[0m");
+	    plateauConsole.append(generationMultiple(Couleur.BLEU.couleur()+"+----", 9)+"\n\u001B[0m");
 
 	    for (int row = 1; row <= 9; row++) {
 	        plateauConsole.append(" " + row + " \u001B[34m|");
@@ -120,9 +123,9 @@ public class PlateauDeJeu {
 	                plateauConsole.append(" " + tuile.afficher() + " \u001B[34m|");
 	            } else {
 	                if (c.type() == Type.SOLEIL) {
-	                    plateauConsole.append(" \u001B[33m\u2600\u001B[34m |" );
+	                    plateauConsole.append(Couleur.JAUNE.couleur()+soleil+ Couleur.BLEU.couleur()+" |"  );
 	                } else if (c.type() == Type.LUNE) {
-	                    plateauConsole.append(" \u001B[33m\uD83C\uDF19\u001B[34m |");
+	                    plateauConsole.append(Couleur.JAUNE.couleur()+lune+ Couleur.BLEU.couleur()+" |" );
 	                } else {
 	                    plateauConsole.append("    |");
 	                }
@@ -130,7 +133,7 @@ public class PlateauDeJeu {
 	        }
 	        plateauConsole.append("\n");
 	        plateauConsole.append("   "); 
-	        plateauConsole.append(generationMultiple("\u001B[34m+----", 9) + "+\n\u001B[0m");
+	        plateauConsole.append(generationMultiple(Couleur.BLEU.couleur()+"+----", 9)+"\n\u001B[0m");
 	    }
 
 	    return plateauConsole.toString();
