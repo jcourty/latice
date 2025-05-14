@@ -1,0 +1,18 @@
+.root{
+	-fx-background-color: #d7ffd8;
+}
+
+.chevalet {
+	-fx-grid-lines-visible: true;
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-width: 3;
+}
+
+.gridpane{
+    -fx-border-color: black;       /* Couleur du bord */
+    -fx-border-width: 5px;         /* Épaisseur du bord */
+    -fx-border-style: solid;       /* Style du bord */
+    -fx-border-radius: 5px;        /* (Optionnel) coins arrondis */
+    -fx-padding: 10px;             /* (Optionnel) espace intérieur */
+}
