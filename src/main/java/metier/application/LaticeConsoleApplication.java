@@ -12,6 +12,7 @@ import metier.tuile.Couleur;
 import metier.tuile.Symbole;
 import metier.tuile.Tuile;
 import vue.Console;
+import vue.fxPaquet.metier.AffichagePlateau;
 
 public class LaticeConsoleApplication {
 
@@ -21,6 +22,9 @@ public class LaticeConsoleApplication {
 		Console.sautLigne();
 		
 		// Main V1
+		Console.titre("--                   Main V1                     --");
+		Console.sautLigne();
+		
 		List<Joueur> joueurs = new ArrayList<>();
 		TasDeTuile pioche = new TasDeTuile();
 		PlateauDeJeu plateau = new PlateauDeJeu();
@@ -48,8 +52,10 @@ public class LaticeConsoleApplication {
 		joueursAfficherChevalet(joueurs);
 
 		// Main V2
+		Console.titre("--                   Main V2                     --");
+		Console.sautLigne();
+		
 		Console.message(plateau.afficherConsole());
-
 		Tuile tuile1 = new Tuile(Symbole.DAUPHIN, Couleur.BLEU);
 		Case case1 = new Case(new Coordonnee(5, 5));
 		plateau.poserTuile(case1, tuile1);
@@ -59,6 +65,14 @@ public class LaticeConsoleApplication {
 		Case case2 = new Case(new Coordonnee(5, 6));
 		plateau.poserTuile(case2, tuile2);
 		Console.message(plateau.afficherConsole());
+		
+		// Main V3
+		Console.titre("--                   Main V3                     --");
+		Console.sautLigne();
+		
+		
+		AffichagePlateau plateauIHM = new AffichagePlateau(plateau);
+		Console.message(plateauIHM.afficher());
 
 	}
 

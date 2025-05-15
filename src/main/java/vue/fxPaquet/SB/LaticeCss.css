@@ -14,5 +14,4 @@
     -fx-border-width: 5px;         /* Épaisseur du bord */
     -fx-border-style: solid;       /* Style du bord */
     -fx-border-radius: 5px;        /* (Optionnel) coins arrondis */
-    -fx-padding: 10px;             /* (Optionnel) espace intérieur */
 }

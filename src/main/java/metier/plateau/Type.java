@@ -1,19 +1,18 @@
 package metier.plateau;
 
 public enum Type {
-	SOLEIL(" \u2600 "), 
-	LUNE(" \uD83C\uDF19 "), 
-	SIMPLE("\u001B[34m");
-	
-	
-	private String type;
+    SOLEIL("\u2600"), 
+    LUNE("\uD83C\uDF19"), 
+    SIMPLE("simple");
 
-	private Type(String type) {
-		this.type=type;
-	}
+    private String type;
 
-	public String type() {
-		return type;
-	}
+    private Type(String type) {
+        this.type=type;
+    }
+
+    public String afficher() {
+        return type;
+    }
 
 }

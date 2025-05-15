@@ -38,10 +38,10 @@ public class Coordonnee {
 		return x == other.x && y == other.y;
 	}
 	
-	@Override
-	public String toString() {
-		return "Coordonnee [x=" + x + ", y=" + y + "]";
+	public String afficher() {
+		return "(" + x + "," + y + ")";
 	}
+
 	
 
 }

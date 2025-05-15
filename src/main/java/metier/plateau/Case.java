@@ -51,5 +51,9 @@ public class Case {
 	public int coordonneeY() {
 		return coordonnee.y();
 	}
+	
+	public String afficher() {
+		return "Case" + coordonnee.afficher() + '(' + type.afficher() + ')';
+	}
 
 }
