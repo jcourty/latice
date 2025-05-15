@@ -84,7 +84,7 @@ class JoueurTest {
 	    pioche.distribuerTuile(joueurs);
 	    joueur1.distribuerDansChevalet();
 
-	    List<Tuile> chevaletJoueur1 = joueur1.chevalet();
+	    List<Tuile> chevaletJoueur1 = joueur1.listeChevalet();
 	    Tuile tuileAttendue = chevaletJoueur1.get(3);
 	    Tuile tuilePiochee = joueur1.piocherDansChevalet(3);
 

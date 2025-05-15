@@ -28,7 +28,11 @@ public class Joueur {
 		return main;
 	}
 	
-	public List<Tuile> chevalet() {
+	public Chevalet chevalet() {
+		return chevalet ;
+	}
+	
+	public List<Tuile> listeChevalet() {
 		return chevalet.listeTuiles();
 	}
 	

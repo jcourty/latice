@@ -13,6 +13,13 @@ public class Chevalet extends TasDeTuile {
 		listeTuiles.remove(tuile);
 		return tuile;
 	}
+
+	public void remplirChevalet(TasDeTuile main) {
+		while (taillePioche() > 5) {
+			Tuile tuile = main.piocherTuile() ;
+			ajouterTuile(tuile);
+		}
+	}
 	
 }
 
