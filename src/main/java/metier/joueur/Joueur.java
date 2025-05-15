@@ -74,6 +74,12 @@ public class Joueur {
 			ajouterDansChevalet(tuile);
 		}
 	}
+	public void remplirChevalet() {
+		while (chevalet.taillePioche() < 5) {
+			Tuile tuile = main.piocherTuile() ;
+			chevalet.ajouterTuile(tuile);
+		}
+	}
 
 	
 	

@@ -14,12 +14,7 @@ public class Chevalet extends TasDeTuile {
 		return tuile;
 	}
 
-	public void remplirChevalet(TasDeTuile main) {
-		while (taillePioche() > 5) {
-			Tuile tuile = main.piocherTuile() ;
-			ajouterTuile(tuile);
-		}
-	}
+	
 	
 }
 
