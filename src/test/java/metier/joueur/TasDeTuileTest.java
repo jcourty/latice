@@ -2,7 +2,6 @@ package metier.joueur;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,16 +62,5 @@ class TasDeTuileTest {
 		assertEquals(null,tuilePioche);
 	}
 	
-	@Test
-	void distribuerTuile_pioche_vide() {
-	    pioche.creerTasDeTuile();
-	    
-	    List<Joueur> joueurs = new ArrayList<>();
-	    joueurs.add(new Joueur("Alice"));
-	    joueurs.add(new Joueur("Bob"));
-	    
-	    pioche.distribuerTuile(joueurs);
-	    assertTrue(pioche.estVide());
-	}
 	
 }

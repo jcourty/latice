@@ -13,6 +13,8 @@ public class Chevalet extends TasDeTuile {
 		listeTuiles.remove(tuile);
 		return tuile;
 	}
+
+	
 	
 }
 

@@ -28,7 +28,11 @@ public class Joueur {
 		return main;
 	}
 	
-	public List<Tuile> chevalet() {
+	public Chevalet chevalet() {
+		return chevalet ;
+	}
+	
+	public List<Tuile> listeChevalet() {
 		return chevalet.listeTuiles();
 	}
 	
@@ -68,6 +72,12 @@ public class Joueur {
 		for (int i = 0; i < 5; i++) {
 			Tuile tuile = piocherDansMain();
 			ajouterDansChevalet(tuile);
+		}
+	}
+	public void remplirChevalet() {
+		while (chevalet.taillePioche() < 5) {
+			Tuile tuile = main.piocherTuile() ;
+			chevalet.ajouterTuile(tuile);
 		}
 	}
 

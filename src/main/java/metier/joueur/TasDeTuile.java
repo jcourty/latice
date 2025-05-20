@@ -75,13 +75,4 @@ public class TasDeTuile {
 		return listeTuiles.size();
 	}
 
-	public void distribuerTuile(List<Joueur> joueurs) {
-		while (!estVide()) {
-			for (Joueur joueur : joueurs) {
-				Tuile tuile = piocherTuile();
-				joueur.ajouterDansMain(tuile);
-				
-			}
-		}
-	}
 }
