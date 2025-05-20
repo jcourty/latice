@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import metier.joueur.Joueur;
 import metier.joueur.TasDeTuile;
-import metier.plateau.PlateauDeJeu;
 import metier.tuile.Tuile;
 import vue.Console;
 
@@ -89,7 +88,11 @@ public class Arbitre {
 		return joueurs.get(index);
 	}
 
-	public int debutDePartie(TasDeTuile pioche, List<Joueur> joueurs, int nombreJoueur, PlateauDeJeu plateau) {
+	public int debutDePartie() {
+		TasDeTuile pioche = new TasDeTuile();
+		pioche.creerTasDeTuile();
+		int nb_joueurs = this.nombreJoueur();
+		List<Joueur> joueurs = this.creationListeJoueur(nb_joueurs);
 		distribuerTuile(pioche, joueurs);
 		distribuerDansChevalet(joueurs);
 		afficherChevaletJoueurs(joueurs);

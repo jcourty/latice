@@ -3,6 +3,7 @@ package metier.application;
 import java.util.ArrayList;
 import java.util.List;
 
+import metier.arbitre.Arbitre;
 import metier.joueur.Joueur;
 import metier.joueur.TasDeTuile;
 import metier.plateau.Case;
@@ -70,10 +71,16 @@ public class LaticeConsoleApplication {
 		Console.titre("--                   Main V3                     --");
 		Console.sautLigne();
 		
-		
 		AffichagePlateau plateauIHM = new AffichagePlateau(plateau);
 		Console.message(plateauIHM.afficher());
-
+		
+		// Main V4
+		Console.titre("--                   Main V4                     --");
+		Console.sautLigne();
+		
+		Arbitre arbitre = new Arbitre();
+		arbitre.debutDePartie();
+		
 	}
 
 	public static void distribuerDansChevalet(List<Joueur> joueurs) {
