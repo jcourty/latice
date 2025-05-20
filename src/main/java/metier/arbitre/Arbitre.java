@@ -22,7 +22,7 @@ public class Arbitre {
 		while (!saisieValide) {
 			if (scanner.hasNextInt()) {
 				nombreJoueur = scanner.nextInt();
-				scanner.nextLine(); 
+				scanner.nextLine();
 				if (nombreJoueur >= 2 && nombreJoueur <= 4) {
 					saisieValide = true;
 				} else {
@@ -30,7 +30,7 @@ public class Arbitre {
 				}
 			} else {
 				Console.ligne("Erreur : veuillez entrer un nombre entier : ");
-				scanner.nextLine(); 
+				scanner.nextLine();
 			}
 		}
 
@@ -52,6 +52,18 @@ public class Arbitre {
 					saisieValide = true;
 				}
 			}
+		}
+
+		return joueurs;
+	}
+
+	public List<Joueur> creationListeJoueurFX(int nombreJoueur) {
+		List<Joueur> joueurs = new ArrayList<>();
+
+		for (int i = 1; i <= nombreJoueur; i++) {
+			String nom = "Didier";
+			joueurs.add(new Joueur(nom));
+
 		}
 
 		return joueurs;

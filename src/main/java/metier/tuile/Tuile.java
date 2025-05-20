@@ -1,6 +1,6 @@
 package metier.tuile;
 
-
+import javafx.scene.image.Image;
 
 public class Tuile {
 
@@ -30,5 +30,10 @@ public class Tuile {
 		return couleur == tuile.couleur || symbole == tuile.symbole;
 		
 	}
+	
+	public Image getImage() {
+		System.out.println("/images/" + symbole + couleur + ".png");
+        return new Image(getClass().getResourceAsStream("/images/" + symbole + couleur + ".png"));
+    }
 
 }

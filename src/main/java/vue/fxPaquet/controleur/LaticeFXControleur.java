@@ -1,8 +1,13 @@
 package vue.fxPaquet.controleur;
 
+import java.util.List;
+
 import javafx.fxml.FXML;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import metier.joueur.Joueur;
+import metier.tuile.Tuile;
 
 public class LaticeFXControleur {
 
@@ -11,8 +16,26 @@ public class LaticeFXControleur {
 
     @FXML
     private VBox idChevalet1;
+    
+    @FXML
+    private GridPane idGridPaneChevalet1; // le GridPane défini dans le FXML
+
+    public void afficherChevalet(Joueur joueur) {
+        List<Tuile> tuiles = joueur.listeChevalet();
+        
+        for (int i = 0; i < tuiles.size(); i++) {
+            Tuile tuile = tuiles.get(i);
+            ImageView imageView = new ImageView(tuile.getImage());
+            imageView.setFitWidth(80);
+            imageView.setFitHeight(60);
+            imageView.setPreserveRatio(true);
+
+            idGridPaneChevalet1.add(imageView, 0, i); 
+        }
+    }
 
     @FXML
     private GridPane idPlateauJeu;
+    
  
 }
