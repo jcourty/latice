@@ -18,13 +18,13 @@ import metier.joueur.TasDeTuile;
 
 class ArbitreTest {
 
-	private ByteArrayInputStream Donnees_entree;
-	private final ByteArrayOutputStream Donnees_Sorties = new ByteArrayOutputStream();
+	private ByteArrayInputStream donneesEntree;
+	private final ByteArrayOutputStream donneesSorties = new ByteArrayOutputStream();
 	private Arbitre arbitre;
 
 	@BeforeEach
 	void changeSortiePourLaSave() {
-		System.setOut(new PrintStream(Donnees_Sorties));
+		System.setOut(new PrintStream(donneesSorties));
 	}
 
 	@AfterEach
@@ -34,8 +34,8 @@ class ArbitreTest {
 	}
 
 	private void transformeCeQuiEstEnParametreEnEntreeCommeAuClavier(String data) {
-		Donnees_entree = new ByteArrayInputStream(data.getBytes());
-		System.setIn(Donnees_entree);
+		donneesEntree = new ByteArrayInputStream(data.getBytes());
+		System.setIn(donneesEntree);
 		arbitre = new Arbitre();
 	}
 
