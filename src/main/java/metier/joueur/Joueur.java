@@ -53,7 +53,9 @@ public class Joueur {
 	}
 	
 	public Tuile piocherDansChevalet(int rang) {
-		return chevalet.piocherTuile(rang);
+		Tuile tuile = chevalet.piocherTuile(rang);
+		remplirChevalet();
+		return tuile ;
 	}
 	
 	public Tuile piocherDansMain() {
@@ -88,7 +90,7 @@ public class Joueur {
 	}
 	
 	public void remplirChevalet() {
-		while (chevalet.taillePioche() < 5) {
+		while (chevalet.taillePioche() < 5 && !main.estVide()) {
 			Tuile tuile = main.piocherTuile() ;
 			chevalet.ajouterTuile(tuile);
 		}
