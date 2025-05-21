@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import metier.arbitre.Arbitre;
 import metier.joueur.Joueur;
 import metier.joueur.TasDeTuile;
+import vue.fxPaquet.controleur.DndImgControleur;
 import vue.fxPaquet.controleur.LaticeFXControleur;
 
 public class LaticeFX extends Application {
@@ -25,20 +26,20 @@ public class LaticeFX extends Application {
 		
 		Arbitre arbitre = new Arbitre();
 		List<GridPane> gridPanes = controller.listeGridPanes() ;
-		System.out.println(gridPanes);
-		
 		List<Joueur> champsJoueurs = arbitre.creationListeJoueurFX(2,gridPanes);
 		TasDeTuile pioche = new TasDeTuile();
-		
+		GridPane gpPlateauDeJeu = controller.gridPane() ;
 		pioche.creerTasDeTuile();
 		arbitre.distribuerTuile(pioche, champsJoueurs);
 		arbitre.distribuerDansChevalet(champsJoueurs);
 		
 		for (Joueur joueur : champsJoueurs) {
-			joueur.afficherChevalet();
-			System.out.println(joueur.idGridPane());
-			controller.afficherChevalet(joueur);
+			LaticeFXControleur.afficherChevalet(joueur);
 		}
+			
+		DndImgControleur.DndPourGridPane(gpPlateauDeJeu);
+		//TODO Faire en sorte que l'arbitre puisse dire qu'une tuile est valide ou pas.
+		
 		
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Latice");

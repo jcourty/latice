@@ -32,7 +32,6 @@ public class Tuile {
 	}
 	
 	public Image getImage() {
-		System.out.println("/images/" + symbole + couleur + ".png");
         return new Image(getClass().getResourceAsStream("/images/" + symbole + couleur + ".png"));
     }
 

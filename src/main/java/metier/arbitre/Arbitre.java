@@ -63,7 +63,6 @@ public class Arbitre {
 
 		for (int i = 1; i <= nombreJoueur; i++) {
 			String nom = "Didier";
-			System.out.println(gridPanes.get(i-1));
 			joueurs.add(new Joueur(nom,gridPanes.get(i-1)));
 		}
 

@@ -30,13 +30,6 @@
 						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 					</rowConstraints>
-               <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="13.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="13.0" layoutY="136.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="13.0" layoutY="215.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4" />
-               </children>
 				</GridPane>
 			</children>
 		</VBox>
@@ -60,13 +53,6 @@
 						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 					</rowConstraints>
-               <children>
-                  <ImageView fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-                  <ImageView fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
-                  <ImageView fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
-                  <ImageView fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4" />
-               </children>
 				</GridPane>
 			</children>
 		</VBox>
