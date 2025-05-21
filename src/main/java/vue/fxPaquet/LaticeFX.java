@@ -6,13 +6,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import metier.arbitre.Arbitre;
 import metier.joueur.Joueur;
 import metier.joueur.TasDeTuile;
-import metier.tuile.Couleur;
-import metier.tuile.Symbole;
-import metier.tuile.Tuile;
 import vue.fxPaquet.controleur.LaticeFXControleur;
 
 public class LaticeFX extends Application {
@@ -26,17 +24,19 @@ public class LaticeFX extends Application {
 		LaticeFXControleur controller = loader.getController();
 		
 		Arbitre arbitre = new Arbitre();
+		List<GridPane> gridPanes = controller.listeGridPanes() ;
+		System.out.println(gridPanes);
 		
-		List<Joueur> champsJoueurs = arbitre.creationListeJoueurFX(2);
+		List<Joueur> champsJoueurs = arbitre.creationListeJoueurFX(2,gridPanes);
 		TasDeTuile pioche = new TasDeTuile();
-		Tuile tuile = new Tuile(Symbole.GECKO,Couleur.ROUGE);
-		tuile.getImage();
+		
 		pioche.creerTasDeTuile();
 		arbitre.distribuerTuile(pioche, champsJoueurs);
 		arbitre.distribuerDansChevalet(champsJoueurs);
 		
 		for (Joueur joueur : champsJoueurs) {
 			joueur.afficherChevalet();
+			System.out.println(joueur.idGridPane());
 			controller.afficherChevalet(joueur);
 		}
 		

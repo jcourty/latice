@@ -2,6 +2,8 @@ package metier.joueur;
 
 import java.util.List;
 
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import metier.tuile.Tuile;
 
 public class Joueur {
@@ -9,15 +11,21 @@ public class Joueur {
 	private final String pseudo;
 	private Chevalet chevalet;
 	private TasDeTuile main;
+	private GridPane idGridPane;
 	
-	public Joueur(String pseudo,Chevalet chevalet, TasDeTuile main) {
+	public Joueur(String pseudo,Chevalet chevalet, TasDeTuile main, GridPane idGridPane) {
 		this.pseudo = pseudo;
 		this.chevalet = chevalet ;
 		this.main = main;
+		this.idGridPane = idGridPane ;
+	}
+	
+	public Joueur(String pseudo,GridPane idGridPane) {
+		this(pseudo,new Chevalet(),new TasDeTuile(),idGridPane);
 	}
 	
 	public Joueur(String pseudo) {
-		this(pseudo,new Chevalet(),new TasDeTuile());
+		this(pseudo,new Chevalet(),new TasDeTuile(),null);
 	}
 	
 	public String pseudo() {
@@ -30,6 +38,10 @@ public class Joueur {
 	
 	public Chevalet chevalet() {
 		return chevalet ;
+	}
+	
+	public GridPane idGridPane() {
+		return idGridPane ;
 	}
 	
 	public List<Tuile> listeChevalet() {
@@ -74,11 +86,16 @@ public class Joueur {
 			ajouterDansChevalet(tuile);
 		}
 	}
+	
 	public void remplirChevalet() {
 		while (chevalet.taillePioche() < 5) {
 			Tuile tuile = main.piocherTuile() ;
 			chevalet.ajouterTuile(tuile);
 		}
+	}
+	
+	public void ajouterDansGridPane(ImageView imageView, int x , int y) {
+		idGridPane().add(imageView, x, y);
 	}
 
 	

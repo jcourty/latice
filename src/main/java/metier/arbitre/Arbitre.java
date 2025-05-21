@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import javafx.scene.layout.GridPane;
 import metier.joueur.Joueur;
 import metier.joueur.TasDeTuile;
 import metier.tuile.Tuile;
@@ -57,13 +58,13 @@ public class Arbitre {
 		return joueurs;
 	}
 
-	public List<Joueur> creationListeJoueurFX(int nombreJoueur) {
+	public List<Joueur> creationListeJoueurFX(int nombreJoueur,List<GridPane> gridPanes) {
 		List<Joueur> joueurs = new ArrayList<>();
 
 		for (int i = 1; i <= nombreJoueur; i++) {
 			String nom = "Didier";
-			joueurs.add(new Joueur(nom));
-
+			System.out.println(gridPanes.get(i-1));
+			joueurs.add(new Joueur(nom,gridPanes.get(i-1)));
 		}
 
 		return joueurs;
