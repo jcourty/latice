@@ -66,7 +66,7 @@ public class TasDeTuile {
 
 	public void afficherTuiles() {
 		for (Tuile tuile : listeTuiles) {
-			Console.message(tuile.afficher());
+			Console.ligne(tuile.afficher());
 		}
 		Console.sautLigne();
 	}
