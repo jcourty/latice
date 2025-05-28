@@ -6,7 +6,7 @@
 	-fx-grid-lines-visible: true;
     -fx-border-color: black;
     -fx-border-style: solid;
-    -fx-border-width: 3;
+    -fx-border-width: 5;
 }
 
 .gridpane{

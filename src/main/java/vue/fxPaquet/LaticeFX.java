@@ -21,9 +21,8 @@ public class LaticeFX extends Application {
 		
 		GridPane gpPlateauDeJeu = controller.gridPane() ;
 		
-		DndImgControleur.DndPourGridPane(gpPlateauDeJeu);
+		DndImgControleur.dndPourGridPane(gpPlateauDeJeu);
 		controller.afficherPlateau();
-		//TODO Faire en sorte que l'arbitre puisse dire qu'une tuile est valide ou pas.
 		
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Latice");

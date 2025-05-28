@@ -155,9 +155,7 @@ public class Arbitre {
 		for (int[] direction : directions) {
 			int xAdjacent = x + direction[0];
 			int yAdjacent = y + direction[1];
-
-			if (xAdjacent >= 0 && xAdjacent < taille && yAdjacent >= 0 && yAdjacent <= taille) {
-
+			if (xAdjacent >= 0 && xAdjacent <= taille && yAdjacent >= 0 && yAdjacent <= taille) {
 				Coordonnee coordonnee = new Coordonnee(xAdjacent, yAdjacent);
 				Case caseAdjacente = plateau.caseSur(coordonnee);
 				if (plateau.contientTuile(caseAdjacente)) {

@@ -4,9 +4,7 @@ import java.util.List;
 
 import metier.arbitre.Arbitre;
 import metier.joueur.Joueur;
-import metier.joueur.TasDeTuile;
 import metier.plateau.PlateauDeJeu;
-import metier.tuile.Tuile;
 import vue.Console;
 
 public class LaticeConsoleApplication {
