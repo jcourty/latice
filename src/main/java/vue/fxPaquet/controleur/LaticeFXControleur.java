@@ -1,10 +1,14 @@
 package vue.fxPaquet.controleur;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -18,23 +22,40 @@ import metier.tuile.Tuile;
 
 public class LaticeFXControleur {
 
-	@FXML
-	private VBox idChevalet2;
+    @FXML
+    private VBox idChevalet2;
 
-	@FXML
-	private VBox idChevalet1;
+    @FXML
+    private GridPane idGridPaneChevalet2;
 
-	@FXML
-	private GridPane idGridPaneChevalet1;
+    @FXML
+    private VBox idChevalet1;
 
-	@FXML
-	private GridPane idGridPaneChevalet2;
+    @FXML
+    private GridPane idGridPaneChevalet1;
 
+    @FXML
+    private GridPane idPlateauJeu;
+
+    @FXML
+    private Button btnEchange;
+
+    @FXML
+    private Button btnPasser;
+
+    @FXML
+    private Button btnNouvAction;
+
+    @FXML
+    private Button btnQuitter;
+
+    private List<Joueur> champsJoueurs ;
+    private int indexJoueurActuel = 0 ;
+    
 	public List<GridPane> listeGridPanes() {
 		List<GridPane> gridPanes = new ArrayList<>();
 		gridPanes.add(idGridPaneChevalet1);
 		gridPanes.add(idGridPaneChevalet2);
-
 		return gridPanes;
 	}
 
@@ -57,29 +78,27 @@ public class LaticeFXControleur {
 	}
 
 	@FXML
-	private GridPane idPlateauJeu;
-
-	@FXML
 	public GridPane gridPane() {
 		return idPlateauJeu;
 	}
 	
 	@FXML
 	public void initialize() {
-		
 		Arbitre arbitre = new Arbitre();
 		
 		List<GridPane> chevalet = listeGridPanes();
-		List<Joueur> champsJoueurs = arbitre.creationListeJoueurFX(2,chevalet);
+		champsJoueurs = arbitre.creationListeJoueurFX(2,chevalet);
+		Collections.shuffle(champsJoueurs);
+		
 		TasDeTuile pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
+		
 		arbitre.distribuerTuile(pioche, champsJoueurs);
 		arbitre.distribuerDansChevalet(champsJoueurs);
-		
+		 
 		for (Joueur joueur : champsJoueurs) {
 			LaticeFXControleur.afficherChevalet(joueur);
 		}
-		
 	}
 	
 	public void afficherImagesDansGridPane(List<String> urls, List<int[]> positions, GridPane gridPane) {
@@ -116,5 +135,35 @@ public class LaticeFXControleur {
 				idPlateauJeu.add(imageView, col - 1, row - 1);
 			}
 		}
+	}	
+	
+	public Joueur joueurActuel() {
+		return champsJoueurs.get(indexJoueurActuel) ;
 	}
+
+	
+	//Tous les eventHandler pour les bouttons
+	@FXML
+    void echanger(ActionEvent event) {
+		Joueur joueur = joueurActuel() ;
+		joueur.viderChevalet();
+		joueur.remplirChevalet();
+		afficherChevalet(joueur);
+    }
+
+    @FXML
+    void nouvelleAction(ActionEvent event) {
+    	//TODO
+    }
+
+    @FXML
+    void passer(ActionEvent event) {
+    	indexJoueurActuel = (indexJoueurActuel +1 ) % champsJoueurs.size();
+    }
+
+    @FXML
+    void quitter(ActionEvent event) {
+    	Platform.exit();
+    }
+	
 }
