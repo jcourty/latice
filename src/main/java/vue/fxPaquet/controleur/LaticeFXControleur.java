@@ -7,8 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import metier.arbitre.Arbitre;
 import metier.joueur.Joueur;
+import metier.joueur.TasDeTuile;
 import metier.tuile.Tuile;
+import vue.fxPaquet.LaticeFX;
 
 public class LaticeFXControleur {
 
@@ -53,8 +56,26 @@ public class LaticeFXControleur {
 	@FXML
 	private GridPane idPlateauJeu;
 
+	@FXML
 	public GridPane gridPane() {
 		return idPlateauJeu;
 	}
-
+	
+	@FXML
+	public void initialize() {
+		
+		Arbitre arbitre = new Arbitre();
+		
+		List<GridPane> chevalet = listeGridPanes();
+		List<Joueur> champsJoueurs = arbitre.creationListeJoueurFX(2,chevalet);
+		TasDeTuile pioche = new TasDeTuile();
+		pioche.creerTasDeTuile();
+		arbitre.distribuerTuile(pioche, champsJoueurs);
+		arbitre.distribuerDansChevalet(champsJoueurs);
+		
+		for (Joueur joueur : champsJoueurs) {
+			LaticeFXControleur.afficherChevalet(joueur);
+		}
+		
+	}
 }
