@@ -1,7 +1,5 @@
 package vue.fxPaquet;
 
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,6 +22,7 @@ public class LaticeFX extends Application {
 		GridPane gpPlateauDeJeu = controller.gridPane() ;
 		
 		DndImgControleur.DndPourGridPane(gpPlateauDeJeu);
+		controller.afficherPlateau();
 		//TODO Faire en sorte que l'arbitre puisse dire qu'une tuile est valide ou pas.
 		
 		primaryStage.setScene(scene);

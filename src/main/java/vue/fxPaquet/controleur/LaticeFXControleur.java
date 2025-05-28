@@ -2,16 +2,19 @@ package vue.fxPaquet.controleur;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import metier.arbitre.Arbitre;
 import metier.joueur.Joueur;
 import metier.joueur.TasDeTuile;
+import metier.plateau.Case;
+import metier.plateau.PlateauDeJeu;
 import metier.tuile.Tuile;
-import vue.fxPaquet.LaticeFX;
 
 public class LaticeFXControleur {
 
@@ -77,5 +80,41 @@ public class LaticeFXControleur {
 			LaticeFXControleur.afficherChevalet(joueur);
 		}
 		
+	}
+	
+	public void afficherImagesDansGridPane(List<String> urls, List<int[]> positions, GridPane gridPane) {
+	   for (int i = 0; i < urls.size(); i++) {
+	        String imagePath = urls.get(i);
+	        int[] pos = positions.get(i); 
+	        Image image = new Image(getClass().getResource(imagePath).toExternalForm());
+
+	        ImageView imageView = new ImageView(image);
+	        imageView.setFitWidth(79);
+	        imageView.setFitHeight(79);
+	        imageView.setPreserveRatio(true);
+
+	        gridPane.add(imageView, pos[0], pos[1]);
+	    }
+	}
+	
+	PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
+	
+	public void afficherPlateau() {
+		for (Map.Entry<Case, Tuile> entry : plateauDeJeu.plateau().entrySet()) {
+			Case uneCase = entry.getKey();
+			int col = uneCase.coordonneeX();
+			int row = uneCase.coordonneeY();
+
+			if (plateauDeJeu.tuileSur(uneCase) == null) {
+				Image image = uneCase.getImage();
+				ImageView imageView = new ImageView(image);
+				imageView.setUserData("fond");
+				imageView.setFitWidth(80);
+				imageView.setFitHeight(80);
+				imageView.setPreserveRatio(true);
+
+				idPlateauJeu.add(imageView, col - 1, row - 1);
+			}
+		}
 	}
 }

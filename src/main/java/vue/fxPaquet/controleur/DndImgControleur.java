@@ -2,7 +2,6 @@ package vue.fxPaquet.controleur;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -46,7 +45,6 @@ public class DndImgControleur {
     }
 
     public static void DndPourGridPane(GridPane gridPane) {
-    	// Dimensions du plateau/GridPane
         int nbCol = 9;
         int nbLigne = 9;
 
@@ -60,22 +58,17 @@ public class DndImgControleur {
         gridPane.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean succes = false;
-            
-            // Si on a bien sélectionné une tuile
+
             if (db.hasImage()) {
-            	// Taille d'une cellule
                 double largeurCase = gridPane.getWidth() / nbCol;
                 double hauteurCase = gridPane.getHeight() / nbLigne;
-                
-                // Colonne et ligne de la case
+
                 int col = (int) (event.getX() / largeurCase);
                 int ligne = (int) (event.getY() / hauteurCase);
-                
-                // Si on est bien sur la GridPane
+
                 if (col >= 0 && col < nbCol && ligne >= 0 && ligne < nbLigne) {
                     System.out.println("Drop sur GridPane : " + (col + 1) + ", " + (ligne + 1));
-                    
-                    // On parcours la GridPane pour chercher la case correspondante à l'endroit où on veut poser la tuile
+
                     ImageView imgViewCible = null;
                     for (Node noeud : gridPane.getChildren()) {
                         Integer colNoeud = GridPane.getColumnIndex(noeud);
@@ -89,45 +82,27 @@ public class DndImgControleur {
                             break;
                         }
                     }
-                    // Si la case est nulle (pas trop possible normalement mais sinon y'a des problèmes
+
                     if (imgViewCible == null) {
-                        // Pas d'ImageView à cet emplacement donc on créer la tuile
                         ImageView nouvImageView = new ImageView(db.getImage());
                         nouvImageView.setFitWidth(largeurCase);
                         nouvImageView.setFitHeight(hauteurCase);
+                        nouvImageView.setUserData("tuile"); // on pose une vraie tuile
                         gridPane.add(nouvImageView, col, ligne);
                         succes = true;
                     } else {
-                        // ImageView existe donc on regarde son image
-                        Image img = imgViewCible.getImage();
-                        if (img == null) {
-                            // ImageView sans image donc on pose la tuile
+                        Object tag = imgViewCible.getUserData();
+                        if (tag == null || "fond".equals(tag)) {
                             imgViewCible.setImage(db.getImage());
                             imgViewCible.setFitWidth(largeurCase);
                             imgViewCible.setFitHeight(hauteurCase);
+                            imgViewCible.setUserData("tuile"); // devient une vraie tuile
                             succes = true;
                         } else {
-                        	// à changer car j'ai pas trouvé de remplacement 
-                            @SuppressWarnings("deprecation")
-							String url = img.impl_getUrl();
-                            if (url != null && (
-                                url.endsWith("bg_sun.png") || 
-                                url.endsWith("bg_moon.png") || 
-                                url.endsWith("bg_sea.png"))) {
-                                // ImageView avec image de fond donc on remplace par la tuile
-                                imgViewCible.setImage(db.getImage());
-                                imgViewCible.setFitWidth(largeurCase);
-                                imgViewCible.setFitHeight(hauteurCase);
-                                succes = true;
-                            } else {
-                                // Case déjà occupée par une tuile donc on refuse le drop
-                                System.out.println("Case déjà occupée par une tuile, drop refusé.");
-                                succes = false;
-                            }
+                            System.out.println("Case déjà occupée par une tuile, drop refusé.");
                         }
                     }
                 } else {
-                	// Sinon si on drop dehors, ça ne marche pas
                     System.out.println("Drop hors GridPane !");
                 }
             }

@@ -2,6 +2,8 @@ package metier.plateau;
 
 import java.util.Objects;
 
+import javafx.scene.image.Image;
+
 public class Case {
 
 	private final Coordonnee coordonnee;
@@ -55,5 +57,8 @@ public class Case {
 	public String afficher() {
 		return "Case" + coordonnee.afficher() + '(' + type.afficher() + ')';
 	}
-
+	
+	public Image getImage() {
+        return new Image(getClass().getResourceAsStream("/images/bg_" + type +".png"));
+    }
 }
