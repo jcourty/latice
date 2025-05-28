@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import metier.joueur.Joueur;
 import metier.joueur.TasDeTuile;
@@ -65,15 +67,22 @@ public class Arbitre {
 		return joueurs;
 	}
 	
-	public List<Joueur> creationListeJoueurFX(int nombreJoueur,List<GridPane> gridPanes) {
-		List<Joueur> joueurs = new ArrayList<>();
+	public List<Joueur> creationListeJoueurFX(int nombreJoueur, List<GridPane> gridPanes, List<Label> labels) {
+	    List<Joueur> joueurs = new ArrayList<>();
 
-		for (int i = 1; i <= nombreJoueur; i++) {
-			String nom = "Didier";
-			joueurs.add(new Joueur(nom,gridPanes.get(i-1)));
-		}
+	    for (int i = 1; i <= nombreJoueur; i++) {
+	        Label label = labels.get(i-1);
+	        TextInputDialog dialog = new TextInputDialog("Joueur " + i);
+	        dialog.setTitle("Nom du joueur " + i);
+	        dialog.setHeaderText(null);
+	        dialog.setContentText("Entrez le nom du joueur " + i + " :");
+	        String nom = dialog.showAndWait().orElse("Joueur " + i);
+	        label.setText(nom);
+	        joueurs.add(new Joueur(nom, gridPanes.get(i - 1)));
+	        
+	    }
 
-		return joueurs;
+	    return joueurs;
 	}
 
 	public void distribuerTuile(TasDeTuile pioche, List<Joueur> joueurs) {

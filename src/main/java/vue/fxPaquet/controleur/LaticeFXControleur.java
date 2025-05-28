@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -22,48 +23,95 @@ import metier.tuile.Tuile;
 
 public class LaticeFXControleur {
 
-    @FXML
-    private VBox idChevalet2;
+	@FXML 
+	private Label idLblTour ;
+	
+	@FXML
+	private VBox idChevalet1;
 
-    @FXML
-    private GridPane idGridPaneChevalet2;
+	@FXML
+	private GridPane idGridPaneChevalet1;
 
-    @FXML
-    private VBox idChevalet1;
+	@FXML
+	private Label idLblChevalet1;
+	
+	@FXML
+	private VBox idChevalet2;
+	
+	@FXML
+    private Label idLblChevalet2 ;
+	
+	@FXML
+	private GridPane idGridPaneChevalet2;
 
-    @FXML
-    private GridPane idGridPaneChevalet1;
+	@FXML
+	private GridPane idPlateauJeu;
 
-    @FXML
-    private GridPane idPlateauJeu;
+	@FXML
+	private Button btnEchange;
 
-    @FXML
-    private Button btnEchange;
+	@FXML
+	private Button btnPasser;
 
-    @FXML
-    private Button btnPasser;
+	@FXML
+	private Button btnNouvAction;
 
-    @FXML
-    private Button btnNouvAction;
+	@FXML
+	private Button btnQuitter;
 
-    @FXML
-    private Button btnQuitter;
+	@FXML
+	public GridPane gridPane() {
+		return idPlateauJeu;
+	}
+	
+	List<GridPane> gridPanes ;
+	List<Label> labels ;
+	
+	PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
+	private List<Joueur> champsJoueurs;
+	private int indexJoueurActuel = 0;
 
-    private List<Joueur> champsJoueurs ;
-    private int indexJoueurActuel = 0 ;
-    
 	public List<GridPane> listeGridPanes() {
-		List<GridPane> gridPanes = new ArrayList<>();
+		gridPanes = new ArrayList<>();
 		gridPanes.add(idGridPaneChevalet1);
 		gridPanes.add(idGridPaneChevalet2);
 		return gridPanes;
 	}
 
+	public List<Label> listeNomChevalet() {
+		labels = new ArrayList<>();
+		labels.add(idLblChevalet1);
+		labels.add(idLblChevalet2);
+		return labels;
+	}
+
+	@FXML
+	public void initialize() {
+		Arbitre arbitre = new Arbitre();
+
+		List<GridPane> chevalet = listeGridPanes();
+		List<Label> nomChevalet = listeNomChevalet();
+		champsJoueurs = arbitre.creationListeJoueurFX(2, chevalet, nomChevalet);
+		Collections.shuffle(champsJoueurs);
+		idLblTour.setText("Tour de " + champsJoueurs.get(indexJoueurActuel).pseudo());
+		
+		TasDeTuile pioche = new TasDeTuile();
+		pioche.creerTasDeTuile();
+
+		arbitre.distribuerTuile(pioche, champsJoueurs);
+		arbitre.distribuerDansChevalet(champsJoueurs);
+
+		for (Joueur joueur : champsJoueurs) {
+			LaticeFXControleur.afficherChevalet(joueur);
+		}
+	}
+	
 	public static void afficherChevalet(Joueur joueur) {
 		List<Tuile> tuiles = joueur.listeChevalet();
 
-	    joueur.idGridPane().getChildren().clear();
+		joueur.idGridPane().getChildren().clear();
 		if (joueur.tailleChevalet() >= 5) {
+
 			for (int i = 0; i < tuiles.size(); i++) {
 				Tuile tuile = tuiles.get(i);
 				ImageView imageView = new ImageView(tuile.getImage());
@@ -77,47 +125,21 @@ public class LaticeFXControleur {
 		}
 	}
 
-	@FXML
-	public GridPane gridPane() {
-		return idPlateauJeu;
-	}
-	
-	@FXML
-	public void initialize() {
-		Arbitre arbitre = new Arbitre();
-		
-		List<GridPane> chevalet = listeGridPanes();
-		champsJoueurs = arbitre.creationListeJoueurFX(2,chevalet);
-		Collections.shuffle(champsJoueurs);
-		
-		TasDeTuile pioche = new TasDeTuile();
-		pioche.creerTasDeTuile();
-		
-		arbitre.distribuerTuile(pioche, champsJoueurs);
-		arbitre.distribuerDansChevalet(champsJoueurs);
-		 
-		for (Joueur joueur : champsJoueurs) {
-			LaticeFXControleur.afficherChevalet(joueur);
+	public void afficherImagesDansGridPane(List<String> urls, List<int[]> positions, GridPane gridPane) {
+		for (int i = 0; i < urls.size(); i++) {
+			String imagePath = urls.get(i);
+			int[] pos = positions.get(i);
+			Image image = new Image(getClass().getResource(imagePath).toExternalForm());
+
+			ImageView imageView = new ImageView(image);
+			imageView.setFitWidth(79);
+			imageView.setFitHeight(79);
+			imageView.setPreserveRatio(true);
+
+			gridPane.add(imageView, pos[0], pos[1]);
 		}
 	}
-	
-	public void afficherImagesDansGridPane(List<String> urls, List<int[]> positions, GridPane gridPane) {
-	   for (int i = 0; i < urls.size(); i++) {
-	        String imagePath = urls.get(i);
-	        int[] pos = positions.get(i); 
-	        Image image = new Image(getClass().getResource(imagePath).toExternalForm());
 
-	        ImageView imageView = new ImageView(image);
-	        imageView.setFitWidth(79);
-	        imageView.setFitHeight(79);
-	        imageView.setPreserveRatio(true);
-
-	        gridPane.add(imageView, pos[0], pos[1]);
-	    }
-	}
-	
-	PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
-	
 	public void afficherPlateau() {
 		for (Map.Entry<Case, Tuile> entry : plateauDeJeu.plateau().entrySet()) {
 			Case uneCase = entry.getKey();
@@ -135,35 +157,35 @@ public class LaticeFXControleur {
 				idPlateauJeu.add(imageView, col - 1, row - 1);
 			}
 		}
-	}	
-	
-	public Joueur joueurActuel() {
-		return champsJoueurs.get(indexJoueurActuel) ;
 	}
 
-	
-	//Tous les eventHandler pour les bouttons
+	public Joueur joueurActuel() {
+		return champsJoueurs.get(indexJoueurActuel);
+	}
+
+	// Tous les eventHandler pour les bouttons
 	@FXML
-    void echanger(ActionEvent event) {
-		Joueur joueur = joueurActuel() ;
+	void echanger(ActionEvent event) {
+		Joueur joueur = joueurActuel();
 		joueur.viderChevalet();
 		joueur.remplirChevalet();
 		afficherChevalet(joueur);
-    }
+	}
 
-    @FXML
-    void nouvelleAction(ActionEvent event) {
-    	//TODO
-    }
+	@FXML
+	void nouvelleAction(ActionEvent event) {
+		// TODO
+	}
 
-    @FXML
-    void passer(ActionEvent event) {
-    	indexJoueurActuel = (indexJoueurActuel +1 ) % champsJoueurs.size();
-    }
+	@FXML
+	void passer(ActionEvent event) {
+		indexJoueurActuel = (indexJoueurActuel + 1) % champsJoueurs.size();
+		idLblTour.setText("Tour de " + champsJoueurs.get(indexJoueurActuel).pseudo());
+	}
 
-    @FXML
-    void quitter(ActionEvent event) {
-    	Platform.exit();
-    }
-	
+	@FXML
+	void quitter(ActionEvent event) {
+		Platform.exit();
+	}
+
 }
