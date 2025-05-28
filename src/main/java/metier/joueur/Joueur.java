@@ -54,7 +54,6 @@ public class Joueur {
 	
 	public Tuile piocherDansChevalet(int rang) {
 		Tuile tuile = chevalet.piocherTuile(rang);
-		remplirChevalet();
 		return tuile ;
 	}
 	
@@ -86,6 +85,13 @@ public class Joueur {
 		for (int i = 0; i < 5; i++) {
 			Tuile tuile = piocherDansMain();
 			ajouterDansChevalet(tuile);
+		}
+	}
+	
+	public void viderChevalet() {
+		while(!chevalet.estVide()) {
+			Tuile tuile = chevalet.piocherTuile();
+			main.ajouterTuile(tuile);
 		}
 	}
 	

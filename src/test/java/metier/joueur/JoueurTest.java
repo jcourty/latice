@@ -108,6 +108,7 @@ class JoueurTest {
 		joueur1.remplirChevalet();
 		assertEquals(5, joueur1.tailleChevalet());
 		joueur1.piocherDansChevalet(1);
+		joueur1.remplirChevalet();
 		assertEquals(5, joueur1.tailleChevalet());
 	}
 	
