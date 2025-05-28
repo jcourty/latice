@@ -53,8 +53,7 @@ public class Joueur {
 	}
 	
 	public Tuile piocherDansChevalet(int rang) {
-		Tuile tuile = chevalet.piocherTuile(rang);
-		return tuile ;
+		return chevalet.piocherTuile(rang) ;
 	}
 	
 	public Tuile piocherDansMain() {

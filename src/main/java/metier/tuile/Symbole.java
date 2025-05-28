@@ -8,14 +8,14 @@ public enum Symbole {
 	GECKO("\ud83e\udd8e"), 
 	DAUPHIN("\ud83d\udc2c");
 	
-	private String symbole;
+	private String codeSymbole;
 	
 	private Symbole(String symbole) {
-		this.symbole=symbole;
+		this.codeSymbole=symbole;
 	}
 	
 	public String symbole() {
-		return this.symbole;
+		return this.codeSymbole;
 	}
 	
 }

@@ -8,18 +8,18 @@ public enum Couleur {
 	VERT("\u001B[32m"), 
 	CYAN("\u001B[36m");
 	
-	private String couleur;
+	private String codeCouleur;
 	
 	private Couleur(String couleur) {
-		this.couleur=couleur;
+		this.codeCouleur=couleur;
 	}
 	
 	public String colorier(String text) {
-		return couleur+text+"\u001B[0m";
+		return codeCouleur+text+"\u001B[0m";
 	}
 	
-	public String couleur() {
-		return couleur;
+	public String codeCouleur() {
+		return codeCouleur;
 	}
 	
 }

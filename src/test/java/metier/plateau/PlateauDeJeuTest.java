@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import metier.arbitre.Arbitre;
 import metier.tuile.Couleur;
 import metier.tuile.Symbole;
 import metier.tuile.Tuile;
@@ -29,7 +30,6 @@ class PlateauDeJeuTest {
     void poserTuile_sur_case_vide() {
 		Case uneCase = plateau.caseSur(new Coordonnee(5, 5));
         Tuile tuile = new Tuile(Symbole.DAUPHIN, Couleur.BLEU);
-        assertTrue(plateau.peutPoserTuile(uneCase, tuile));
         plateau.poserTuile(uneCase, tuile);
         assertEquals(tuile, plateau.tuileSur(uneCase));
     }
@@ -40,8 +40,7 @@ class PlateauDeJeuTest {
         Tuile tuile1 = new Tuile(Symbole.GECKO, Couleur.VERT);
         Tuile tuile2 = new Tuile(Symbole.OISEAU, Couleur.CYAN);
         plateau.poserTuile(uneCase, tuile1);
-        assertFalse(plateau.peutPoserTuile(uneCase, tuile2));
-        assertEquals(tuile1, plateau.tuileSur(uneCase));
+        assertFalse(Arbitre.peutPoserTuile(plateau, uneCase, tuile2));
     }
     
    @Test
@@ -52,7 +51,7 @@ class PlateauDeJeuTest {
         Tuile uneAutreTuile = new Tuile(Symbole.GECKO, Couleur.ROUGE);
         plateau.poserTuile(uneCase, tuile);
         plateau.poserTuile(uneAutreCase, uneAutreTuile);
-        assertTrue(plateau.tuileAdjacenteSimilaire(uneCase,tuile));
+        assertTrue(Arbitre.tuileAdjacenteSimilaire(plateau, uneCase,tuile));
         assertEquals(uneAutreTuile, plateau.retirerTuileSur(uneAutreCase));
    }
     

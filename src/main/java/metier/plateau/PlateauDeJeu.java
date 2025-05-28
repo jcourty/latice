@@ -3,6 +3,7 @@ package metier.plateau;
 import java.util.HashMap;
 import java.util.Map;
 
+import metier.arbitre.Arbitre;
 import metier.tuile.Couleur;
 import metier.tuile.Tuile;
 
@@ -37,51 +38,8 @@ public class PlateauDeJeu {
 	    return true;
 	}
 
-	public boolean tuileAdjacenteSimilaire(Case uneCase, Tuile uneTuile) {
-		int x = uneCase.coordonneeX();
-		int y = uneCase.coordonneeY();
-		int nombreCaseSimilaire = 0;
-		int nombreCaseAdjacente = 0;
-		int taille = 9;
-
-		int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
-
-		for (int[] direction : directions) {
-			int xAdjacent = x + direction[0];
-			int yAdjacent = y + direction[1];
-
-			if (xAdjacent >= 0 && xAdjacent < taille && yAdjacent >= 0 && yAdjacent <= taille) {
-
-				Coordonnee coordonnee = new Coordonnee(xAdjacent, yAdjacent);
-				Case caseAdjacente = caseSur(coordonnee);
-				if (contientTuile(caseAdjacente)) {
-					nombreCaseAdjacente++;
-					Tuile tuileAdjacente = tuileSur(caseAdjacente);
-					if (uneTuile.estSimilaire(tuileAdjacente)) {
-						nombreCaseSimilaire++;
-					}
-				}
-			}
-		}
-		if (nombreCaseAdjacente > 0) {
-			return (nombreCaseSimilaire == nombreCaseAdjacente);
-		} else {
-			return false;
-		}
-	}
-
-	public boolean peutPoserTuile(Case uneCase, Tuile uneTuile) {
-		if (estVide() && uneCase.coordonneeX() == 5 && uneCase.coordonneeY() == 5) {
-			return true ;
-		}
-		if (contientTuile(uneCase)) {
-			return false ;
-		}
-		return tuileAdjacenteSimilaire(uneCase, uneTuile);
-	}
-
 	public void poserTuile(Case uneCase, Tuile uneTuile) {
-		if (peutPoserTuile(uneCase, uneTuile)) {
+		if (Arbitre.peutPoserTuile(this, uneCase, uneTuile)) {
 			plateau.put(uneCase, uneTuile);
 		}
 	}
@@ -158,7 +116,7 @@ public class PlateauDeJeu {
 		plateauConsole.append("\n");
 
 		plateauConsole.append("   ");
-		plateauConsole.append(generationMultiple(Couleur.BLEU.couleur() + "-----", 9) + "\n\u001B[0m");
+		plateauConsole.append(generationMultiple(Couleur.BLEU.codeCouleur() + "-----", 9) + "\n\u001B[0m");
 
 		for (int row = 1; row <= 9; row++) {
 			plateauConsole.append(" " + row + " \u001B[34m|");
@@ -172,9 +130,9 @@ public class PlateauDeJeu {
 					plateauConsole.append(" " + tuile.afficher() + " \u001B[34m|");
 				} else {
 					if (c.type() == Type.SOLEIL) {
-						plateauConsole.append(Couleur.JAUNE.couleur() + soleil + Couleur.BLEU.couleur() + "|");
+						plateauConsole.append(Couleur.JAUNE.codeCouleur() + soleil + Couleur.BLEU.codeCouleur() + "|");
 					} else if (c.type() == Type.LUNE) {
-						plateauConsole.append(Couleur.JAUNE.couleur() + lune + Couleur.BLEU.couleur() + "|");
+						plateauConsole.append(Couleur.JAUNE.codeCouleur() + lune + Couleur.BLEU.codeCouleur() + "|");
 					} else {
 						plateauConsole.append("    |");
 					}
@@ -182,7 +140,7 @@ public class PlateauDeJeu {
 			}
 			plateauConsole.append("\n");
 			plateauConsole.append("   ");
-			plateauConsole.append(generationMultiple(Couleur.BLEU.couleur() + "-----", 9) + "\n\u001B[0m");
+			plateauConsole.append(generationMultiple(Couleur.BLEU.codeCouleur() + "-----", 9) + "\n\u001B[0m");
 		}
 		return plateauConsole.toString();
 	}

@@ -28,39 +28,7 @@ public class LaticeConsoleApplication {
         Console.titre("--                   Main V4                     --");
         Console.sautLigne();
 
-        arbitre.debutDePartie(joueurs, nombreJoueur, plateau);
+        arbitre.debutDePartie(joueurs, plateau);
 
-    }
-
-    public static void distribuerDansChevalet(List<Joueur> joueurs) {
-        for (int i = 0; i < 5; i++) {
-            for (Joueur joueur : joueurs) {
-                Tuile tuile = joueur.piocherDansMain();
-                joueur.ajouterDansChevalet(tuile);
-            }
-        }
-    }
-
-    static void joueursAfficherMain(List<Joueur> joueurs) {
-        for (Joueur joueur : joueurs) {
-            joueur.afficherMain();
-            Console.nombre(joueur.tailleMain());
-        }
-    }
-
-    static void joueursAfficherChevalet(List<Joueur> joueurs) {
-        for (Joueur joueur : joueurs) {
-            joueur.afficherChevalet();
-            Console.nombre(joueur.tailleChevalet());
-        }
-    }
-
-    static void distribuerTuile(TasDeTuile pioche, List<Joueur> joueurs) {
-        while (!pioche.estVide()) {
-            for (Joueur joueur : joueurs) {
-                Tuile tuile = pioche.piocherTuile();
-                joueur.ajouterDansMain(tuile);
-            }
-        }
     }
 }

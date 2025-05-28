@@ -3,7 +3,6 @@ package metier.arbitre;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 import javafx.scene.layout.GridPane;
@@ -97,13 +96,7 @@ public class Arbitre {
 		joueur.afficherChevalet();
 	}
 
-	public static Joueur choisirJoueurAleatoire(List<Joueur> joueurs) {
-		Random random = new Random();
-		int index = random.nextInt(joueurs.size());
-		return joueurs.get(index);
-	}
-
-	public Coordonnee choisirCoordonnee(PlateauDeJeu plateau, Tuile tuile) {
+	public Coordonnee choisirCoordonnee(PlateauDeJeu plateau) {
 		Coordonnee coordonnee = null;
 		if (!plateau.estVide()) {
 
@@ -149,8 +142,52 @@ public class Arbitre {
 
 		return tuile;
 	}
+	
+	public static boolean tuileAdjacenteSimilaire(PlateauDeJeu plateau, Case uneCase, Tuile uneTuile) {
+		int x = uneCase.coordonneeX();
+		int y = uneCase.coordonneeY();
+		int nombreCaseSimilaire = 0;
+		int nombreCaseAdjacente = 0;
+		int taille = 9;
 
-	public void debutDePartie(List<Joueur> joueurs, int nombreJoueur, PlateauDeJeu plateau) {
+		int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+		for (int[] direction : directions) {
+			int xAdjacent = x + direction[0];
+			int yAdjacent = y + direction[1];
+
+			if (xAdjacent >= 0 && xAdjacent < taille && yAdjacent >= 0 && yAdjacent <= taille) {
+
+				Coordonnee coordonnee = new Coordonnee(xAdjacent, yAdjacent);
+				Case caseAdjacente = plateau.caseSur(coordonnee);
+				if (plateau.contientTuile(caseAdjacente)) {
+					nombreCaseAdjacente++;
+					if (uneTuile.estSimilaire(plateau.tuileSur(caseAdjacente))) {
+						nombreCaseSimilaire++;
+					}
+				}
+			}
+		}
+		if (nombreCaseAdjacente > 0) {
+			return (nombreCaseSimilaire == nombreCaseAdjacente);
+		} else {
+			return false;
+		}
+	}
+	
+	public static boolean peutPoserTuile(PlateauDeJeu plateau,Case uneCase, Tuile uneTuile) {
+		if (plateau.estVide() && uneCase.coordonneeX() == 5 && uneCase.coordonneeY() == 5) {
+			return true ;
+		}
+		if (plateau.contientTuile(uneCase)) {
+			return false ;
+		}
+		return tuileAdjacenteSimilaire(plateau, uneCase, uneTuile);
+	}
+
+	
+
+	public void debutDePartie(List<Joueur> joueurs, PlateauDeJeu plateau) {
 		TasDeTuile pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
 		distribuerTuile(pioche, joueurs);
@@ -166,35 +203,39 @@ public class Arbitre {
 				Console.message("Tour de : " + joueurActuel.pseudo());
 				Console.message((tour + 1) + " tour");
 
-				boolean tuilePosee = false;
-
 				if (plateau.estVide()) {
 					Tuile tuile = choixChevalet(joueurActuel);
-					Coordonnee coordonnee = choisirCoordonnee(plateau, tuile);
+					Coordonnee coordonnee = choisirCoordonnee(plateau);
 					Case uneCase = plateau.caseSur(coordonnee);
 					plateau.poserTuile(uneCase, tuile);
 					joueurActuel.remplirChevalet();
 				} else {
-					while (!tuilePosee) {
-						Tuile tuile = choixChevalet(joueurActuel);
-						Coordonnee coordonnee = choisirCoordonnee(plateau, tuile);
-						Case uneCase = plateau.caseSur(coordonnee);
-
-						tuilePosee = plateau.peutPoserTuile(uneCase, tuile);
-						if (tuilePosee) {
-							tuilePosee = true;
-							plateau.poserTuile(uneCase, tuile);
-							joueurActuel.remplirChevalet();
-						} else {
-							joueurActuel.ajouterDansChevalet(tuile);
-							Console.message(plateau.afficherConsole());
-							Console.message("Tuile invalide : ");
-						}
-					}
+					poserTuileAvecValidation(plateau, joueurActuel);
 				}
 			}
 		}
 		scanner.close();
-		System.out.println("Fin de partie");
+		Console.message("Fin de partie");
+	}
+
+	private void poserTuileAvecValidation(PlateauDeJeu plateau, Joueur joueurActuel) {
+		boolean tuilePosee = false;
+		
+		while (!tuilePosee) {
+			Tuile tuile = choixChevalet(joueurActuel);
+			Coordonnee coordonnee = choisirCoordonnee(plateau);
+			Case uneCase = plateau.caseSur(coordonnee);
+			tuilePosee = peutPoserTuile(plateau,uneCase, tuile);
+			
+			if (tuilePosee) {
+				tuilePosee = true;
+				plateau.poserTuile(uneCase, tuile);
+				joueurActuel.remplirChevalet();
+			} else {
+				joueurActuel.ajouterDansChevalet(tuile);
+				Console.message(plateau.afficherConsole());
+				Console.message("Tuile invalide : ");
+			}
+		}
 	}
 }
