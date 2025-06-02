@@ -32,6 +32,7 @@
 						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 				</GridPane>
+            <Label fx:id="idScore2" style="-fx-font-size: 25;" text="Score" />
 			</children>
 		</VBox>
 	</right>
@@ -55,6 +56,7 @@
 						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 				</GridPane>
+            <Label fx:id="idScore1" style="-fx-font-size: 25;" text="Score" />
 			</children>
 		</VBox>
 	</left>
@@ -114,10 +116,18 @@
       </HBox>
    </bottom>
    <top>
-      <Label fx:id="idLblTour" text="Tour de jeu" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Label>
+      <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="50.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="idLblTour" style="-fx-font-size: 50; -fx-font-weight: bold;" text="Tour de jeu">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="idLblNbTour" style="-fx-font-size: 30;" text="Nombre de tour" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
    </top>
 </BorderPane>

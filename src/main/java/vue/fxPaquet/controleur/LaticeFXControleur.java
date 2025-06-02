@@ -8,6 +8,7 @@ import java.util.Map;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -25,10 +26,16 @@ public class LaticeFXControleur {
 
 	@FXML
 	private Label idLblTour;
+	
+	@FXML
+	private Label idLblNbTour;
 
 	@FXML
 	private VBox idChevalet1;
 
+	@FXML
+	private Label idScore1;
+	
 	@FXML
 	private GridPane idGridPaneChevalet1;
 
@@ -37,6 +44,9 @@ public class LaticeFXControleur {
 
 	@FXML
 	private VBox idChevalet2;
+	
+	@FXML
+	private Label idScore2;
 
 	@FXML
 	private Label idLblChevalet2;
@@ -66,11 +76,20 @@ public class LaticeFXControleur {
 
 	private List<GridPane> gridPanes;
 	private List<Label> labels;
+	private List<Label> scores = new ArrayList<>();
 
 	private PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
 	private static List<Joueur> champsJoueurs;
 	private static int indexJoueurActuel = 0;
-
+	
+	 
+	private static int nbTour = 1;
+		
+	public void scores() {
+		scores.add(idScore1);
+		scores.add(idScore2);
+	}
+	
 	public List<GridPane> listeGridPanes() {
 		gridPanes = new ArrayList<>();
 		gridPanes.add(idGridPaneChevalet1);
@@ -94,16 +113,21 @@ public class LaticeFXControleur {
 		champsJoueurs = arbitre.creationListeJoueurFX(2, chevalet, nomChevalet);
 		Collections.shuffle(champsJoueurs);
 		idLblTour.setText("Tour de " + champsJoueurs.get(indexJoueurActuel).pseudo());
+		idLblNbTour.setText("Tour " + nbTour);
 
 		TasDeTuile pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
-
+		scores();
 		arbitre.distribuerTuile(pioche, champsJoueurs);
 		arbitre.distribuerDansChevalet(champsJoueurs);
 
-		for (Joueur joueur : champsJoueurs) {
+		for (int i = 0; i < champsJoueurs.size(); i++) {
+			Joueur joueur = champsJoueurs.get(i);
+			Label score = scores.get(i);
 			LaticeFXControleur.afficherChevalet(joueur);
+			score.setText("Score : " + joueur.score());
 		}
+
 		DndImgControleur.dndPourGridPane(gridPane());
 	}
 
@@ -188,21 +212,46 @@ public class LaticeFXControleur {
 
 	@FXML
 	void passer(ActionEvent event) {
-		indexJoueurActuel = (indexJoueurActuel + 1) % champsJoueurs.size();
-
-		Joueur nouveauJoueurActuel = joueurActuel();
-		idLblTour.setText("Tour de " + nouveauJoueurActuel.pseudo());
-
-		for (Joueur joueur : champsJoueurs) {
-			LaticeFXControleur.afficherChevalet(joueur);
-			System.out.println(joueur.pseudo() + ":" + joueur.score());
+		if(!partieFinie()) {
+			if (indexJoueurActuel == champsJoueurs.size()-1) {
+				nbTour += 1;
+			}
+			if (nbTour <= 10) {
+				idLblNbTour.setText("Tour " + nbTour);
+			
+				indexJoueurActuel = (indexJoueurActuel + 1) % champsJoueurs.size();
+		
+				Joueur nouveauJoueurActuel = joueurActuel();
+				idLblTour.setText("Tour de " + nouveauJoueurActuel.pseudo());
+		
+				for (int i = 0; i < champsJoueurs.size(); i++) {
+					Joueur joueur = champsJoueurs.get(i);
+					Label score = scores.get(i);
+					LaticeFXControleur.afficherChevalet(joueur);
+					score.setText("Score : " + joueur.score());
+				}
+				DndImgControleur.dndPourGridPane(gridPane());
+	
+				System.out.println(nbTour);
+			} else {
+				System.out.println("Partie finie");
+				Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+				dialog.setTitle("Fin de partie");
+				dialog.setHeaderText(null);
+				dialog.setContentText("La partie est finie.");
+				dialog.showAndWait();
+			}
 		}
-		DndImgControleur.dndPourGridPane(gridPane());
 	}
 
 	@FXML
 	void quitter(ActionEvent event) {
 		Platform.exit();
+	}
+	
+	@FXML
+	boolean partieFinie() {
+		return (nbTour > 10);
 	}
 
 }
