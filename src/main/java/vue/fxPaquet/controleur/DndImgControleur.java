@@ -119,15 +119,21 @@ public class DndImgControleur {
     }
     
     public static boolean coupValide(PlateauDeJeu plateau, Tuile tuile, int col, int ligne, Joueur joueur) {
-    	System.out.println(joueur.pseudo());
-    	Case uneCase = plateau.caseSur(new Coordonnee(col, ligne));
-    	if (Arbitre.peutPoserTuile(plateau, uneCase, tuile, joueur)) {
-    		plateau.poserTuile(uneCase, tuile, joueur);
-    		joueur.lblScore().setText("Score : " + 
-    		joueur.score());
-    		
-    		return true;
-    	}
-    	return false;
+        if (!LaticeFXControleur.peutJouer()) {
+            System.out.println("Action impossible");
+            return false; 
+        }
+
+        Case uneCase = plateau.caseSur(new Coordonnee(col, ligne));
+        if (Arbitre.peutPoserTuile(plateau, uneCase, tuile, joueur)) {
+            plateau.poserTuile(uneCase, tuile, joueur);
+            joueur.lblScore().setText("Score : " + joueur.score());
+
+            LaticeFXControleur.actionEffectuee(); 
+
+            return true;
+        }
+        return false;
     }
+
 }

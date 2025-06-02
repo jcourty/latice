@@ -43,7 +43,9 @@ public class LaticeFXControleur {
 	private PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
 	private static List<Joueur> champsJoueurs;
 	private static int indexJoueurActuel = 0;
-	private static int nbTour = 1;
+	private static int nbTour = 1; 
+	private static int actionsEffectuees = 0;
+    private static int actionsMaxParTour = 1;
 
 	@FXML
 	public GridPane gridPane() {
@@ -166,6 +168,7 @@ public class LaticeFXControleur {
 
 	@FXML
 	void passer(ActionEvent event) {
+		resetActions();
 		if (!partieFinie()) {
 			if (indexJoueurActuel == champsJoueurs.size() - 1) {
 				nbTour++;
@@ -202,4 +205,17 @@ public class LaticeFXControleur {
 		dialog.setContentText("La partie est finie.");
 		dialog.showAndWait();
 	}
+	
+	public static boolean peutJouer() {
+        return actionsEffectuees < actionsMaxParTour;
+    }
+
+    public static void actionEffectuee() {
+        actionsEffectuees++;
+    }
+
+    public static void resetActions() {
+    	actionsMaxParTour = 1 ;
+        actionsEffectuees = 0;
+    }
 }
