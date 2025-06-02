@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <VBox prefHeight="400.0" prefWidth="627.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="En jouant à Latice, vous n'avez qu'un seul objectif: être le premier à vider votre pioche en seulement dix tours.">
+               <VBox.margin>
+                  <Insets top="100.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pour cela, rien de plus simple: il vous suffit de poser vos tuiles à coté de celles déjà sur le plateau. Mais attention, seule une tuile similaire, par le symbole ou bien la couleur, est acceptée." wrappingWidth="568.658203125" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="À chaque tour vous pouvez soit échanger votre chevalet, soit passer votre tour, soit obtenir des actions supplémentaires coûtant 2 points." wrappingWidth="547.900390625" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Le système de points fonctionne ainsi :">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- Un double : la tuile jouée correspond par couleur ou symbole sur deux de ses cotés, vous gagnez 1 point">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- Un triple : la tuile jouée correspond par couleur ou symbole sur trois de ses cotés, vous gagnez 2 points">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- Un Latice : la tuile jouée correspond par couleur ou symbole sur quatre de ses cotés, vous gagnez 4 points">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- Placez votre tuile sur un soleil pour gagner 2 points">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Text>
+         </children>
+         <BorderPane.margin>
+            <Insets left="10.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets top="20.0" />
+         </padding>
+      </VBox>
+   </center>
+</BorderPane>

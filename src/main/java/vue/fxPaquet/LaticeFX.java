@@ -3,6 +3,8 @@ package vue.fxPaquet;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import vue.fxPaquet.controleur.LaticeFXControleur;
@@ -16,6 +18,7 @@ public class LaticeFX extends Application {
 		BorderPane racine = chargeur.load();
 		Scene scene = new Scene(racine);
 		LaticeFXControleur controleur = chargeur.getController();
+		
 		
 		controleur.afficherPlateau();
 		
