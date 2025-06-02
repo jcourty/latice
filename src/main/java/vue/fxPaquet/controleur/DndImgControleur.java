@@ -2,6 +2,7 @@ package vue.fxPaquet.controleur;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -50,7 +51,7 @@ public class DndImgControleur {
 		});
 	}
 
-    public static void dndPourGridPane(GridPane gridPane) {
+    public static void dndPourGridPane(GridPane gridPane, Label lblAction) {
         int nbCol = 9;
         int nbLigne = 9;
         Joueur joueur = LaticeFXControleur.joueurActuel();
@@ -102,7 +103,7 @@ public class DndImgControleur {
                         succes = true;
                     } else {
                         Object tag = imgViewCible.getUserData();
-                        if ((tag == null || "fond".equals(tag)) && coupValide(plateau, tuile, colNoeud+1, ligneNoeud+1, joueur)) {
+                        if ((tag == null || "fond".equals(tag)) && coupValide(plateau, tuile, colNoeud+1, ligneNoeud+1, joueur, lblAction)) {
                             imgViewCible.setImage(db.getImage());
                             imgViewCible.setFitWidth(largeurCase);
                             imgViewCible.setFitHeight(hauteurCase);
@@ -118,18 +119,18 @@ public class DndImgControleur {
         });
     }
     
-    public static boolean coupValide(PlateauDeJeu plateau, Tuile tuile, int col, int ligne, Joueur joueur) {
+    public static boolean coupValide(PlateauDeJeu plateau, Tuile tuile, int col, int ligne, Joueur joueur, Label lblAction) {
         if (!LaticeFXControleur.peutJouer()) {
             System.out.println("Action impossible");
             return false; 
         }
-
         Case uneCase = plateau.caseSur(new Coordonnee(col, ligne));
         if (Arbitre.peutPoserTuile(plateau, uneCase, tuile, joueur)) {
             plateau.poserTuile(uneCase, tuile, joueur);
             joueur.lblScore().setText("Score : " + joueur.score());
 
-            LaticeFXControleur.actionEffectuee(); 
+            LaticeFXControleur.actionEffectuee();
+            lblAction.setText(LaticeFXControleur.majLblAction());
 
             return true;
         }

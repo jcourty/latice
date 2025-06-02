@@ -43,13 +43,13 @@ public class PlateauDeJeu {
 	}
 
 	public int nombreTuileSurPlateau() {
-	    int count = 0;
+	    int compteur = 0;
 	    for (Tuile tuile : plateau.values()) {
 	        if (tuile != null ) {
-	            count++;
+	            compteur++;
 	        }
 	    }
-	    return count;
+	    return compteur;
 	}
 
 	public void vider() {
@@ -74,22 +74,22 @@ public class PlateauDeJeu {
 	}
 
 	public void creationPlateau() {
-		for (int row = 1; row <= 9; row++) {
+		for (int ligne = 1; ligne <= 9; ligne++) {
 			for (int col = 1; col <= 9; col++) {
-				Coordonnee coordonnee = new Coordonnee(row, col);
+				Coordonnee coordonnee = new Coordonnee(ligne, col);
 				Type type;
 				Tuile tuile = null;
 
 				// Cases soleils
-				if ((row == 1 && col == 1) || (row == 2 && col == 2) || (row == 3 && col == 3) || (row == 7 && col == 7)
-						|| (row == 8 && col == 8) || (row == 9 && col == 9) || (row == 1 && col == 9)
-						|| (row == 2 && col == 8) || (row == 3 && col == 7) || (row == 9 && col == 1)
-						|| (row == 8 && col == 2) || (row == 7 && col == 3) || (row == 1 && col == 5)
-						|| (row == 5 && col == 1) || (row == 9 && col == 5) || (row == 5 && col == 9)) {
+				if ((ligne == 1 && col == 1) || (ligne == 2 && col == 2) || (ligne == 3 && col == 3) || (ligne == 7 && col == 7)
+						|| (ligne == 8 && col == 8) || (ligne == 9 && col == 9) || (ligne == 1 && col == 9)
+						|| (ligne == 2 && col == 8) || (ligne == 3 && col == 7) || (ligne == 9 && col == 1)
+						|| (ligne == 8 && col == 2) || (ligne == 7 && col == 3) || (ligne == 1 && col == 5)
+						|| (ligne == 5 && col == 1) || (ligne == 9 && col == 5) || (ligne == 5 && col == 9)) {
 					type = Type.SOLEIL;
 				}
 				// Case lune
-				else if (row == 5 && col == 5) {
+				else if (ligne == 5 && col == 5) {
 					type = Type.LUNE;
 				}
 				// Cases simples
@@ -108,19 +108,19 @@ public class PlateauDeJeu {
 		StringBuilder plateauConsole = new StringBuilder();
 
 		plateauConsole.append("   ");
-		for (int col = 1; col <= 9; col++) {
-			plateauConsole.append("  " + col + "  ");
+		for (int ligne = 1; ligne <= 9; ligne++) {
+			plateauConsole.append("  " + ligne + "  ");
 		}
 		plateauConsole.append("\n");
 
 		plateauConsole.append("   ");
 		plateauConsole.append(generationMultiple(Couleur.BLEU.codeCouleur() + "-----", 9) + "\n\u001B[0m");
 
-		for (int row = 1; row <= 9; row++) {
-			plateauConsole.append(" " + row + " \u001B[34m|");
+		for (int ligne = 1; ligne <= 9; ligne++) {
+			plateauConsole.append(" " + ligne + " \u001B[34m|");
 
 			for (int col = 1; col <= 9; col++) {
-				Coordonnee coordonnee = new Coordonnee(row, col);
+				Coordonnee coordonnee = new Coordonnee(ligne, col);
 				Case c = this.caseSur(coordonnee);
 				Tuile tuile = this.tuileSur(c);
 
@@ -144,11 +144,11 @@ public class PlateauDeJeu {
 	}
 
 	private String generationMultiple(String pattern, int count) {
-		StringBuilder builder = new StringBuilder();
+		StringBuilder constructeur = new StringBuilder();
 		for (int i = 0; i < count; i++) {
-			builder.append(pattern);
+			constructeur.append(pattern);
 		}
-		return builder.toString();
+		return constructeur.toString();
 	}
 
 }

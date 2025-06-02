@@ -2,8 +2,8 @@ package vue;
 
 public class Console {
 
-	public static void message (String text) {
-		System.out.println(text);
+	public static void message (String texte) {
+		System.out.println(texte);
 	}
 	
 	public static void nombre (int nbr) {
@@ -14,15 +14,15 @@ public class Console {
 		System.out.println("");
 	}
 	
-	public static void ligne (String text) {
-		System.out.print(text);
+	public static void ligne (String texte) {
+		System.out.print(texte);
 	}
 
 	public static final String SEPARATOR_LINE = "---------------------------------------------------";
 
-	public static void titre(String text) {
+	public static void titre(String texte) {
 		message(SEPARATOR_LINE);
-		message(text);
+		message(texte);
 		message(SEPARATOR_LINE);
 	}
 

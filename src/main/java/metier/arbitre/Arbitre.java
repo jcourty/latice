@@ -70,11 +70,11 @@ public class Arbitre {
 		List<Joueur> joueurs = new ArrayList<>();
 		for (int i = 1; i <= nombreJoueur; i++) {
 			Label label = labels.get(i - 1);
-			TextInputDialog dialog = new TextInputDialog("Joueur " + i);
-			dialog.setTitle("Nom du joueur " + i);
-			dialog.setHeaderText(null);
-			dialog.setContentText("Entrez le nom du joueur " + i + " :");
-			String nom = dialog.showAndWait().orElse("Joueur " + i);
+			TextInputDialog dialogue = new TextInputDialog("Joueur " + i);
+			dialogue.setTitle("Nom du joueur " + i);
+			dialogue.setHeaderText(null);
+			dialogue.setContentText("Entrez le nom du joueur " + i + " :");
+			String nom = dialogue.showAndWait().orElse("Joueur " + i);
 			label.setText(nom);
 			joueurs.add(new Joueur(nom, gridPanes.get(i - 1), scores.get(i - 1)));
 		}

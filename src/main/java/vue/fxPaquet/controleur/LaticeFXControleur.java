@@ -24,29 +24,46 @@ import metier.tuile.Tuile;
 
 public class LaticeFXControleur {
 
-	@FXML private Label idLblTour;
-	@FXML private Label idLblNbTour;
-	@FXML private VBox idChevalet1;
-	@FXML private Label idScore1;
-	@FXML private GridPane idGridPaneChevalet1;
-	@FXML private Label idLblChevalet1;
-	@FXML private VBox idChevalet2;
-	@FXML private Label idScore2;
-	@FXML private Label idLblChevalet2;
-	@FXML private GridPane idGridPaneChevalet2;
-	@FXML private GridPane idPlateauJeu;
-	@FXML private Button btnEchange;
-	@FXML private Button btnPasser;
-	@FXML private Button btnNouvAction;
-	@FXML private Button btnQuitter;
+	@FXML
+	private Label idLblTour;
+	@FXML
+	private Label idLblNbTour;
+	@FXML
+	private VBox idChevalet1;
+	@FXML
+	private Label idScore1;
+	@FXML
+	private GridPane idGridPaneChevalet1;
+	@FXML
+	private Label idLblChevalet1;
+	@FXML
+	private VBox idChevalet2;
+	@FXML
+	private Label idScore2;
+	@FXML
+	private Label idLblChevalet2;
+	@FXML
+	private GridPane idGridPaneChevalet2;
+	@FXML
+	private GridPane idPlateauJeu;
+	@FXML
+	private Label idAction;
+	@FXML
+	private Button btnEchange;
+	@FXML
+	private Button btnPasser;
+	@FXML
+	private Button btnNouvAction;
+	@FXML
+	private Button btnQuitter;
 
 	private PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
 	private static List<Joueur> champsJoueurs;
 	private static int indexJoueurActuel = 0;
-	private static int nbTour = 1; 
+	private static int nbTour = 1;
 	private static int actionsEffectuees = 0;
-    private static int actionsMaxParTour = 1;
-
+	private static int actionsMaxParTour = 1;
+	
 	@FXML
 	public GridPane gridPane() {
 		return idPlateauJeu;
@@ -56,21 +73,24 @@ public class LaticeFXControleur {
 	public void initialize() {
 		Arbitre arbitre = new Arbitre();
 
-	    List<GridPane> gridPanes = new ArrayList<>();
-	    gridPanes.add(idGridPaneChevalet1);
-	    gridPanes.add(idGridPaneChevalet2);
+		List<GridPane> gridPanes = new ArrayList<>();
+		gridPanes.add(idGridPaneChevalet1);
+		gridPanes.add(idGridPaneChevalet2);
 
-	    List<Label> labels = new ArrayList<>();
-	    labels.add(idLblChevalet1);
-	    labels.add(idLblChevalet2);
+		List<Label> labels = new ArrayList<>();
+		labels.add(idLblChevalet1);
+		labels.add(idLblChevalet2);
 
-	    List<Label> scores = new ArrayList<>();
-	    scores.add(idScore1);
-	    scores.add(idScore2);
+		List<Label> scores = new ArrayList<>();
+		scores.add(idScore1);
+		scores.add(idScore2);
 		champsJoueurs = arbitre.creationListeJoueurFX(2, gridPanes, labels, scores);
 		Collections.shuffle(champsJoueurs);
 
 		majLabelsTour();
+		idScore1.setText("Score : 0");
+		idScore2.setText("Score : 0");
+		idAction.setText(majLblAction());
 
 		TasDeTuile pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
@@ -81,7 +101,7 @@ public class LaticeFXControleur {
 			afficherChevalet(joueur);
 		}
 
-		DndImgControleur.dndPourGridPane(gridPane());
+		DndImgControleur.dndPourGridPane(gridPane(), idAction);
 	}
 
 	private void majLabelsTour() {
@@ -117,9 +137,9 @@ public class LaticeFXControleur {
 
 	public void afficherImagesDansGridPane(List<String> urls, List<int[]> positions, GridPane gridPane) {
 		for (int i = 0; i < urls.size(); i++) {
-			String imagePath = urls.get(i);
+			String cheminImage = urls.get(i);
 			int[] pos = positions.get(i);
-			Image image = new Image(getClass().getResource(imagePath).toExternalForm());
+			Image image = new Image(getClass().getResource(cheminImage).toExternalForm());
 
 			ImageView imageView = new ImageView(image);
 			imageView.setFitWidth(79);
@@ -134,7 +154,7 @@ public class LaticeFXControleur {
 		for (Map.Entry<Case, Tuile> entry : plateauDeJeu.plateau().entrySet()) {
 			Case uneCase = entry.getKey();
 			int col = uneCase.coordonneeX();
-			int row = uneCase.coordonneeY();
+			int ligne = uneCase.coordonneeY();
 
 			if (plateauDeJeu.tuileSur(uneCase) == null) {
 				Image image = uneCase.getImage();
@@ -144,7 +164,7 @@ public class LaticeFXControleur {
 				imageView.setFitHeight(80);
 				imageView.setPreserveRatio(true);
 
-				idPlateauJeu.add(imageView, col - 1, row - 1);
+				idPlateauJeu.add(imageView, col - 1, ligne - 1);
 			}
 		}
 	}
@@ -155,10 +175,14 @@ public class LaticeFXControleur {
 
 	@FXML
 	void echanger(ActionEvent event) {
-		Joueur joueur = joueurActuel();
-		joueur.viderChevalet();
-		joueur.remplirChevalet();
-		afficherChevalet(joueur);
+		if (peutJouer()) {
+			actionEffectuee();
+			idAction.setText(majLblAction());
+			Joueur joueur = joueurActuel();
+			joueur.viderChevalet();
+			joueur.remplirChevalet();
+			afficherChevalet(joueur);
+		}
 	}
 
 	@FXML
@@ -169,6 +193,7 @@ public class LaticeFXControleur {
 	@FXML
 	void passer(ActionEvent event) {
 		resetActions();
+		idAction.setText(majLblAction());
 		if (!partieFinie()) {
 			if (indexJoueurActuel == champsJoueurs.size() - 1) {
 				nbTour++;
@@ -181,7 +206,7 @@ public class LaticeFXControleur {
 				for (Joueur joueur : champsJoueurs) {
 					afficherChevalet(joueur);
 				}
-				DndImgControleur.dndPourGridPane(gridPane());
+				DndImgControleur.dndPourGridPane(gridPane(), idAction);
 			} else {
 				finDePartie();
 			}
@@ -199,23 +224,27 @@ public class LaticeFXControleur {
 	}
 
 	private void finDePartie() {
-		Alert dialog = new Alert(Alert.AlertType.INFORMATION);
-		dialog.setTitle("Fin de partie");
-		dialog.setHeaderText(null);
-		dialog.setContentText("La partie est finie.");
-		dialog.showAndWait();
+		Alert dialogue = new Alert(Alert.AlertType.INFORMATION);
+		dialogue.setTitle("Fin de partie");
+		dialogue.setHeaderText(null);
+		dialogue.setContentText("La partie est finie.");
+		dialogue.showAndWait();
+	}
+
+	public static boolean peutJouer() {
+		return actionsEffectuees < actionsMaxParTour;
+	}
+
+	public static void actionEffectuee() {
+		actionsEffectuees++;
+	}
+
+	public static void resetActions() {
+		actionsMaxParTour = 1;
+		actionsEffectuees = 0;
 	}
 	
-	public static boolean peutJouer() {
-        return actionsEffectuees < actionsMaxParTour;
-    }
-
-    public static void actionEffectuee() {
-        actionsEffectuees++;
-    }
-
-    public static void resetActions() {
-    	actionsMaxParTour = 1 ;
-        actionsEffectuees = 0;
-    }
+	public static String majLblAction() {
+		return "Nombre d'actions : " + actionsEffectuees + "/" + actionsMaxParTour;
+	}
 }
