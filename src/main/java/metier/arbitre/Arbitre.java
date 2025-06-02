@@ -20,7 +20,8 @@ import vue.Console;
 public class Arbitre {
 
 	private final Scanner scanner;
-
+	private static int nombreCaseAdjacente ;
+	
 	public Arbitre() {
 		scanner = new Scanner(System.in);
 	}
@@ -141,10 +142,11 @@ public class Arbitre {
 	}
 
 	public static boolean tuileAdjacenteSimilaire(PlateauDeJeu plateau, Case uneCase, Tuile uneTuile, Joueur joueur) {
+		nombreCaseAdjacente = 0 ;
+		System.out.println(nombreCaseAdjacente);
 		int x = uneCase.coordonneeX();
 		int y = uneCase.coordonneeY();
 		int nombreCaseSimilaire = 0;
-		int nombreCaseAdjacente = 0;
 		int taille = 9;
 
 		int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
@@ -164,7 +166,6 @@ public class Arbitre {
 			}
 		}
 		if (nombreCaseAdjacente > 0) {
-			joueur.setScore(calculeScore(joueur, uneCase, nombreCaseAdjacente));
 			return (nombreCaseSimilaire == nombreCaseAdjacente);
 		} else {
 			return false;
@@ -243,16 +244,20 @@ public class Arbitre {
 		Console.message("Le joueur gagnant est : " + joueurGagnant.pseudo());
 	}
 
-	private static int calculeScore(Joueur joueur, Case uneCase, int nombreCaseAdjacente) {
-		int score = joueur.score();
+	public static void calculeScore(Joueur joueur, Case uneCase) {
+		int score = 0;
 		if (uneCase.type() == Type.SOLEIL) {
 			score += 2;
 		}
 		if (nombreCaseAdjacente == 4) {
 			score += nombreCaseAdjacente;
 		} else if (nombreCaseAdjacente > 1) {
+	
 			score += nombreCaseAdjacente - 1;
 		}
-		return score;
+		joueur.ajouterScore(score);
+
 	}
+
+
 }

@@ -129,6 +129,7 @@ public class DndImgControleur {
             plateau.poserTuile(uneCase, tuile, joueur);
             joueur.lblScore().setText("Score : " + joueur.score());
 
+            Arbitre.calculeScore(joueur, uneCase);
             LaticeFXControleur.actionEffectuee();
             lblAction.setText(LaticeFXControleur.majLblAction());
 

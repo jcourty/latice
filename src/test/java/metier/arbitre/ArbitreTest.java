@@ -301,18 +301,21 @@ class ArbitreTest {
 		@Test 
 		void gagne_1_point_quand_double() {
 			plateau.poserTuile(centre, tuileReference, joueur1);
+			Case uneCase = plateau.caseSur(new Coordonnee(6, 6)) ;
 			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
 			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
-			Arbitre.peutPoserTuile(plateau,plateau.caseSur(new Coordonnee(6, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+			Arbitre.peutPoserTuile(plateau,uneCase, new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
+            Arbitre.calculeScore(joueur1, uneCase);
 			assertEquals(joueur1.score(), 1);
 		}
 		
 		@Test 
 		void gagne_2_points_quand_triple() {
 			plateau.poserTuile(centre, tuileReference, joueur1);
+			Case uneCase = plateau.caseSur(new Coordonnee(6, 6)) ;
 			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
 			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
@@ -321,14 +324,16 @@ class ArbitreTest {
 					joueur1);
 			plateau.poserTuile(plateau.caseSur(new Coordonnee(7, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
-			Arbitre.peutPoserTuile(plateau,plateau.caseSur(new Coordonnee(6, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+			Arbitre.peutPoserTuile(plateau,uneCase, new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
+            Arbitre.calculeScore(joueur1, uneCase);
 			assertEquals(joueur1.score(), 2);
 		}
 		
 		@Test 
 		void gagne_4_points_quand_latice() {
 			plateau.poserTuile(centre, tuileReference, joueur1);
+			Case uneCase = plateau.caseSur(new Coordonnee(6, 6)) ;
 			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
 			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
@@ -341,22 +346,25 @@ class ArbitreTest {
 					joueur1);
 			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 7)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
-			Arbitre.peutPoserTuile(plateau,plateau.caseSur(new Coordonnee(6, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+			Arbitre.peutPoserTuile(plateau,uneCase, new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
+            Arbitre.calculeScore(joueur1, uneCase);
 			assertEquals(joueur1.score(), 4);
 		}
 		
 		@Test 
 		void gagne_2_point_quand_posé_sur_soleil() {
 			plateau.poserTuile(centre, tuileReference, joueur1);
+			Case uneCase = plateau.caseSur(new Coordonnee(7, 7)) ;
 			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
 			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
 			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 7)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
-			Arbitre.peutPoserTuile(plateau,plateau.caseSur(new Coordonnee(7, 7)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+			Arbitre.peutPoserTuile(plateau,uneCase, new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
 					joueur1);
+            Arbitre.calculeScore(joueur1, uneCase);
 			assertEquals(joueur1.score(), 2);
 		}
 	}
