@@ -191,7 +191,12 @@ public class LaticeFXControleur {
 
 	@FXML
 	void nouvelleAction(ActionEvent event) {
-		// TODO
+		Joueur joueur = joueurActuel();
+        if(joueur.score() >= 2) {
+            joueur.ajouterScore(-2);
+            actionsMaxParTour++;
+            majLabelActionAutomatique();
+        }
 	}
 
 	@FXML
