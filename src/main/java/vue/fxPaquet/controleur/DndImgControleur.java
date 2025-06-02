@@ -27,6 +27,7 @@ public class DndImgControleur {
 				Dragboard db = imageView.startDragAndDrop(TransferMode.MOVE);
 				ClipboardContent contenu = new ClipboardContent();
 				imageView.setUserData(tuile);
+				
 				contenu.putImage(imageView.getImage());
 				db.setContent(contenu);
 				event.consume();
@@ -52,6 +53,7 @@ public class DndImgControleur {
     public static void dndPourGridPane(GridPane gridPane) {
         int nbCol = 9;
         int nbLigne = 9;
+        Joueur joueur = LaticeFXControleur.joueurActuel();
 
         gridPane.setOnDragOver(event -> {
             if (event.getGestureSource() != gridPane && event.getDragboard().hasImage()) {
@@ -100,7 +102,7 @@ public class DndImgControleur {
                         succes = true;
                     } else {
                         Object tag = imgViewCible.getUserData();
-                        if ((tag == null || "fond".equals(tag)) && coupValide(plateau, tuile, colNoeud+1, ligneNoeud+1)) {
+                        if ((tag == null || "fond".equals(tag)) && coupValide(plateau, tuile, colNoeud+1, ligneNoeud+1, joueur)) {
                             imgViewCible.setImage(db.getImage());
                             imgViewCible.setFitWidth(largeurCase);
                             imgViewCible.setFitHeight(hauteurCase);
@@ -116,10 +118,11 @@ public class DndImgControleur {
         });
     }
     
-    public static boolean coupValide(PlateauDeJeu plateau, Tuile tuile, int col, int ligne) {
-    	Case uneCase = new Case(new Coordonnee(col, ligne));
-    	if (Arbitre.peutPoserTuile(plateau, uneCase, tuile)) {
-    		plateau.poserTuile(uneCase, tuile);
+    public static boolean coupValide(PlateauDeJeu plateau, Tuile tuile, int col, int ligne, Joueur joueur) {
+    	System.out.println(joueur.pseudo());
+    	Case uneCase = plateau.caseSur(new Coordonnee(col, ligne));
+    	if (Arbitre.peutPoserTuile(plateau, uneCase, tuile, joueur)) {
+    		plateau.poserTuile(uneCase, tuile, joueur);
     		return true;
     	}
     	return false;

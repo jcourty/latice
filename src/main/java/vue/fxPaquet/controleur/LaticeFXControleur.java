@@ -104,6 +104,7 @@ public class LaticeFXControleur {
 		for (Joueur joueur : champsJoueurs) {
 			LaticeFXControleur.afficherChevalet(joueur);
 		}
+		DndImgControleur.dndPourGridPane(gridPane());
 	}
 
 	public static void afficherChevalet(Joueur joueur) {
@@ -194,7 +195,9 @@ public class LaticeFXControleur {
 
 		for (Joueur joueur : champsJoueurs) {
 			LaticeFXControleur.afficherChevalet(joueur);
+			System.out.println(joueur.pseudo() + ":" + joueur.score());
 		}
+		DndImgControleur.dndPourGridPane(gridPane());
 	}
 
 	@FXML

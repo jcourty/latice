@@ -19,9 +19,6 @@ public class LaticeFX extends Application {
 		Scene scene = new Scene(root);
 		LaticeFXControleur controller = loader.getController();
 		
-		GridPane gpPlateauDeJeu = controller.gridPane() ;
-		
-		DndImgControleur.dndPourGridPane(gpPlateauDeJeu);
 		controller.afficherPlateau();
 		
 		primaryStage.setScene(scene);
