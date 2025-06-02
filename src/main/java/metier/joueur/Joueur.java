@@ -14,6 +14,7 @@ public class Joueur {
 	private TasDeTuile main;
 	private GridPane idGridPane;
 	private int score;
+	private int nbTuilePose;
 	private Label lblScore;
 
 	public Joueur(String pseudo, Chevalet chevalet, TasDeTuile main, GridPane idGridPane, int score, Label lblScore) {
@@ -51,7 +52,15 @@ public class Joueur {
 	public int score() {
 		return score;
 	}
-
+	
+	public int nbTuilePose() {
+		return nbTuilePose;
+	}
+	
+	public void incrementerNbTuilePose() {
+		nbTuilePose++;
+	}
+	
 	public Label lblScore() {
 		return lblScore;
 	}

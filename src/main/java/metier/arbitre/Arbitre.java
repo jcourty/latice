@@ -76,6 +76,7 @@ public class Arbitre {
 			dialogue.setHeaderText(null);
 			dialogue.setContentText("Entrez le nom du joueur " + i + " :");
 			String nom = dialogue.showAndWait().orElse("Joueur " + i);
+			
 			label.setText(nom);
 			joueurs.add(new Joueur(nom, gridPanes.get(i - 1), scores.get(i - 1)));
 		}
@@ -232,11 +233,11 @@ public class Arbitre {
 	}
 
 	public static Joueur joueurGagnant(List<Joueur> joueurs) {
-		int scoreMax = 0;
-		Joueur joueurGagnant = joueurs.get(0);
+		int nbTuilePoseMax = 0;
+		Joueur joueurGagnant = joueurs.get(0); //recupère le premier joueur de la liste
 		for (Joueur joueur : joueurs) {
-			if (joueur.score() > scoreMax) {
-				scoreMax = joueur.score();
+			if (joueur.nbTuilePose() > nbTuilePoseMax) {
+				nbTuilePoseMax = joueur.nbTuilePose();
 				joueurGagnant = joueur;
 			}
 		}
