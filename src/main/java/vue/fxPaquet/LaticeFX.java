@@ -4,9 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import vue.fxPaquet.controleur.DndImgControleur;
 import vue.fxPaquet.controleur.LaticeFXControleur;
 
 public class LaticeFX extends Application {

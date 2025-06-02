@@ -2,6 +2,7 @@ package metier.joueur;
 
 import java.util.List;
 
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import metier.tuile.Tuile;
@@ -13,26 +14,28 @@ public class Joueur {
 	private TasDeTuile main;
 	private GridPane idGridPane;
 	private int score ;
+	private Label lblScore;
 	
-	public Joueur(String pseudo,Chevalet chevalet, TasDeTuile main, GridPane idGridPane,int score) {
+	public Joueur(String pseudo,Chevalet chevalet, TasDeTuile main, GridPane idGridPane,int score,Label lblScore) {
 		this.pseudo = pseudo;
 		this.chevalet = chevalet ;
 		this.main = main;
 		this.idGridPane = idGridPane ;
+		this.lblScore = lblScore ;
 	}
 	
-	public Joueur(String pseudo,GridPane idGridPane) {
-		this(pseudo,new Chevalet(),new TasDeTuile(),idGridPane,0);
+	public Joueur(String pseudo,GridPane idGridPane, Label lblScore) {
+		this(pseudo,new Chevalet(),new TasDeTuile(),idGridPane,0,lblScore);
 	}
 	
 	public Joueur(String pseudo) {
-		this(pseudo,new Chevalet(),new TasDeTuile(),null,0);
+		this(pseudo,new Chevalet(),new TasDeTuile(),null,0,null);
 	}
 	
 	public String pseudo() {
 		return pseudo;
 	}
-
+	
 	public TasDeTuile main() {
 		return main;
 	}
@@ -47,6 +50,10 @@ public class Joueur {
 	
 	public int score() {
 		return score;
+	}
+	
+	public Label lblScore() {
+		return lblScore ;
 	}
 	
 	public void setScore(int score) {

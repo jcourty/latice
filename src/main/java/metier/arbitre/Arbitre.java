@@ -44,7 +44,6 @@ public class Arbitre {
 				scanner.nextLine();
 			}
 		}
-
 		return nombreJoueur;
 	}
 
@@ -64,13 +63,11 @@ public class Arbitre {
 				}
 			}
 		}
-
 		return joueurs;
 	}
 
-	public List<Joueur> creationListeJoueurFX(int nombreJoueur, List<GridPane> gridPanes, List<Label> labels) {
+	public List<Joueur> creationListeJoueurFX(int nombreJoueur, List<GridPane> gridPanes, List<Label> labels, List<Label> scores) {
 		List<Joueur> joueurs = new ArrayList<>();
-
 		for (int i = 1; i <= nombreJoueur; i++) {
 			Label label = labels.get(i - 1);
 			TextInputDialog dialog = new TextInputDialog("Joueur " + i);
@@ -79,10 +76,8 @@ public class Arbitre {
 			dialog.setContentText("Entrez le nom du joueur " + i + " :");
 			String nom = dialog.showAndWait().orElse("Joueur " + i);
 			label.setText(nom);
-			joueurs.add(new Joueur(nom, gridPanes.get(i - 1)));
-
+			joueurs.add(new Joueur(nom, gridPanes.get(i - 1), scores.get(i - 1)));
 		}
-
 		return joueurs;
 	}
 
@@ -99,7 +94,6 @@ public class Arbitre {
 		for (Joueur joueur : joueurs) {
 			joueur.remplirChevalet();
 		}
-
 	}
 
 	public void afficherChevaletJoueur(Joueur joueur) {
@@ -107,19 +101,15 @@ public class Arbitre {
 	}
 
 	public Coordonnee choisirCoordonnee(PlateauDeJeu plateau) {
-		Coordonnee coordonnee = null;
-		if (!plateau.estVide()) {
-
+		if (plateau.estVide()) {
+			return new Coordonnee(5, 5);
+		} else {
 			Console.ligne("Entrez la ligne : ");
 			int x = scanner.nextInt();
 			Console.ligne("Entrer la colonne : ");
 			int y = scanner.nextInt();
-			coordonnee = new Coordonnee(x, y);
-
-		} else {
-			coordonnee = new Coordonnee(5, 5);
+			return new Coordonnee(x, y);
 		}
-		return coordonnee;
 	}
 
 	public Tuile choixChevalet(Joueur joueur) {
@@ -129,14 +119,12 @@ public class Arbitre {
 			Console.ligne("Quelle tuile voulez-vous poser ? (entre 1 et 5, 6 pour changer de chevalet) : ");
 			joueur.afficherChevalet();
 			if (scanner.hasNextInt()) {
-
 				int choix = scanner.nextInt() - 1;
 				scanner.nextLine();
 				if (choix >= 0 && choix <= 5) {
 					if (choix == 5) {
 						joueur.viderChevalet();
 						joueur.remplirChevalet();
-
 					} else {
 						tuile = joueur.piocherDansChevalet(choix);
 						saisieValide = true;
@@ -149,7 +137,6 @@ public class Arbitre {
 				scanner.nextLine();
 			}
 		}
-
 		return tuile;
 	}
 
@@ -176,11 +163,8 @@ public class Arbitre {
 				}
 			}
 		}
-		
 		if (nombreCaseAdjacente > 0) {
-			
-
-			joueur.setScore(calculeScore(joueur,uneCase,nombreCaseAdjacente));
+			joueur.setScore(calculeScore(joueur, uneCase, nombreCaseAdjacente));
 			return (nombreCaseSimilaire == nombreCaseAdjacente);
 		} else {
 			return false;
@@ -208,7 +192,6 @@ public class Arbitre {
 
 		for (int tour = 0; tour < 10; tour++) {
 			for (Joueur joueurActuel : ordreDuTour) {
-
 				Console.message(plateau.afficherConsole());
 				Console.message("Tour de : " + joueurActuel.pseudo());
 				Console.message((tour + 1) + " tour");
@@ -232,15 +215,12 @@ public class Arbitre {
 
 	private void poserTuileAvecValidation(PlateauDeJeu plateau, Joueur joueurActuel) {
 		boolean tuilePosee = false;
-
 		while (!tuilePosee) {
 			Tuile tuile = choixChevalet(joueurActuel);
 			Coordonnee coordonnee = choisirCoordonnee(plateau);
 			Case uneCase = plateau.caseSur(coordonnee);
 			tuilePosee = peutPoserTuile(plateau, uneCase, tuile, joueurActuel);
-
 			if (tuilePosee) {
-				tuilePosee = true;
 				plateau.poserTuile(uneCase, tuile, joueurActuel);
 				joueurActuel.remplirChevalet();
 			} else {
@@ -250,29 +230,28 @@ public class Arbitre {
 			}
 		}
 	}
-	
+
 	private void joueurGagnant(List<Joueur> joueurs) {
-		int scoreMax = 0 ;
-		Joueur joueurGagnant = new Joueur("") ;
+		int scoreMax = 0;
+		Joueur joueurGagnant = new Joueur("");
 		for (Joueur joueur : joueurs) {
 			if (joueur.score() > scoreMax) {
 				scoreMax = joueur.score();
-				joueurGagnant = joueur; 
+				joueurGagnant = joueur;
 			}
 		}
-		Console.message("Le joueur gagnant est : " + joueurGagnant.pseudo()); 
+		Console.message("Le joueur gagnant est : " + joueurGagnant.pseudo());
 	}
-	
-	private static int calculeScore(Joueur joueur, Case uneCase,int nombreCaseAdjacente) {
+
+	private static int calculeScore(Joueur joueur, Case uneCase, int nombreCaseAdjacente) {
 		int score = joueur.score();
 		if (uneCase.type() == Type.SOLEIL) {
-			score = score + 2;
+			score += 2;
 		}
-
 		if (nombreCaseAdjacente == 4) {
-			score = score + nombreCaseAdjacente;
+			score += nombreCaseAdjacente;
 		} else if (nombreCaseAdjacente > 1) {
-			score = score + nombreCaseAdjacente - 1;
+			score += nombreCaseAdjacente - 1;
 		}
 		return score;
 	}

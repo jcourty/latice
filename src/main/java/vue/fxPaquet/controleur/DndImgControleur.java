@@ -123,6 +123,9 @@ public class DndImgControleur {
     	Case uneCase = plateau.caseSur(new Coordonnee(col, ligne));
     	if (Arbitre.peutPoserTuile(plateau, uneCase, tuile, joueur)) {
     		plateau.poserTuile(uneCase, tuile, joueur);
+    		joueur.lblScore().setText("Score : " + 
+    		joueur.score());
+    		
     		return true;
     	}
     	return false;
