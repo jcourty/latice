@@ -29,13 +29,20 @@ import metier.tuile.Tuile;
 
 class ArbitreTest {
 
+	private Joueur joueur1;
+	private Joueur joueur2;
+	private Arbitre arbitre;
+	private PlateauDeJeu plateau;
 	private ByteArrayInputStream donneesEntree;
 	private final ByteArrayOutputStream donneesSorties = new ByteArrayOutputStream();
-	private Arbitre arbitre;
 
 	@BeforeEach
-	void changeSortiePourLaSave() {
-		System.setOut(new PrintStream(donneesSorties));
+	void initialiser() {
+		plateau = new PlateauDeJeu();
+		joueur1 = new Joueur("Clotaire");
+		joueur2 = new Joueur("Berthenilde");
+		arbitre = new Arbitre();
+		System.setOut(new PrintStream(donneesSorties)); // change la sortie pour permettre de garder la valeur
 	}
 
 	@AfterEach
@@ -74,7 +81,6 @@ class ArbitreTest {
 	@Test
 	void test_creation_liste_joueur() {
 		transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("Karim\nMohamed\nDidier\n");
-		arbitre = new Arbitre();
 		List<Joueur> joueurs = arbitre.creationListeJoueur(3);
 		assertEquals(3, joueurs.size());
 		assertEquals("Karim", joueurs.get(0).pseudo());
@@ -84,14 +90,11 @@ class ArbitreTest {
 
 	@Test
 	void test_distribuer_tuile() {
-		Joueur joueur1 = new Joueur("Mohamed");
-		Joueur joueur2 = new Joueur("Didier");
 		List<Joueur> joueurs = Arrays.asList(joueur1, joueur2);
 
 		TasDeTuile pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
 
-		arbitre = new Arbitre();
 		arbitre.distribuerTuile(pioche, joueurs);
 
 		for (Joueur joueur : joueurs) {
@@ -103,14 +106,11 @@ class ArbitreTest {
 
 	@Test
 	void test_distribuer_dans_chevalet() {
-		Joueur joueur1 = new Joueur("Alice");
-		Joueur joueur2 = new Joueur("Bob");
 		List<Joueur> joueurs = Arrays.asList(joueur1, joueur2);
 
 		TasDeTuile pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
 
-		arbitre = new Arbitre();
 		arbitre.distribuerTuile(pioche, joueurs);
 		arbitre.distribuerDansChevalet(joueurs);
 
@@ -125,10 +125,9 @@ class ArbitreTest {
 
 	@Test
 	void test_choisirCoordonnee_plateauNonVide() {
-		PlateauDeJeu plateau = new PlateauDeJeu();
 		Case uneCase = new Case(new Coordonnee(5, 5), Type.SIMPLE);
 		Tuile tuile = new Tuile(Symbole.GECKO, Couleur.ROUGE);
-		plateau.poserTuile(uneCase, tuile);
+		plateau.poserTuile(uneCase, tuile, joueur1);
 
 		transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("4\n5\n");
 		Coordonnee coordonnee = arbitre.choisirCoordonnee(plateau);
@@ -139,14 +138,38 @@ class ArbitreTest {
 
 	@Test
 	void test_choisirCoordonnee_plateauVide() {
-		PlateauDeJeu plateau = new PlateauDeJeu();
 		transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("\n");
 		Coordonnee coordonnee = arbitre.choisirCoordonnee(plateau);
 
 		assertEquals(5, coordonnee.x());
 		assertEquals(5, coordonnee.y());
 	}
+	
+	@Test
+	void test_peutPoserTuile_quand_valide() {
+		Case centre = plateau.caseSur(new Coordonnee(5, 5));
+		Case adjacente = plateau.caseSur(new Coordonnee(5, 4));
+		plateau.poserTuile(centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE), joueur1);
+		boolean resultat = Arbitre.peutPoserTuile(plateau, adjacente, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE), joueur1);
+		assertTrue(resultat);
+	}
 
+	@Test
+	void test_peutPoserTuile_quand_plateau_vide() {
+		Case centre = plateau.caseSur(new Coordonnee(5, 5));
+		boolean resultat = Arbitre.peutPoserTuile(plateau, centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE), joueur1);
+		assertTrue(resultat);
+	}
+
+	@Test
+	void test_ne_peut_pas_poser_quand_tuile_sur_case() {
+		Case centre = plateau.caseSur(new Coordonnee(5, 5));
+		plateau.poserTuile(centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE), joueur1);
+		boolean resultat = Arbitre.peutPoserTuile(plateau, centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE), joueur1);
+		assertFalse(resultat);
+	}
+	
+	
 	@Nested
 	class ChoixChevaletTests {
 
@@ -155,8 +178,8 @@ class ArbitreTest {
 		private TasDeTuile pioche;
 
 		@BeforeEach
-		void setUp() {
-			joueur = new Joueur("pedro");
+		void initialiser() {
+			joueur = new Joueur("Andromaque");
 			joueurs = new ArrayList<>();
 			joueurs.add(joueur);
 			pioche = new TasDeTuile();
@@ -179,7 +202,7 @@ class ArbitreTest {
 		void test_changement_de_chevalet() {
 			transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("6\n2\n");
 			List<Tuile> ancienChevalet = new ArrayList<>(joueur.listeChevalet());
-			arbitre.choixChevalet(joueur); 
+			arbitre.choixChevalet(joueur);
 			List<Tuile> nouveauChevalet = joueur.listeChevalet();
 			assertNotEquals(ancienChevalet, nouveauChevalet);
 		}
@@ -202,91 +225,140 @@ class ArbitreTest {
 			assertEquals(attendue, actuelle);
 		}
 	}
-	
+
 	@Nested
 	class TuileAdjacenteSimilaireTests {
 
 		private PlateauDeJeu plateau;
 		private Tuile tuileReference;
 		private Case centre;
+		private Joueur joueur1;
 
 		@BeforeEach
-		void setUp() {
+		void initialiser() {
 			plateau = new PlateauDeJeu();
 			tuileReference = new Tuile(Symbole.DAUPHIN, Couleur.BLEU);
 			centre = plateau.caseSur(new Coordonnee(5, 5));
+			joueur1 = new Joueur("Francois");
 		}
 
 		@Test
 		void test_aucune_tuile_adjacente() {
-			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference);
+			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference, joueur1);
 			assertEquals(false, resultat);
 		}
 
 		@Test
 		void test_une_tuile_adjacente_similaire() {
 			Case adjacente = plateau.caseSur(new Coordonnee(4, 5));
-			Tuile nouvelleTuile = new Tuile(Symbole.DAUPHIN,Couleur.BLEU);
-			plateau.poserTuile(centre, tuileReference);
-			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, adjacente, nouvelleTuile);
-			
+			Tuile nouvelleTuile = new Tuile(Symbole.DAUPHIN, Couleur.BLEU);
+			plateau.poserTuile(centre, tuileReference, joueur1);
+			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, adjacente, nouvelleTuile, joueur1);
+
 			assertEquals(true, resultat);
 		}
 
 		@Test
 		void test_une_tuile_adjacente_differente() {
 			Case adjacente = plateau.caseSur(new Coordonnee(4, 5));
-			plateau.poserTuile(adjacente, new Tuile(Symbole.FLEUR, Couleur.ROUGE));
-			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference);
+			plateau.poserTuile(adjacente, new Tuile(Symbole.FLEUR, Couleur.ROUGE), joueur1);
+			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference, joueur1);
 			assertEquals(false, resultat);
 		}
 
 		@Test
 		void test_trois_adjacentes_similaires_et_une_vide() {
-			plateau.poserTuile(centre, tuileReference);
-			plateau.poserTuile(new Case(new Coordonnee(4, 5), Type.SIMPLE), new Tuile(Symbole.DAUPHIN, Couleur.BLEU));
-			plateau.poserTuile(new Case(new Coordonnee(6, 5), Type.SIMPLE), new Tuile(Symbole.DAUPHIN, Couleur.BLEU));
-			plateau.poserTuile(new Case(new Coordonnee(5, 4), Type.SIMPLE), new Tuile(Symbole.DAUPHIN, Couleur.BLEU));
+			plateau.poserTuile(centre, tuileReference, joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(4, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 4)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
 
-			boolean result = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference);
-			assertEquals(true, result); 
+			boolean result = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference, joueur1);
+			assertEquals(true, result);
 		}
 
-		@Test
-		void test_mix_similaire_et_different() {
-			plateau.poserTuile(new Case(new Coordonnee(4, 5), Type.SIMPLE), new Tuile(Symbole.DAUPHIN, Couleur.BLEU));
-			plateau.poserTuile(new Case(new Coordonnee(5,4), Type.SIMPLE), new Tuile(Symbole.DAUPHIN, Couleur.ROUGE));
-			boolean result = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference);
-			assertEquals(false, result);
+	}
+	@Nested
+	class PointsGagnés {
+
+		private PlateauDeJeu plateau;
+		private Tuile tuileReference;
+		private Case centre;
+		private Joueur joueur1;
+
+		@BeforeEach
+		void initialiser() {
+			plateau = new PlateauDeJeu();
+			tuileReference = new Tuile(Symbole.DAUPHIN, Couleur.BLEU);
+			centre = plateau.caseSur(new Coordonnee(5, 5));
+			joueur1 = new Joueur("Argan");
+			joueur1.setScore(0);
+		}
+		
+		@Test 
+		void gagne_1_point_quand_double() {
+			plateau.poserTuile(centre, tuileReference, joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			Arbitre.peutPoserTuile(plateau,plateau.caseSur(new Coordonnee(6, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			assertEquals(joueur1.score(), 1);
+		}
+		
+		@Test 
+		void gagne_2_points_quand_triple() {
+			plateau.poserTuile(centre, tuileReference, joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(7, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(7, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			Arbitre.peutPoserTuile(plateau,plateau.caseSur(new Coordonnee(6, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			assertEquals(joueur1.score(), 2);
+		}
+		
+		@Test 
+		void gagne_4_points_quand_latice() {
+			plateau.poserTuile(centre, tuileReference, joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(7, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(7, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(7, 7)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 7)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			Arbitre.peutPoserTuile(plateau,plateau.caseSur(new Coordonnee(6, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			assertEquals(joueur1.score(), 4);
+		}
+		
+		@Test 
+		void gagne_2_point_quand_posé_sur_soleil() {
+			plateau.poserTuile(centre, tuileReference, joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 6)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 7)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			Arbitre.peutPoserTuile(plateau,plateau.caseSur(new Coordonnee(7, 7)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),
+					joueur1);
+			assertEquals(joueur1.score(), 2);
 		}
 	}
 	
-	@Test
-	void test_peutPoserTuile_quand_valide() {
-		PlateauDeJeu plateau = new PlateauDeJeu() ;
-		Case centre = plateau.caseSur(new Coordonnee(5, 5));
-		Case adjacente = plateau.caseSur(new Coordonnee(5,4));
-		plateau.poserTuile(centre, new Tuile(Symbole.DAUPHIN,Couleur.ROUGE));
-		boolean resultat = Arbitre.peutPoserTuile(plateau, adjacente, new Tuile(Symbole.DAUPHIN,Couleur.ROUGE));
-		assertTrue(resultat);
-	}
-	
-	@Test
-	void test_peutPoserTuile_quand_plateau_vide() {
-		PlateauDeJeu plateau = new PlateauDeJeu() ;
-		Case centre = plateau.caseSur(new Coordonnee(5, 5));
-		boolean resultat = Arbitre.peutPoserTuile(plateau, centre, new Tuile(Symbole.DAUPHIN,Couleur.ROUGE));
-		assertTrue(resultat);
-	}
-	
-	@Test
-	void test_ne_peut_pas_poser_quand_tuile_sur_case() {
-		PlateauDeJeu plateau = new PlateauDeJeu() ;
-		Case centre = plateau.caseSur(new Coordonnee(5, 5));
-		plateau.poserTuile(centre, new Tuile(Symbole.DAUPHIN,Couleur.ROUGE));
-		boolean resultat = Arbitre.peutPoserTuile(plateau, centre, new Tuile(Symbole.DAUPHIN,Couleur.ROUGE));
-		assertFalse(resultat);
-	}
-
-
 }

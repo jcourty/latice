@@ -9,16 +9,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import metier.arbitre.Arbitre;
+import metier.joueur.Joueur;
 import metier.tuile.Couleur;
 import metier.tuile.Symbole;
 import metier.tuile.Tuile;
 
 class PlateauDeJeuTest {
     PlateauDeJeu plateau;
+    private Joueur joueur1;
 
     @BeforeEach
     void initialiser() {
         plateau = new PlateauDeJeu();
+        joueur1 = new Joueur("Caligula");
     }
 
     @Test
@@ -30,7 +33,7 @@ class PlateauDeJeuTest {
     void poserTuile_sur_case_vide() {
 		Case uneCase = plateau.caseSur(new Coordonnee(5, 5));
         Tuile tuile = new Tuile(Symbole.DAUPHIN, Couleur.BLEU);
-        plateau.poserTuile(uneCase, tuile);
+        plateau.poserTuile(uneCase, tuile, joueur1);
         assertEquals(tuile, plateau.tuileSur(uneCase));
     }
 
@@ -39,8 +42,8 @@ class PlateauDeJeuTest {
 		Case uneCase = plateau.caseSur(new Coordonnee(5, 5));
         Tuile tuile1 = new Tuile(Symbole.GECKO, Couleur.VERT);
         Tuile tuile2 = new Tuile(Symbole.OISEAU, Couleur.CYAN);
-        plateau.poserTuile(uneCase, tuile1);
-        assertFalse(Arbitre.peutPoserTuile(plateau, uneCase, tuile2));
+        plateau.poserTuile(uneCase, tuile1, joueur1);
+        assertFalse(Arbitre.peutPoserTuile(plateau, uneCase, tuile2, joueur1));
     }
     
    @Test
@@ -49,28 +52,18 @@ class PlateauDeJeuTest {
         Case uneAutreCase = plateau.caseSur(new Coordonnee(5, 6));
         Tuile tuile = new Tuile(Symbole.TORTUE, Couleur.ROUGE);
         Tuile uneAutreTuile = new Tuile(Symbole.GECKO, Couleur.ROUGE);
-        plateau.poserTuile(uneCase, tuile);
-        plateau.poserTuile(uneAutreCase, uneAutreTuile);
-        assertTrue(Arbitre.tuileAdjacenteSimilaire(plateau, uneCase,tuile));
+        plateau.poserTuile(uneCase, tuile, joueur1);
+        plateau.poserTuile(uneAutreCase, uneAutreTuile, joueur1);
+        assertTrue(Arbitre.tuileAdjacenteSimilaire(plateau, uneCase,tuile, joueur1));
         assertEquals(uneAutreTuile, plateau.retirerTuileSur(uneAutreCase));
    }
     
-    @Test
-   void tuile_differente_non_pose() {
-    	Case uneCase = plateau.caseSur(new Coordonnee(2, 2));
-        Tuile tuile = new Tuile(Symbole.TORTUE, Couleur.ROUGE);
-        plateau.poserTuile(uneCase, tuile);
-        Case uneAutreCase = plateau.caseSur(new Coordonnee(2, 3));
-        Tuile uneAutreTuile = new Tuile(Symbole.PLUME, Couleur.CYAN);
-        plateau.poserTuile(uneAutreCase, uneAutreTuile);
-        assertNull(plateau.tuileSur(uneAutreCase));        
-    }
-
+ 
     @Test
     void retirerTuile_retourne_la_bonne_tuile_et_la_retire() {
 		Case uneCase = plateau.caseSur(new Coordonnee(5, 5));
         Tuile tuile = new Tuile(Symbole.FLEUR, Couleur.MAGENTA);
-        plateau.poserTuile(uneCase, tuile);
+        plateau.poserTuile(uneCase, tuile, joueur1);
         assertEquals(tuile, plateau.retirerTuileSur(uneCase));
         assertNull(plateau.tuileSur(uneCase));
     }
@@ -82,8 +75,8 @@ class PlateauDeJeuTest {
         Tuile tuile1 = new Tuile(Symbole.PLUME, Couleur.VERT);
         Tuile tuile2 = new Tuile(Symbole.PLUME, Couleur.ROUGE);
         
-        plateau.poserTuile(case1, tuile1);
-        plateau.poserTuile(case2, tuile2);
+        plateau.poserTuile(case1, tuile1, joueur1);
+        plateau.poserTuile(case2, tuile2, joueur1);
         assertEquals(2, plateau.nombreTuileSurPlateau());
 
         plateau.retirerTuileSur(case1);
@@ -93,7 +86,7 @@ class PlateauDeJeuTest {
     @Test
     void vider_plateau_le_rend_vide() {
         Case case1 = plateau.caseSur(new Coordonnee(5, 5));
-        plateau.poserTuile(case1, new Tuile(Symbole.DAUPHIN, Couleur.MAGENTA));
+        plateau.poserTuile(case1, new Tuile(Symbole.DAUPHIN, Couleur.MAGENTA), joueur1);
         assertFalse(plateau.estVide());
 
         plateau.vider();

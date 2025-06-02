@@ -110,9 +110,9 @@ public class Arbitre {
 		Coordonnee coordonnee = null;
 		if (!plateau.estVide()) {
 
-			Console.ligne("Entrer le x : ");
+			Console.ligne("Entrez la ligne : ");
 			int x = scanner.nextInt();
-			Console.ligne("Entrer le y : ");
+			Console.ligne("Entrer la colonne : ");
 			int y = scanner.nextInt();
 			coordonnee = new Coordonnee(x, y);
 
@@ -178,18 +178,9 @@ public class Arbitre {
 		}
 		
 		if (nombreCaseAdjacente > 0) {
-			int score = joueur.score();
-			if (uneCase.type() == Type.SOLEIL) {
-				score = score + 2;
-			}
+			
 
-			if (nombreCaseAdjacente == 4) {
-				score = score + nombreCaseAdjacente;
-			} else if (nombreCaseAdjacente > 1) {
-				score = score + nombreCaseAdjacente - 1;
-			}
-
-			joueur.setScore(score);
+			joueur.setScore(calculeScore(joueur,uneCase,nombreCaseAdjacente));
 			return (nombreCaseSimilaire == nombreCaseAdjacente);
 		} else {
 			return false;
@@ -270,5 +261,19 @@ public class Arbitre {
 			}
 		}
 		Console.message("Le joueur gagnant est : " + joueurGagnant.pseudo()); 
+	}
+	
+	private static int calculeScore(Joueur joueur, Case uneCase,int nombreCaseAdjacente) {
+		int score = joueur.score();
+		if (uneCase.type() == Type.SOLEIL) {
+			score = score + 2;
+		}
+
+		if (nombreCaseAdjacente == 4) {
+			score = score + nombreCaseAdjacente;
+		} else if (nombreCaseAdjacente > 1) {
+			score = score + nombreCaseAdjacente - 1;
+		}
+		return score;
 	}
 }
