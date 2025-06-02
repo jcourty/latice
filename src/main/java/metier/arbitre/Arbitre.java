@@ -13,6 +13,7 @@ import metier.joueur.TasDeTuile;
 import metier.plateau.Case;
 import metier.plateau.Coordonnee;
 import metier.plateau.PlateauDeJeu;
+import metier.plateau.Type;
 import metier.tuile.Tuile;
 import vue.Console;
 
@@ -23,7 +24,7 @@ public class Arbitre {
 	public Arbitre() {
 		scanner = new Scanner(System.in);
 	}
-	
+
 	public int nombreJoueur() {
 		int nombreJoueur = 0;
 		boolean saisieValide = false;
@@ -66,23 +67,23 @@ public class Arbitre {
 
 		return joueurs;
 	}
-	
+
 	public List<Joueur> creationListeJoueurFX(int nombreJoueur, List<GridPane> gridPanes, List<Label> labels) {
-	    List<Joueur> joueurs = new ArrayList<>();
+		List<Joueur> joueurs = new ArrayList<>();
 
-	    for (int i = 1; i <= nombreJoueur; i++) {
-	        Label label = labels.get(i-1);
-	        TextInputDialog dialog = new TextInputDialog("Joueur " + i);
-	        dialog.setTitle("Nom du joueur " + i);
-	        dialog.setHeaderText(null);
-	        dialog.setContentText("Entrez le nom du joueur " + i + " :");
-	        String nom = dialog.showAndWait().orElse("Joueur " + i);
-	        label.setText(nom);
-	        joueurs.add(new Joueur(nom, gridPanes.get(i - 1)));
-	        
-	    }
+		for (int i = 1; i <= nombreJoueur; i++) {
+			Label label = labels.get(i - 1);
+			TextInputDialog dialog = new TextInputDialog("Joueur " + i);
+			dialog.setTitle("Nom du joueur " + i);
+			dialog.setHeaderText(null);
+			dialog.setContentText("Entrez le nom du joueur " + i + " :");
+			String nom = dialog.showAndWait().orElse("Joueur " + i);
+			label.setText(nom);
+			joueurs.add(new Joueur(nom, gridPanes.get(i - 1)));
 
-	    return joueurs;
+		}
+
+		return joueurs;
 	}
 
 	public void distribuerTuile(TasDeTuile pioche, List<Joueur> joueurs) {
@@ -151,8 +152,8 @@ public class Arbitre {
 
 		return tuile;
 	}
-	
-	public static boolean tuileAdjacenteSimilaire(PlateauDeJeu plateau, Case uneCase, Tuile uneTuile) {
+
+	public static boolean tuileAdjacenteSimilaire(PlateauDeJeu plateau, Case uneCase, Tuile uneTuile, Joueur joueur) {
 		int x = uneCase.coordonneeX();
 		int y = uneCase.coordonneeY();
 		int nombreCaseSimilaire = 0;
@@ -175,24 +176,35 @@ public class Arbitre {
 				}
 			}
 		}
+		
 		if (nombreCaseAdjacente > 0) {
+			int score = joueur.score();
+			if (uneCase.type() == Type.SOLEIL) {
+				score = score + 2;
+			}
+
+			if (nombreCaseAdjacente == 4) {
+				score = score + nombreCaseAdjacente;
+			} else if (nombreCaseAdjacente > 1) {
+				score = score + nombreCaseAdjacente - 1;
+			}
+
+			joueur.setScore(score);
 			return (nombreCaseSimilaire == nombreCaseAdjacente);
 		} else {
 			return false;
 		}
 	}
-	
-	public static boolean peutPoserTuile(PlateauDeJeu plateau,Case uneCase, Tuile uneTuile) {
+
+	public static boolean peutPoserTuile(PlateauDeJeu plateau, Case uneCase, Tuile uneTuile, Joueur joueur) {
 		if (plateau.estVide() && uneCase.coordonneeX() == 5 && uneCase.coordonneeY() == 5) {
-			return true ;
+			return true;
 		}
 		if (plateau.contientTuile(uneCase)) {
-			return false ;
+			return false;
 		}
-		return tuileAdjacenteSimilaire(plateau, uneCase, uneTuile);
+		return tuileAdjacenteSimilaire(plateau, uneCase, uneTuile, joueur);
 	}
-
-	
 
 	public void debutDePartie(List<Joueur> joueurs, PlateauDeJeu plateau) {
 		TasDeTuile pioche = new TasDeTuile();
@@ -209,12 +221,13 @@ public class Arbitre {
 				Console.message(plateau.afficherConsole());
 				Console.message("Tour de : " + joueurActuel.pseudo());
 				Console.message((tour + 1) + " tour");
+				Console.message("Score de " + joueurActuel.pseudo() + " : " + joueurActuel.score());
 
 				if (plateau.estVide()) {
 					Tuile tuile = choixChevalet(joueurActuel);
 					Coordonnee coordonnee = choisirCoordonnee(plateau);
 					Case uneCase = plateau.caseSur(coordonnee);
-					plateau.poserTuile(uneCase, tuile);
+					plateau.poserTuile(uneCase, tuile, joueurActuel);
 					joueurActuel.remplirChevalet();
 				} else {
 					poserTuileAvecValidation(plateau, joueurActuel);
@@ -222,21 +235,22 @@ public class Arbitre {
 			}
 		}
 		scanner.close();
+		joueurGagnant(joueurs);
 		Console.message("Fin de partie");
 	}
 
 	private void poserTuileAvecValidation(PlateauDeJeu plateau, Joueur joueurActuel) {
 		boolean tuilePosee = false;
-		
+
 		while (!tuilePosee) {
 			Tuile tuile = choixChevalet(joueurActuel);
 			Coordonnee coordonnee = choisirCoordonnee(plateau);
 			Case uneCase = plateau.caseSur(coordonnee);
-			tuilePosee = peutPoserTuile(plateau,uneCase, tuile);
-			
+			tuilePosee = peutPoserTuile(plateau, uneCase, tuile, joueurActuel);
+
 			if (tuilePosee) {
 				tuilePosee = true;
-				plateau.poserTuile(uneCase, tuile);
+				plateau.poserTuile(uneCase, tuile, joueurActuel);
 				joueurActuel.remplirChevalet();
 			} else {
 				joueurActuel.ajouterDansChevalet(tuile);
@@ -244,5 +258,17 @@ public class Arbitre {
 				Console.message("Tuile invalide : ");
 			}
 		}
+	}
+	
+	private void joueurGagnant(List<Joueur> joueurs) {
+		int scoreMax = 0 ;
+		Joueur joueurGagnant = new Joueur("") ;
+		for (Joueur joueur : joueurs) {
+			if (joueur.score() > scoreMax) {
+				scoreMax = joueur.score();
+				joueurGagnant = joueur; 
+			}
+		}
+		Console.message("Le joueur gagnant est : " + joueurGagnant.pseudo()); 
 	}
 }

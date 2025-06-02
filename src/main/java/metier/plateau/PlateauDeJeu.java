@@ -3,7 +3,7 @@ package metier.plateau;
 import java.util.HashMap;
 import java.util.Map;
 
-import metier.arbitre.Arbitre;
+import metier.joueur.Joueur;
 import metier.tuile.Couleur;
 import metier.tuile.Tuile;
 
@@ -38,10 +38,8 @@ public class PlateauDeJeu {
 	    return true;
 	}
 
-	public void poserTuile(Case uneCase, Tuile uneTuile) {
-		if (Arbitre.peutPoserTuile(this, uneCase, uneTuile)) {
-			plateau.put(uneCase, uneTuile);
-		}
+	public void poserTuile(Case uneCase, Tuile uneTuile,Joueur joueur) {
+		plateau.put(uneCase, uneTuile);
 	}
 
 	public int nombreTuileSurPlateau() {

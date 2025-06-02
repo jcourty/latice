@@ -12,8 +12,9 @@ public class Joueur {
 	private Chevalet chevalet;
 	private TasDeTuile main;
 	private GridPane idGridPane;
+	private int score ;
 	
-	public Joueur(String pseudo,Chevalet chevalet, TasDeTuile main, GridPane idGridPane) {
+	public Joueur(String pseudo,Chevalet chevalet, TasDeTuile main, GridPane idGridPane,int score) {
 		this.pseudo = pseudo;
 		this.chevalet = chevalet ;
 		this.main = main;
@@ -21,11 +22,11 @@ public class Joueur {
 	}
 	
 	public Joueur(String pseudo,GridPane idGridPane) {
-		this(pseudo,new Chevalet(),new TasDeTuile(),idGridPane);
+		this(pseudo,new Chevalet(),new TasDeTuile(),idGridPane,0);
 	}
 	
 	public Joueur(String pseudo) {
-		this(pseudo,new Chevalet(),new TasDeTuile(),null);
+		this(pseudo,new Chevalet(),new TasDeTuile(),null,0);
 	}
 	
 	public String pseudo() {
@@ -42,6 +43,14 @@ public class Joueur {
 	
 	public GridPane idGridPane() {
 		return idGridPane ;
+	}
+	
+	public int score() {
+		return score;
+	}
+	
+	public void setScore(int score) {
+		this.score = score ;
 	}
 	
 	public List<Tuile> listeChevalet() {
