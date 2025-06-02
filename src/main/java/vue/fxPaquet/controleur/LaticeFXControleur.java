@@ -23,9 +23,9 @@ import metier.tuile.Tuile;
 
 public class LaticeFXControleur {
 
-	@FXML 
-	private Label idLblTour ;
-	
+	@FXML
+	private Label idLblTour;
+
 	@FXML
 	private VBox idChevalet1;
 
@@ -34,13 +34,13 @@ public class LaticeFXControleur {
 
 	@FXML
 	private Label idLblChevalet1;
-	
+
 	@FXML
 	private VBox idChevalet2;
-	
+
 	@FXML
-    private Label idLblChevalet2 ;
-	
+	private Label idLblChevalet2;
+
 	@FXML
 	private GridPane idGridPaneChevalet2;
 
@@ -63,13 +63,13 @@ public class LaticeFXControleur {
 	public GridPane gridPane() {
 		return idPlateauJeu;
 	}
-	
-	List<GridPane> gridPanes ;
-	List<Label> labels ;
-	
-	PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
-	private List<Joueur> champsJoueurs;
-	private int indexJoueurActuel = 0;
+
+	private List<GridPane> gridPanes;
+	private List<Label> labels;
+
+	private PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
+	private static List<Joueur> champsJoueurs;
+	private static int indexJoueurActuel = 0;
 
 	public List<GridPane> listeGridPanes() {
 		gridPanes = new ArrayList<>();
@@ -94,7 +94,7 @@ public class LaticeFXControleur {
 		champsJoueurs = arbitre.creationListeJoueurFX(2, chevalet, nomChevalet);
 		Collections.shuffle(champsJoueurs);
 		idLblTour.setText("Tour de " + champsJoueurs.get(indexJoueurActuel).pseudo());
-		
+
 		TasDeTuile pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
 
@@ -105,22 +105,30 @@ public class LaticeFXControleur {
 			LaticeFXControleur.afficherChevalet(joueur);
 		}
 	}
-	
+
 	public static void afficherChevalet(Joueur joueur) {
 		List<Tuile> tuiles = joueur.listeChevalet();
 
 		joueur.idGridPane().getChildren().clear();
-		if (joueur.tailleChevalet() >= 5) {
 
+		if (joueur.tailleChevalet() == 5) {
 			for (int i = 0; i < tuiles.size(); i++) {
 				Tuile tuile = tuiles.get(i);
 				ImageView imageView = new ImageView(tuile.getImage());
 				imageView.setFitWidth(79);
 				imageView.setFitHeight(79);
 				imageView.setPreserveRatio(true);
+
 				joueur.ajouterDansGridPane(imageView, 0, i);
 
-				DndImgControleur.manageSourceDragAndDrop(imageView, joueur, tuile);
+				if (joueur == joueurActuel()) {
+					imageView.setOpacity(1.0);
+					DndImgControleur.manageSourceDragAndDrop(imageView, joueur, tuile);
+				} else {
+					imageView.setOnDragDetected(null);
+					imageView.setOnDragDone(null);
+					imageView.setOpacity(0.5);
+				}
 			}
 		}
 	}
@@ -159,11 +167,11 @@ public class LaticeFXControleur {
 		}
 	}
 
-	public Joueur joueurActuel() {
+	public static Joueur joueurActuel() {
 		return champsJoueurs.get(indexJoueurActuel);
 	}
 
-	// Tous les eventHandler pour les bouttons
+	// Tous les eventHandler pour les boutons
 	@FXML
 	void echanger(ActionEvent event) {
 		Joueur joueur = joueurActuel();
@@ -180,7 +188,13 @@ public class LaticeFXControleur {
 	@FXML
 	void passer(ActionEvent event) {
 		indexJoueurActuel = (indexJoueurActuel + 1) % champsJoueurs.size();
-		idLblTour.setText("Tour de " + champsJoueurs.get(indexJoueurActuel).pseudo());
+
+		Joueur nouveauJoueurActuel = joueurActuel();
+		idLblTour.setText("Tour de " + nouveauJoueurActuel.pseudo());
+
+		for (Joueur joueur : champsJoueurs) {
+			LaticeFXControleur.afficherChevalet(joueur);
+		}
 	}
 
 	@FXML

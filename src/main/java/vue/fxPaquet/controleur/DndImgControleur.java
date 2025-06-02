@@ -21,36 +21,33 @@ public class DndImgControleur {
 	private static PlateauDeJeu plateau = new PlateauDeJeu();
 
     public static void manageSourceDragAndDrop(ImageView imageView, Joueur joueur, Tuile tuile) {
-        imageView.setOnDragDetected(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                Dragboard db = imageView.startDragAndDrop(TransferMode.MOVE);
-                ClipboardContent contenu = new ClipboardContent();
-                imageView.setUserData(tuile);
-                contenu.putImage(imageView.getImage());
-                db.setContent(contenu);
-                System.out.println(tuile.afficher());
-                event.consume();
-            }
-        });
+    	
+		imageView.setOnDragDetected(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				Dragboard db = imageView.startDragAndDrop(TransferMode.MOVE);
+				ClipboardContent contenu = new ClipboardContent();
+				imageView.setUserData(tuile);
+				contenu.putImage(imageView.getImage());
+				db.setContent(contenu);
+				event.consume();
+			}
+		});
 
-        imageView.setOnDragDone(new EventHandler<DragEvent>() {
-            public void handle(DragEvent event) {
-                if (event.getTransferMode() == TransferMode.MOVE) {
-                    System.out.println("Drop complété !");
-                    joueur.piocherDansChevalet(joueur.listeChevalet().indexOf(tuile));
-                    joueur.remplirChevalet();
-                    if (joueur.tailleChevalet() < 5) {
-                        ((GridPane) imageView.getParent()).getChildren().remove(imageView);
-                    } else {
-                        LaticeFXControleur.afficherChevalet(joueur);
-                    }
-                } else {
-                    System.out.println("Drop échoué !");
-                }
-                event.consume();
-            }
-        });
-    }
+		imageView.setOnDragDone(new EventHandler<DragEvent>() {
+			public void handle(DragEvent event) {
+				if (event.getTransferMode() == TransferMode.MOVE) {
+					joueur.piocherDansChevalet(joueur.listeChevalet().indexOf(tuile));
+					joueur.remplirChevalet();
+					if (joueur.tailleChevalet() < 5) {
+						((GridPane) imageView.getParent()).getChildren().remove(imageView);
+					} else {
+						LaticeFXControleur.afficherChevalet(joueur);
+					}
+				}
+				event.consume();
+			}
+		});
+	}
 
     public static void dndPourGridPane(GridPane gridPane) {
         int nbCol = 9;
@@ -79,7 +76,6 @@ public class DndImgControleur {
                 int ligne = (int) (event.getY() / hauteurCase);
 
                 if (col >= 0 && col < nbCol && ligne >= 0 && ligne < nbLigne) {
-                    System.out.println("Drop sur GridPane : " + (col + 1) + ", " + (ligne + 1));
 
                     ImageView imgViewCible = null;
                     for (Node noeud : gridPane.getChildren()) {
@@ -110,12 +106,8 @@ public class DndImgControleur {
                             imgViewCible.setFitHeight(hauteurCase);
                             imgViewCible.setUserData("tuile"); // devient une vraie tuile
                             succes = true;
-                        } else {
-                            System.out.println("Case déjà occupée par une tuile, drop refusé.");
                         }
                     }
-                } else {
-                    System.out.println("Drop hors GridPane !");
                 }
             }
 
