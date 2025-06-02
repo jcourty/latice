@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -21,6 +23,7 @@ import metier.joueur.TasDeTuile;
 import metier.plateau.Case;
 import metier.plateau.PlateauDeJeu;
 import metier.tuile.Tuile;
+import vue.Console;
 
 public class LaticeFXControleur {
 
@@ -63,7 +66,8 @@ public class LaticeFXControleur {
 	private static int nbTour = 1;
 	private static int actionsEffectuees = 0;
 	private static int actionsMaxParTour = 1;
-	
+	private static final StringProperty actionTexteProperty = new SimpleStringProperty("Nombre d'actions : 0/1");
+
 	@FXML
 	public GridPane gridPane() {
 		return idPlateauJeu;
@@ -90,7 +94,7 @@ public class LaticeFXControleur {
 		majLabelsTour();
 		idScore1.setText("Score : 0");
 		idScore2.setText("Score : 0");
-		idAction.setText(majLblAction());
+		idAction.textProperty().bind(actionTexteProperty());
 
 		TasDeTuile pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
@@ -101,7 +105,7 @@ public class LaticeFXControleur {
 			afficherChevalet(joueur);
 		}
 
-		DndImgControleur.dndPourGridPane(gridPane(), idAction);
+		DndImgControleur.dndPourGridPane(gridPane());
 	}
 
 	private void majLabelsTour() {
@@ -177,7 +181,7 @@ public class LaticeFXControleur {
 	void echanger(ActionEvent event) {
 		if (peutJouer()) {
 			actionEffectuee();
-			idAction.setText(majLblAction());
+			majLabelActionAutomatique();
 			Joueur joueur = joueurActuel();
 			joueur.viderChevalet();
 			joueur.remplirChevalet();
@@ -193,7 +197,7 @@ public class LaticeFXControleur {
 	@FXML
 	void passer(ActionEvent event) {
 		resetActions();
-		idAction.setText(majLblAction());
+		majLabelActionAutomatique();
 		if (!partieFinie()) {
 			if (indexJoueurActuel == champsJoueurs.size() - 1) {
 				nbTour++;
@@ -206,7 +210,7 @@ public class LaticeFXControleur {
 				for (Joueur joueur : champsJoueurs) {
 					afficherChevalet(joueur);
 				}
-				DndImgControleur.dndPourGridPane(gridPane(), idAction);
+				DndImgControleur.dndPourGridPane(gridPane());
 			} else {
 				finDePartie();
 			}
@@ -225,9 +229,11 @@ public class LaticeFXControleur {
 
 	private void finDePartie() {
 		Alert dialogue = new Alert(Alert.AlertType.INFORMATION);
+		Joueur joueurGagne = Arbitre.joueurGagnant(champsJoueurs);
+		Console.message("Le joueur gagnant est : " + joueurGagne.pseudo());
 		dialogue.setTitle("Fin de partie");
 		dialogue.setHeaderText(null);
-		dialogue.setContentText("La partie est finie.");
+		dialogue.setContentText("La partie est finie, le joueur gagnant est : " + joueurGagne.pseudo()+".");
 		dialogue.showAndWait();
 	}
 
@@ -243,8 +249,16 @@ public class LaticeFXControleur {
 		actionsMaxParTour = 1;
 		actionsEffectuees = 0;
 	}
-	
+
 	public static String majLblAction() {
 		return "Nombre d'actions : " + actionsEffectuees + "/" + actionsMaxParTour;
+	}
+
+	public static StringProperty actionTexteProperty() {
+		return actionTexteProperty;
+	}
+
+	public static void majLabelActionAutomatique() {
+		actionTexteProperty.set("Nombre d'actions : " + actionsEffectuees + "/" + actionsMaxParTour);
 	}
 }

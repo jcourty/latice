@@ -143,7 +143,6 @@ public class Arbitre {
 
 	public static boolean tuileAdjacenteSimilaire(PlateauDeJeu plateau, Case uneCase, Tuile uneTuile, Joueur joueur) {
 		nombreCaseAdjacente = 0 ;
-		System.out.println(nombreCaseAdjacente);
 		int x = uneCase.coordonneeX();
 		int y = uneCase.coordonneeY();
 		int nombreCaseSimilaire = 0;
@@ -210,8 +209,8 @@ public class Arbitre {
 			}
 		}
 		scanner.close();
-		joueurGagnant(joueurs);
-		Console.message("Fin de partie");
+		Joueur joueurGagne = joueurGagnant(joueurs);
+		Console.message("Le joueur gagnant est : " + joueurGagne.pseudo());
 	}
 
 	private void poserTuileAvecValidation(PlateauDeJeu plateau, Joueur joueurActuel) {
@@ -232,16 +231,16 @@ public class Arbitre {
 		}
 	}
 
-	private void joueurGagnant(List<Joueur> joueurs) {
+	public static Joueur joueurGagnant(List<Joueur> joueurs) {
 		int scoreMax = 0;
-		Joueur joueurGagnant = new Joueur("");
+		Joueur joueurGagnant = joueurs.get(0);
 		for (Joueur joueur : joueurs) {
 			if (joueur.score() > scoreMax) {
 				scoreMax = joueur.score();
 				joueurGagnant = joueur;
 			}
 		}
-		Console.message("Le joueur gagnant est : " + joueurGagnant.pseudo());
+		return joueurGagnant;
 	}
 
 	public static void calculeScore(Joueur joueur, Case uneCase) {

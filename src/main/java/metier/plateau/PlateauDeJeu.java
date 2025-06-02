@@ -143,10 +143,10 @@ public class PlateauDeJeu {
 		return plateauConsole.toString();
 	}
 
-	private String generationMultiple(String pattern, int count) {
+	private String generationMultiple(String paterne, int compteur) {
 		StringBuilder constructeur = new StringBuilder();
-		for (int i = 0; i < count; i++) {
-			constructeur.append(pattern);
+		for (int i = 0; i < compteur; i++) {
+			constructeur.append(paterne);
 		}
 		return constructeur.toString();
 	}
