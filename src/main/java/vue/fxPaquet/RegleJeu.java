@@ -43,6 +43,7 @@ public class RegleJeu extends Application {
 
 		// Ajout correct de l'icône à la fenêtre
 		primaryStage.getIcons().add(logo); 
+		primaryStage.setResizable(false) ;
 		
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Règles du jeu");

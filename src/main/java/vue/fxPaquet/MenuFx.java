@@ -46,6 +46,8 @@ public class MenuFx extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Menu");
 		primaryStage.show();
+		
+		primaryStage.setResizable(false) ;
 	}
 
 	public static void main(String[] args) {
