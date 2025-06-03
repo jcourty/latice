@@ -19,14 +19,11 @@ public class LaticeConsoleApplication {
         Console.sautLigne();
 
         Arbitre arbitre = new Arbitre();
-        int nombreJoueur = arbitre.nombreJoueur();
-        List<Joueur> joueurs = arbitre.creationListeJoueur(nombreJoueur);
-        PlateauDeJeu plateau = new PlateauDeJeu();
         // Main V4
         Console.titre("--                   Main V4                     --");
         Console.sautLigne();
 
-        arbitre.debutDePartie(joueurs, plateau);
+        arbitre.lancementDePartie();
 
     }
 }

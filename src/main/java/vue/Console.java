@@ -25,5 +25,8 @@ public class Console {
 		message(texte);
 		message(SEPARATOR_LINE);
 	}
-
+	
+	public static void separateur() {
+		System.out.println(SEPARATOR_LINE);
+	}
 }

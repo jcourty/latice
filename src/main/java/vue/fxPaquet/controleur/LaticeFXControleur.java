@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -27,7 +26,6 @@ import metier.plateau.PlateauDeJeu;
 import metier.tuile.Tuile;
 import vue.Console;
 import vue.fxPaquet.MenuFx;
-import vue.fxPaquet.RegleJeu;
 
 public class LaticeFXControleur {
 
@@ -64,13 +62,13 @@ public class LaticeFXControleur {
 	@FXML
 	private Button btnQuitter;
 
-	private PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
+	private PlateauDeJeu plateauDeJeu;
 	private static List<Joueur> champsJoueurs;
-	private static int indexJoueurActuel = 0;
-	private static int nbTour = 1;
-	private static int actionsEffectuees = 0;
-	private static int actionsMaxParTour = 1;
-	private static final StringProperty actionTexteProperty = new SimpleStringProperty("Nombre d'actions : 0/1");
+	private static int indexJoueurActuel = 0;;
+	private static int nbTour;
+	private static int actionsEffectuees;
+	private static int actionsMaxParTour;
+	private static StringProperty actionTexteProperty;
 
 	@FXML
 	public GridPane gridPane() {
@@ -79,6 +77,11 @@ public class LaticeFXControleur {
 
 	@FXML
 	public void initialize() {
+		plateauDeJeu = new PlateauDeJeu();
+		nbTour = 1;
+		actionsEffectuees = 0;
+		actionsMaxParTour = 1;
+		actionTexteProperty = new SimpleStringProperty("Nombre d'actions : 0/1");
 		Arbitre arbitre = new Arbitre();
 
 		List<GridPane> gridPanes = new ArrayList<>();
@@ -228,17 +231,7 @@ public class LaticeFXControleur {
 
 	@FXML
 	void quitter(ActionEvent event) {
-		 try {
-	            MenuFx menu = new MenuFx();
-	            Stage stage = new Stage();
-	            menu.start(stage);
-	            
-	            // Fermer le menu
-	            Stage menuStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-	            menuStage.close();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
+		 retourMenu((Node) event.getSource());
 	}
 
 	@FXML
@@ -254,6 +247,8 @@ public class LaticeFXControleur {
 		dialogue.setHeaderText(null);
 		dialogue.setContentText("La partie est finie, le joueur gagnant est : " + joueurGagne.pseudo()+".");
 		dialogue.showAndWait();
+		
+		retourMenu(btnQuitter);
 	}
 
 	public static boolean peutJouer() {
@@ -279,5 +274,18 @@ public class LaticeFXControleur {
 
 	public static void majLabelActionAutomatique() {
 		actionTexteProperty.set("Nombre d'actions : " + actionsEffectuees + "/" + actionsMaxParTour);
+	}
+	public void retourMenu(Node event) {
+		 try {
+	            MenuFx menu = new MenuFx();
+	            Stage stage = new Stage();
+	            menu.start(stage);
+	            
+	            // Fermer le menu
+	            Stage menuStage = (Stage) ((Node) event).getScene().getWindow();
+	            menuStage.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	}
 }
