@@ -20,8 +20,8 @@ import vue.Console;
 public class Arbitre {
 
 	private final Scanner scanner;
-	private static int nombreCaseAdjacente ;
-	
+	private static int nombreCaseAdjacente;
+
 	public Arbitre() {
 		scanner = new Scanner(System.in);
 	}
@@ -67,7 +67,8 @@ public class Arbitre {
 		return joueurs;
 	}
 
-	public List<Joueur> creationListeJoueurFX(int nombreJoueur, List<GridPane> gridPanes, List<Label> labels, List<Label> scores) {
+	public List<Joueur> creationListeJoueurFX(int nombreJoueur, List<GridPane> gridPanes, List<Label> labels,
+			List<Label> scores, List<Label> tuilesposses) {
 		List<Joueur> joueurs = new ArrayList<>();
 		for (int i = 1; i <= nombreJoueur; i++) {
 			Label label = labels.get(i - 1);
@@ -76,9 +77,9 @@ public class Arbitre {
 			dialogue.setHeaderText(null);
 			dialogue.setContentText("Entrez le nom du joueur " + i + " :");
 			String nom = dialogue.showAndWait().orElse("Joueur " + i);
-			
+
 			label.setText(nom);
-			joueurs.add(new Joueur(nom, gridPanes.get(i - 1), scores.get(i - 1)));
+			joueurs.add(new Joueur(nom, gridPanes.get(i - 1), scores.get(i - 1), tuilesposses.get(i - 1)));
 		}
 		return joueurs;
 	}
@@ -124,7 +125,7 @@ public class Arbitre {
 				int choix = scanner.nextInt();
 				scanner.nextLine();
 				if (choix >= 1 && choix <= 5) {
-					tuile = joueur.piocherDansChevalet(choix-1);
+					tuile = joueur.piocherDansChevalet(choix - 1);
 					saisieValide = true;
 				} else {
 					Console.ligne("Index invalide : entrez un nombre entre 1 et 5 : ");
@@ -138,7 +139,7 @@ public class Arbitre {
 	}
 
 	public static boolean tuileAdjacenteSimilaire(PlateauDeJeu plateau, Case uneCase, Tuile uneTuile, Joueur joueur) {
-		nombreCaseAdjacente = 0 ;
+		nombreCaseAdjacente = 0;
 		int x = uneCase.coordonneeX();
 		int y = uneCase.coordonneeY();
 		int nombreCaseSimilaire = 0;
@@ -178,8 +179,8 @@ public class Arbitre {
 	}
 
 	public void lancementDePartie() {
-        List<Joueur> joueurs = creationListeJoueur(nombreJoueur());
-        PlateauDeJeu plateau = new PlateauDeJeu();
+		List<Joueur> joueurs = creationListeJoueur(nombreJoueur());
+		PlateauDeJeu plateau = new PlateauDeJeu();
 		TasDeTuile pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
 		distribuerTuile(pioche, joueurs);
@@ -211,7 +212,7 @@ public class Arbitre {
 			tuilePosee = peutPoserTuile(plateau, uneCase, tuile, joueurActuel);
 			if (tuilePosee) {
 				plateau.poserTuile(uneCase, tuile, joueurActuel);
-				calculeScore(joueurActuel,uneCase);
+				calculeScore(joueurActuel, uneCase);
 				joueurActuel.remplirChevalet();
 			} else {
 				joueurActuel.ajouterDansChevalet(tuile);
@@ -220,19 +221,19 @@ public class Arbitre {
 			}
 		}
 	}
-	
+
 	public void echangerChevalet(Joueur joueur) {
 		joueur.viderChevalet();
 		joueur.remplirChevalet();
 	}
-	
+
 	public void menu(PlateauDeJeu plateau, Joueur joueur) {
 		int choix = 0;
 		boolean choix_valide = false;
 		int nbAction = 0;
 		int nbActionMax = 1;
-		
-		while(!choix_valide) {
+
+		while (!choix_valide) {
 			Console.message(plateau.afficherConsole());
 			Console.titre("Menu");
 			Console.message("Score de " + joueur.pseudo() + " : " + joueur.score());
@@ -241,29 +242,25 @@ public class Arbitre {
 			Console.message("2. Echanger le chevalet (1 action)");
 			Console.message("3. Acheter une action (2 points)");
 			Console.message("4. Passer le tour");
-			Console.ligne("Chevalet : "); 
+			Console.ligne("Chevalet : ");
 			joueur.afficherChevalet();
 			Console.ligne("Saisir un choix : ");
 			if (scanner.hasNextInt()) {
 				choix = scanner.nextInt();
-				if(choix == 1 && nbAction < nbActionMax) {
+				if (choix == 1 && nbAction < nbActionMax) {
 					poserTuileAvecValidation(plateau, joueur);
 					nbAction++;
-				}
-				else if(choix == 2 && nbAction < nbActionMax) {
+				} else if (choix == 2 && nbAction < nbActionMax) {
 					echangerChevalet(joueur);
 					nbAction++;
-				}
-				else if (choix == 3) {
-					if(joueur.score() >= 2) {
-			            joueur.ajouterScore(-2);
-			            nbActionMax++;
+				} else if (choix == 3) {
+					if (joueur.score() >= 2) {
+						joueur.ajouterScore(-2);
+						nbActionMax++;
 					}
-				}
-				else if (choix == 4) {
+				} else if (choix == 4) {
 					choix_valide = true;
-				} 
-				else {
+				} else {
 					Console.message("Choix invalide ou Pas assez d'actions");
 				}
 			}
@@ -272,7 +269,7 @@ public class Arbitre {
 
 	public static Joueur joueurGagnant(List<Joueur> joueurs) {
 		int nbTuilePoseMax = 0;
-		Joueur joueurGagnant = joueurs.get(0); //recupère le premier joueur de la liste
+		Joueur joueurGagnant = joueurs.get(0); // recupère le premier joueur de la liste
 		for (Joueur joueur : joueurs) {
 			if (joueur.nbTuilePose() > nbTuilePoseMax) {
 				nbTuilePoseMax = joueur.nbTuilePose();
@@ -290,12 +287,11 @@ public class Arbitre {
 		if (nombreCaseAdjacente == 4) {
 			score += nombreCaseAdjacente;
 		} else if (nombreCaseAdjacente > 1) {
-	
+
 			score += nombreCaseAdjacente - 1;
 		}
 		joueur.ajouterScore(score);
 
 	}
-
 
 }

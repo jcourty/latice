@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="idLblAction" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1400.0" stylesheets="@LaticeCss.css" xmlns="http://javafx.com/javafx/8.0.441" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.fxPaquet.controleur.LaticeFXControleur">
+<BorderPane fx:id="idLblAction" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1400.0" stylesheets="@LaticeCss.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.fxPaquet.controleur.LaticeFXControleur">
 	<right>
 		<VBox fx:id="idChevalet2" alignment="CENTER" prefHeight="747.0" prefWidth="200.0" BorderPane.alignment="TOP_CENTER">
 			<children>
@@ -33,6 +33,7 @@
 					</rowConstraints>
 				</GridPane>
             <Label fx:id="idScore2" style="-fx-font-size: 25;" text="Score" />
+            <Label fx:id="idTuilesPosees2" style="-fx-font-size: 25;" text="Tuiles posées" />
 			</children>
 		</VBox>
 	</right>
@@ -57,6 +58,7 @@
 					</rowConstraints>
 				</GridPane>
             <Label fx:id="idScore1" style="-fx-font-size: 25;" text="Score" />
+            <Label fx:id="idTuilesPosees1" style="-fx-font-size: 25;" text="Tuiles posées" />
 			</children>
 		</VBox>
 	</left>
@@ -95,22 +97,22 @@
             <Label fx:id="idAction" style="-fx-font-size: 20;" text="Nombre d'actions" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btnEchange" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#echanger" prefHeight="33.0" prefWidth="82.0" text="Echanger">
+                  <Button fx:id="btnEchange" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#echanger" prefHeight="33.0" prefWidth="82.0" styleClass="boutton" text="Echanger">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnPasser" mnemonicParsing="false" onAction="#passer" text="Passer le tour">
+                  <Button fx:id="btnPasser" mnemonicParsing="false" onAction="#passer" styleClass="boutton" text="Passer le tour">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnNouvAction" mnemonicParsing="false" onAction="#nouvelleAction" text="Acheter action">
+                  <Button fx:id="btnNouvAction" mnemonicParsing="false" onAction="#nouvelleAction" styleClass="boutton" text="Acheter action">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnQuitter" mnemonicParsing="false" onAction="#quitter" text="Quitter">
+                  <Button fx:id="btnQuitter" mnemonicParsing="false" onAction="#quitter" styleClass="boutton" text="Quitter">
                      <HBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>

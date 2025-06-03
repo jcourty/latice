@@ -16,21 +16,23 @@ public class Joueur {
 	private int score;
 	private int nbTuilePose;
 	private Label lblScore;
+	private Label lblTuilePose;
 
-	public Joueur(String pseudo, Chevalet chevalet, TasDeTuile main, GridPane idGridPane, int score, Label lblScore) {
+	public Joueur(String pseudo, Chevalet chevalet, TasDeTuile main, GridPane idGridPane, int score, Label lblScore, Label lblTuilePose) {
 		this.pseudo = pseudo;
 		this.chevalet = chevalet;
 		this.main = main;
 		this.idGridPane = idGridPane;
 		this.lblScore = lblScore;
+		this.lblTuilePose=lblTuilePose;
 	}
 
-	public Joueur(String pseudo, GridPane idGridPane, Label lblScore) {
-		this(pseudo, new Chevalet(), new TasDeTuile(), idGridPane, 0, lblScore);
+	public Joueur(String pseudo, GridPane idGridPane, Label lblScore, Label lblTuilePose) {
+		this(pseudo, new Chevalet(), new TasDeTuile(), idGridPane, 0, lblScore, lblTuilePose);
 	}
 
 	public Joueur(String pseudo) {
-		this(pseudo, new Chevalet(), new TasDeTuile(), null, 0, null);
+		this(pseudo, new Chevalet(), new TasDeTuile(), null, 0, null, null);
 	}
 
 	public String pseudo() {
@@ -63,6 +65,10 @@ public class Joueur {
 	
 	public Label lblScore() {
 		return lblScore;
+	}
+	
+	public Label lblTuilePose() {
+		return lblTuilePose;
 	}
 
 	public void setScore(int score) {

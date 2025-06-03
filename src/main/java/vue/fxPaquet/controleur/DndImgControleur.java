@@ -130,6 +130,7 @@ public class DndImgControleur {
 			Arbitre.calculeScore(joueur, uneCase);
 			joueur.lblScore().setText("Score : " + joueur.score());
 			joueur.incrementerNbTuilePose();
+			joueur.lblTuilePose().setText("Tuiles posées : "+joueur.nbTuilePose());
 			LaticeFXControleur.actionEffectuee();
 			LaticeFXControleur.majLabelActionAutomatique();
 
