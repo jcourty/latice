@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -61,6 +60,10 @@ public class LaticeFXControleur {
 	private Button btnNouvAction;
 	@FXML
 	private Button btnQuitter;
+	 @FXML
+	 private Label idTuilesPosees1;
+	 @FXML
+	 private Label idTuilesPosees2;
 
 	private PlateauDeJeu plateauDeJeu;
 	private static List<Joueur> champsJoueurs;
@@ -95,12 +98,19 @@ public class LaticeFXControleur {
 		List<Label> scores = new ArrayList<>();
 		scores.add(idScore1);
 		scores.add(idScore2);
-		champsJoueurs = arbitre.creationListeJoueurFX(2, gridPanes, labels, scores);
+		
+		List<Label> tuileposees = new ArrayList<>();
+		tuileposees.add(idTuilesPosees1);
+		tuileposees.add(idTuilesPosees2);
+		
+		champsJoueurs = arbitre.creationListeJoueurFX(2, gridPanes, labels, scores,tuileposees);
 		Collections.shuffle(champsJoueurs);
 
 		majLabelsTour();
 		idScore1.setText("Score : 0");
 		idScore2.setText("Score : 0");
+		idTuilesPosees1.setText("Tuiles posées : 0");
+		idTuilesPosees2.setText("Tuiles posées : 0");
 		idAction.textProperty().bind(actionTexteProperty());
 
 		TasDeTuile pioche = new TasDeTuile();
