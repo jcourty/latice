@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -231,6 +232,10 @@ public class LaticeFXControleur {
 	            MenuFx menu = new MenuFx();
 	            Stage stage = new Stage();
 	            menu.start(stage);
+	            
+	            // Fermer le menu
+	            Stage menuStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+	            menuStage.close();
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
