@@ -22,6 +22,18 @@ public class LaticeFX extends Application {
 		
 		controleur.afficherPlateau();
 		
+		Image logo = new Image(getClass().getResourceAsStream("/images/logo.png"));
+		ImageView logoView = new ImageView(logo);
+
+		// Zoom visuel dans l'interface (pas l'icône de fenêtre)
+		logoView.setPreserveRatio(true);
+		logoView.setFitWidth(100);
+		logoView.setScaleX(2.0);
+		logoView.setScaleY(2.0);
+
+		// Ajout correct de l'icône à la fenêtre
+		stagePrincipale.getIcons().add(logo); 
+		
 		stagePrincipale.setScene(scene);
 		stagePrincipale.setTitle("Latice");
 		stagePrincipale.show();

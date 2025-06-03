@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import metier.arbitre.Arbitre;
 import metier.joueur.Joueur;
 import metier.joueur.TasDeTuile;
@@ -24,6 +25,8 @@ import metier.plateau.Case;
 import metier.plateau.PlateauDeJeu;
 import metier.tuile.Tuile;
 import vue.Console;
+import vue.fxPaquet.MenuFx;
+import vue.fxPaquet.RegleJeu;
 
 public class LaticeFXControleur {
 
@@ -224,7 +227,13 @@ public class LaticeFXControleur {
 
 	@FXML
 	void quitter(ActionEvent event) {
-		Platform.exit();
+		 try {
+	            MenuFx menu = new MenuFx();
+	            Stage stage = new Stage();
+	            menu.start(stage);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	}
 
 	@FXML
