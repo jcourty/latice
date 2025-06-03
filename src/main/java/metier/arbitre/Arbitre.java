@@ -118,19 +118,14 @@ public class Arbitre {
 		boolean saisieValide = false;
 		Tuile tuile = null;
 		while (!saisieValide) {
-			Console.ligne("Quelle tuile voulez-vous poser ? (entre 1 et 5, 6 pour changer de chevalet) : ");
+			Console.ligne("Quelle tuile voulez-vous poser ? (entre 1 et 5) : ");
 			joueur.afficherChevalet();
 			if (scanner.hasNextInt()) {
-				int choix = scanner.nextInt() - 1;
+				int choix = scanner.nextInt();
 				scanner.nextLine();
-				if (choix >= 0 && choix <= 5) {
-					if (choix == 5) {
-						joueur.viderChevalet();
-						joueur.remplirChevalet();
-					} else {
-						tuile = joueur.piocherDansChevalet(choix);
-						saisieValide = true;
-					}
+				if (choix >= 1 && choix <= 5) {
+					tuile = joueur.piocherDansChevalet(choix-1);
+					saisieValide = true;
 				} else {
 					Console.ligne("Index invalide : entrez un nombre entre 1 et 5 : ");
 				}
@@ -182,7 +177,9 @@ public class Arbitre {
 		return tuileAdjacenteSimilaire(plateau, uneCase, uneTuile, joueur);
 	}
 
-	public void debutDePartie(List<Joueur> joueurs, PlateauDeJeu plateau) {
+	public void lancementDePartie() {
+        List<Joueur> joueurs = creationListeJoueur(nombreJoueur());
+        PlateauDeJeu plateau = new PlateauDeJeu();
 		TasDeTuile pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
 		distribuerTuile(pioche, joueurs);
@@ -193,20 +190,11 @@ public class Arbitre {
 
 		for (int tour = 0; tour < 10; tour++) {
 			for (Joueur joueurActuel : ordreDuTour) {
-				Console.message(plateau.afficherConsole());
+				Console.separateur();
 				Console.message("Tour de : " + joueurActuel.pseudo());
 				Console.message((tour + 1) + " tour");
-				Console.message("Score de " + joueurActuel.pseudo() + " : " + joueurActuel.score());
 
-				if (plateau.estVide()) {
-					Tuile tuile = choixChevalet(joueurActuel);
-					Coordonnee coordonnee = choisirCoordonnee(plateau);
-					Case uneCase = plateau.caseSur(coordonnee);
-					plateau.poserTuile(uneCase, tuile, joueurActuel);
-					joueurActuel.remplirChevalet();
-				} else {
-					poserTuileAvecValidation(plateau, joueurActuel);
-				}
+				menu(plateau, joueurActuel);
 			}
 		}
 		scanner.close();
@@ -223,11 +211,61 @@ public class Arbitre {
 			tuilePosee = peutPoserTuile(plateau, uneCase, tuile, joueurActuel);
 			if (tuilePosee) {
 				plateau.poserTuile(uneCase, tuile, joueurActuel);
+				calculeScore(joueurActuel,uneCase);
 				joueurActuel.remplirChevalet();
 			} else {
 				joueurActuel.ajouterDansChevalet(tuile);
 				Console.message(plateau.afficherConsole());
 				Console.message("Tuile invalide : ");
+			}
+		}
+	}
+	
+	public void echangerChevalet(Joueur joueur) {
+		joueur.viderChevalet();
+		joueur.remplirChevalet();
+	}
+	
+	public void menu(PlateauDeJeu plateau, Joueur joueur) {
+		int choix = 0;
+		boolean choix_valide = false;
+		int nbAction = 0;
+		int nbActionMax = 1;
+		
+		while(!choix_valide) {
+			Console.message(plateau.afficherConsole());
+			Console.titre("Menu");
+			Console.message("Score de " + joueur.pseudo() + " : " + joueur.score());
+			Console.message("Nombre d'actions : " + nbAction + "/" + nbActionMax);
+			Console.message("1. Jouer une tuile (1 action)");
+			Console.message("2. Echanger le chevalet (1 action)");
+			Console.message("3. Acheter une action (2 points)");
+			Console.message("4. Passer le tour");
+			Console.ligne("Chevalet : "); 
+			joueur.afficherChevalet();
+			Console.ligne("Saisir un choix : ");
+			if (scanner.hasNextInt()) {
+				choix = scanner.nextInt();
+				if(choix == 1 && nbAction < nbActionMax) {
+					poserTuileAvecValidation(plateau, joueur);
+					nbAction++;
+				}
+				else if(choix == 2 && nbAction < nbActionMax) {
+					echangerChevalet(joueur);
+					nbAction++;
+				}
+				else if (choix == 3) {
+					if(joueur.score() >= 2) {
+			            joueur.ajouterScore(-2);
+			            nbActionMax++;
+					}
+				}
+				else if (choix == 4) {
+					choix_valide = true;
+				} 
+				else {
+					Console.message("Choix invalide ou Pas assez d'actions");
+				}
 			}
 		}
 	}
