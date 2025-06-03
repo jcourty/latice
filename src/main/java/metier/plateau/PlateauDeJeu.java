@@ -2,6 +2,8 @@ package metier.plateau;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import metier.joueur.Joueur;
 import metier.tuile.Couleur;
@@ -21,7 +23,11 @@ public class PlateauDeJeu {
 	public Map<Case, Tuile> plateau() {
 		return plateau;
 	}
-
+	
+	public Set<Entry<Case, Tuile>> plateauEntrySet() {
+		return plateau.entrySet();
+	}
+	
 	public boolean contientTuile(Case uneCase) {
 		if (plateau.get(uneCase) == null) {
 			return false;
