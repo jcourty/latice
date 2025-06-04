@@ -14,13 +14,15 @@ import metier.joueur.Joueur;
 import metier.plateau.Case;
 import metier.plateau.Coordonnee;
 import metier.plateau.PlateauDeJeu;
+import metier.statistique.StatistiqueJeu;
 import metier.tuile.Tuile;
 
 public class DndImgControleur {
 
-	private static PlateauDeJeu plateau = new PlateauDeJeu();
+	private static PlateauDeJeu plateau;
 
-	public static void manageSourceDragAndDrop(ImageView imageView, Joueur joueur, Tuile tuile) {
+	public static void manageSourceDragAndDrop(ImageView imageView, Joueur joueur, Tuile tuile,
+			LaticeFXControleur controleur) {
 
 		imageView.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
@@ -42,7 +44,7 @@ public class DndImgControleur {
 					if (joueur.tailleChevalet() < 5) {
 						((GridPane) imageView.getParent()).getChildren().remove(imageView);
 					} else {
-						LaticeFXControleur.afficherChevalet(joueur);
+						controleur.afficherChevalet(joueur);
 					}
 				}
 				event.consume();
@@ -50,10 +52,10 @@ public class DndImgControleur {
 		});
 	}
 
-	public static void dndPourGridPane(GridPane gridPane) {
+	public static void dndPourGridPane(GridPane gridPane, StatistiqueJeu statistique) {
 		int nbCol = 9;
 		int nbLigne = 9;
-		Joueur joueur = LaticeFXControleur.joueurActuel();
+		plateau = statistique.plateau();
 
 		gridPane.setOnDragOver(event -> {
 			if (event.getGestureSource() != gridPane && event.getDragboard().hasImage()) {
@@ -103,7 +105,7 @@ public class DndImgControleur {
 					} else {
 						Object tag = imgViewCible.getUserData();
 						if ((tag == null || "fond".equals(tag))
-								&& coupValide(plateau, tuile, colNoeud + 1, ligneNoeud + 1, joueur)) {
+								&& coupValide(plateau, tuile, colNoeud + 1, ligneNoeud + 1, statistique)) {
 							imgViewCible.setImage(db.getImage());
 							imgViewCible.setFitWidth(largeurCase);
 							imgViewCible.setFitHeight(hauteurCase);
@@ -119,20 +121,25 @@ public class DndImgControleur {
 		});
 	}
 
-	public static boolean coupValide(PlateauDeJeu plateau, Tuile tuile, int col, int ligne, Joueur joueur) {
-		if (!LaticeFXControleur.peutJouer()) {
+	public static boolean coupValide(PlateauDeJeu plateau, Tuile tuile, int col, int ligne,
+			StatistiqueJeu statistique) {
+		if (!statistique.peutJouer()) {
 			System.out.println("Action impossible");
 			return false;
 		}
+
+		Joueur joueur = statistique.joueurActuel();
 		Case uneCase = plateau.caseSur(new Coordonnee(col, ligne));
 		if (Arbitre.peutPoserTuile(plateau, uneCase, tuile, joueur)) {
 			plateau.poserTuile(uneCase, tuile, joueur);
 			Arbitre.calculeScore(joueur, uneCase);
+			System.out.println(joueur.score());
 			joueur.lblScore().setText("Score : " + joueur.score());
+			System.out.println(joueur.score());
 			joueur.incrementerNbTuilePose();
-			joueur.lblTuilePose().setText("Tuiles posées : "+joueur.nbTuilePose());
-			LaticeFXControleur.actionEffectuee();
-			LaticeFXControleur.majLabelActionAutomatique();
+			joueur.lblTuilePose().setText("Tuiles posées : " + joueur.nbTuilePose());
+			statistique.augmentationActionsEffectuees();
+			statistique.majLabelActionAutomatique();
 
 			return true;
 		}

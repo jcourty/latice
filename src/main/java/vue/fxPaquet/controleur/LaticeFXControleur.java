@@ -1,11 +1,9 @@
 package vue.fxPaquet.controleur;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -22,6 +20,7 @@ import metier.joueur.Joueur;
 import metier.joueur.TasDeTuile;
 import metier.plateau.Case;
 import metier.plateau.PlateauDeJeu;
+import metier.statistique.StatistiqueJeu;
 import metier.tuile.Tuile;
 import vue.Console;
 import vue.fxPaquet.MenuFx;
@@ -61,18 +60,12 @@ public class LaticeFXControleur {
 	private Button btnNouvAction;
 	@FXML
 	private Button btnQuitter;
-	 @FXML
-	 private Label idTuilesPosees1;
-	 @FXML
-	 private Label idTuilesPosees2;
+	@FXML
+	private Label idTuilesPosees1;
+	@FXML
+	private Label idTuilesPosees2;
 
-	private PlateauDeJeu plateauDeJeu;
-	private static List<Joueur> champsJoueurs;
-	private static int indexJoueurActuel = 0;;
-	private static int nbTour;
-	private static int actionsEffectuees;
-	private static int actionsMaxParTour;
-	private static StringProperty actionTexteProperty;
+	private StatistiqueJeu statistique;
 
 	@FXML
 	public GridPane gridPane() {
@@ -81,12 +74,8 @@ public class LaticeFXControleur {
 
 	@FXML
 	public void initialize() {
-		plateauDeJeu = new PlateauDeJeu();
-		nbTour = 1;
-		actionsEffectuees = 0;
-		actionsMaxParTour = 1;
-		actionTexteProperty = new SimpleStringProperty("Nombre d'actions : 0/1");
 		Arbitre arbitre = new Arbitre();
+		PlateauDeJeu plateau = new PlateauDeJeu();
 
 		List<GridPane> gridPanes = new ArrayList<>();
 		gridPanes.add(idGridPaneChevalet1);
@@ -99,39 +88,42 @@ public class LaticeFXControleur {
 		List<Label> scores = new ArrayList<>();
 		scores.add(idScore1);
 		scores.add(idScore2);
-		
+
 		List<Label> tuileposees = new ArrayList<>();
 		tuileposees.add(idTuilesPosees1);
 		tuileposees.add(idTuilesPosees2);
-		
-		champsJoueurs = arbitre.creationListeJoueurFX(2, gridPanes, labels, scores,tuileposees);
-		Collections.shuffle(champsJoueurs);
+
+		statistique = new StatistiqueJeu(plateau,
+				arbitre.creationListeJoueurFX(2, gridPanes, labels, scores, tuileposees));
+		statistique.melangerListeJoueurs();
+		statistique.resetActionsEffectuees();
 
 		majLabelsTour();
 		idScore1.setText("Score : 0");
 		idScore2.setText("Score : 0");
 		idTuilesPosees1.setText("Tuiles posées : 0");
 		idTuilesPosees2.setText("Tuiles posées : 0");
-		idAction.textProperty().bind(actionTexteProperty());
+		idAction.textProperty().bind(statistique.actionTexteProperty());
 
 		TasDeTuile pioche = new TasDeTuile();
 		pioche.creerTasDeTuile();
-		arbitre.distribuerTuile(pioche, champsJoueurs);
-		arbitre.distribuerDansChevalet(champsJoueurs);
+		arbitre.distribuerTuile(pioche, statistique.joueurs());
+		arbitre.distribuerDansChevalet(statistique.joueurs());
 
-		for (Joueur joueur : champsJoueurs) {
+		for (Joueur joueur : statistique.joueurs()) {
 			afficherChevalet(joueur);
 		}
 
-		DndImgControleur.dndPourGridPane(gridPane());
+		System.out.println(statistique.actionsEffectuees());
+		DndImgControleur.dndPourGridPane(gridPane(), statistique);
 	}
 
 	private void majLabelsTour() {
 		idLblTour.setText("Tour de " + joueurActuel().pseudo());
-		idLblNbTour.setText("Tour " + nbTour);
+		idLblNbTour.setText("Tour " + statistique.nbTour());
 	}
 
-	public static void afficherChevalet(Joueur joueur) {
+	public void afficherChevalet(Joueur joueur) {
 		List<Tuile> tuiles = joueur.listeChevalet();
 		joueur.idGridPane().getChildren().clear();
 
@@ -145,9 +137,9 @@ public class LaticeFXControleur {
 
 				joueur.ajouterDansGridPane(imageView, 0, i);
 
-				if (joueur == joueurActuel()) {
+				if (joueur == statistique.joueurActuel()) {
 					imageView.setOpacity(1.0);
-					DndImgControleur.manageSourceDragAndDrop(imageView, joueur, tuile);
+					DndImgControleur.manageSourceDragAndDrop(imageView, joueur, tuile, this);
 				} else {
 					imageView.setOnDragDetected(null);
 					imageView.setOnDragDone(null);
@@ -173,12 +165,13 @@ public class LaticeFXControleur {
 	}
 
 	public void afficherPlateau() {
-		for (Map.Entry<Case, Tuile> entry : plateauDeJeu.plateau().entrySet()) {
+		PlateauDeJeu plateau = statistique.plateau();
+		for (Map.Entry<Case, Tuile> entry : plateau.plateauEntrySet()) {
 			Case uneCase = entry.getKey();
 			int col = uneCase.coordonneeX();
 			int ligne = uneCase.coordonneeY();
 
-			if (plateauDeJeu.tuileSur(uneCase) == null) {
+			if (plateau.tuileSur(uneCase) == null) {
 				Image image = uneCase.getImage();
 				ImageView imageView = new ImageView(image);
 				imageView.setUserData("fond");
@@ -191,15 +184,15 @@ public class LaticeFXControleur {
 		}
 	}
 
-	public static Joueur joueurActuel() {
-		return champsJoueurs.get(indexJoueurActuel);
+	public Joueur joueurActuel() {
+		return statistique.joueurActuel();
 	}
 
 	@FXML
 	void echanger(ActionEvent event) {
-		if (peutJouer()) {
-			actionEffectuee();
-			majLabelActionAutomatique();
+		if (statistique.peutJouer()) {
+			statistique.augmentationActionsEffectuees();
+			statistique.majLabelActionAutomatique();
 			Joueur joueur = joueurActuel();
 			joueur.viderChevalet();
 			joueur.remplirChevalet();
@@ -210,30 +203,31 @@ public class LaticeFXControleur {
 	@FXML
 	void nouvelleAction(ActionEvent event) {
 		Joueur joueur = joueurActuel();
-        if(joueur.score() >= 2) {
-            joueur.ajouterScore(-2);
-            actionsMaxParTour++;
-            majLabelActionAutomatique();
-        }
+		if (joueur.score() >= 2) {
+			joueur.ajouterScore(-2);
+			statistique.augmentationMaxParTour();
+			statistique.majLabelActionAutomatique();
+	        joueur.lblScore().setText("Score : " + joueur.score());
+		}
 	}
 
 	@FXML
 	void passer(ActionEvent event) {
-		resetActions();
-		majLabelActionAutomatique();
+		statistique.reenitialiserActions();
+		statistique.majLabelActionAutomatique();
 		if (!partieFinie()) {
-			if (indexJoueurActuel == champsJoueurs.size() - 1) {
-				nbTour++;
+			if (statistique.indexJoueurActuel() == statistique.joueurs().size() - 1) {
+				statistique.augmentationNombreTour();
 			}
 
-			if (nbTour <= 10) {
-				indexJoueurActuel = (indexJoueurActuel + 1) % champsJoueurs.size();
+			if (statistique.nbTour() <= 10) {
+				statistique.joueurSuivant();
 				majLabelsTour();
 
-				for (Joueur joueur : champsJoueurs) {
+				for (Joueur joueur : statistique.joueurs()) {
 					afficherChevalet(joueur);
 				}
-				DndImgControleur.dndPourGridPane(gridPane());
+				DndImgControleur.dndPourGridPane(gridPane(), statistique);
 			} else {
 				finDePartie();
 			}
@@ -242,32 +236,38 @@ public class LaticeFXControleur {
 
 	@FXML
 	void quitter(ActionEvent event) {
-		 retourMenu((Node) event.getSource());
+		retourMenu((Node) event.getSource());
 	}
 
 	@FXML
 	boolean partieFinie() {
-		return nbTour > 10;
+		return statistique.nbTour() > 10;
 	}
 
 	private void finDePartie() {
 		Alert dialogue = new Alert(Alert.AlertType.INFORMATION);
-		Joueur joueurGagne = Arbitre.joueurGagnant(champsJoueurs);
+		Joueur joueurGagne = Arbitre.joueurGagnant(statistique.joueurs());
 		Console.message("Le joueur gagnant est : " + joueurGagne.pseudo());
 		dialogue.setTitle("Fin de partie");
 		dialogue.setHeaderText(null);
-		dialogue.setContentText("La partie est finie, le joueur gagnant est : " + joueurGagne.pseudo()+".");
+		dialogue.setContentText("La partie est finie, le joueur gagnant est : " + joueurGagne.pseudo() + ".");
 		dialogue.showAndWait();
-		
+
 		retourMenu(btnQuitter);
 	}
 
-	public static boolean peutJouer() {
-		return actionsEffectuees < actionsMaxParTour;
-	}
+	public void retourMenu(Node event) {
+		try {
+			MenuFx menu = new MenuFx();
+			Stage stage = new Stage();
+			menu.start(stage);
 
-	public static void actionEffectuee() {
-		actionsEffectuees++;
+			// Fermer le menu
+			Stage menuStage = (Stage) ((Node) event).getScene().getWindow();
+			menuStage.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void resetActions() {
@@ -288,7 +288,7 @@ public class LaticeFXControleur {
 	}
 	public void retourMenu(Node event) {
 		 try {
-			 	MusicManager.stop();
+                MusicManager.stop();
 	            MenuFx menu = new MenuFx();
 	            Stage stage = new Stage();
 	            menu.start(stage);
