@@ -199,8 +199,7 @@ public class Arbitre {
 			}
 		}
 		scanner.close();
-		Joueur joueurGagne = joueurGagnant(joueurs);
-		Console.message("Le joueur gagnant est : " + joueurGagne.pseudo());
+		Console.message(gestionVictoire(joueurGagnant(joueurs)));
 	}
 
 	private void poserTuileAvecValidation(PlateauDeJeu plateau, Joueur joueurActuel) {
@@ -267,16 +266,16 @@ public class Arbitre {
 		}
 	}
 
-	public static Joueur joueurGagnant(List<Joueur> joueurs) {
+	public static List<Joueur> joueurGagnant(List<Joueur> joueurs) {
 		int nbTuilePoseMax = 0;
-		Joueur joueurGagnant = joueurs.get(0); // recupère le premier joueur de la liste
+		List<Joueur> joueursGagnants = new ArrayList<>();
 		for (Joueur joueur : joueurs) {
-			if (joueur.nbTuilePose() > nbTuilePoseMax) {
+			if (joueur.nbTuilePose() >= nbTuilePoseMax) {
 				nbTuilePoseMax = joueur.nbTuilePose();
-				joueurGagnant = joueur;
+				joueursGagnants.add(joueur);
 			}
 		}
-		return joueurGagnant;
+		return joueursGagnants;
 	}
 
 	public static void calculeScore(Joueur joueur, Case uneCase) {
@@ -292,6 +291,22 @@ public class Arbitre {
 		}
 		joueur.ajouterScore(score);
 
+	}
+	
+	public static String gestionVictoire(List<Joueur> joueurs) {
+		String message = new String();
+		if (joueurs.size() == 1) {
+			Joueur joueur = joueurs.get(0);
+			message = "Le joueur gagnant est " + joueur.pseudo();
+		} else {
+			message = "Les gagnants sont : " ;
+			for (Joueur joueur : joueurs) {
+				message = message + joueur.pseudo() + " " ;
+			}
+		}
+		 
+		return message;
+		
 	}
 
 }

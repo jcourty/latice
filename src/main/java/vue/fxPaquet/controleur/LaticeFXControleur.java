@@ -22,7 +22,6 @@ import metier.plateau.Case;
 import metier.plateau.PlateauDeJeu;
 import metier.statistique.StatistiqueJeu;
 import metier.tuile.Tuile;
-import vue.Console;
 import vue.fxPaquet.MenuFx;
 import vue.fxPaquet.metier.MusicManager;
 
@@ -246,46 +245,15 @@ public class LaticeFXControleur {
 
 	private void finDePartie() {
 		Alert dialogue = new Alert(Alert.AlertType.INFORMATION);
-		Joueur joueurGagne = Arbitre.joueurGagnant(statistique.joueurs());
-		Console.message("Le joueur gagnant est : " + joueurGagne.pseudo());
+		List<Joueur> joueurGagne = Arbitre.joueurGagnant(statistique.joueurs());
 		dialogue.setTitle("Fin de partie");
 		dialogue.setHeaderText(null);
-		dialogue.setContentText("La partie est finie, le joueur gagnant est : " + joueurGagne.pseudo() + ".");
+		dialogue.setContentText(Arbitre.gestionVictoire(joueurGagne));
 		dialogue.showAndWait();
 
 		retourMenu(btnQuitter);
 	}
 
-	public void retourMenu(Node event) {
-		try {
-			MenuFx menu = new MenuFx();
-			Stage stage = new Stage();
-			menu.start(stage);
-
-			// Fermer le menu
-			Stage menuStage = (Stage) ((Node) event).getScene().getWindow();
-			menuStage.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void resetActions() {
-		actionsMaxParTour = 1;
-		actionsEffectuees = 0;
-	}
-
-	public static String majLblAction() {
-		return "Nombre d'actions : " + actionsEffectuees + "/" + actionsMaxParTour;
-	}
-
-	public static StringProperty actionTexteProperty() {
-		return actionTexteProperty;
-	}
-
-	public static void majLabelActionAutomatique() {
-		actionTexteProperty.set("Nombre d'actions : " + actionsEffectuees + "/" + actionsMaxParTour);
-	}
 	public void retourMenu(Node event) {
 		 try {
                 MusicManager.stop();
