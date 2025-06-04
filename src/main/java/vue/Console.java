@@ -2,19 +2,19 @@ package vue;
 
 public class Console {
 
-	public static void message (String texte) {
+	public static void message(String texte) {
 		System.out.println(texte);
 	}
-	
-	public static void nombre (int nbr) {
+
+	public static void nombre(int nbr) {
 		System.out.println(nbr);
 	}
-	
-	public static void sautLigne () {
-		System.out.println("");
+
+	public static void sautLigne() {
+		message("");
 	}
-	
-	public static void ligne (String texte) {
+
+	public static void ligne(String texte) {
 		System.out.print(texte);
 	}
 
@@ -25,8 +25,12 @@ public class Console {
 		message(texte);
 		message(SEPARATOR_LINE);
 	}
-	
+
 	public static void separateur() {
-		System.out.println(SEPARATOR_LINE);
+		message(SEPARATOR_LINE);
+	}
+
+	public static void effacerConsole() {
+		for (int i = 0; i < 50; ++i) System.out.println();
 	}
 }
