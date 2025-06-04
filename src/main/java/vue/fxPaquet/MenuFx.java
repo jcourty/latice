@@ -14,6 +14,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import vue.fxPaquet.metier.MusicManager;
 
 public class MenuFx extends Application {
 
@@ -43,6 +44,8 @@ public class MenuFx extends Application {
 		// Ajout correct de l'icône à la fenêtre
 		primaryStage.getIcons().add(logo); // ici on met bien l'objet Image
 
+		MusicManager.play("/sons/Kahoot.mp3");
+		
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Menu");
 		primaryStage.show();

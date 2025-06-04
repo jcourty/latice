@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import vue.fxPaquet.LaticeFX;
 import vue.fxPaquet.RegleJeu;
+import vue.fxPaquet.metier.MusicManager;
 
 public class MenuControleur {
 
@@ -16,6 +17,7 @@ public class MenuControleur {
     @FXML
     private void lancerJeu(ActionEvent event) {
         try {
+        	MusicManager.stop();
             LaticeFX jeu = new LaticeFX();
             Stage stage = new Stage();
             jeu.start(stage);

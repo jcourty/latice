@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import vue.fxPaquet.controleur.LaticeFXControleur;
+import vue.fxPaquet.metier.MusicManager;
 
 public class LaticeFX extends Application {
 
@@ -33,6 +34,8 @@ public class LaticeFX extends Application {
 
 		// Ajout correct de l'icône à la fenêtre
 		stagePrincipale.getIcons().add(logo); 
+		
+		MusicManager.play("/sons/Jeu.mp3");
 		
 		stagePrincipale.setScene(scene);
 		stagePrincipale.setTitle("Latice");

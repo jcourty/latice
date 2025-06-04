@@ -25,6 +25,7 @@ import metier.plateau.PlateauDeJeu;
 import metier.tuile.Tuile;
 import vue.Console;
 import vue.fxPaquet.MenuFx;
+import vue.fxPaquet.metier.MusicManager;
 
 public class LaticeFXControleur {
 
@@ -287,6 +288,7 @@ public class LaticeFXControleur {
 	}
 	public void retourMenu(Node event) {
 		 try {
+			 	MusicManager.stop();
 	            MenuFx menu = new MenuFx();
 	            Stage stage = new Stage();
 	            menu.start(stage);
