@@ -5,6 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import vue.fxPaquet.LaticeFX;
 import vue.fxPaquet.RegleJeu;
@@ -52,16 +54,51 @@ public class MenuControleur {
     
     @FXML
     private Button btnSon;
+    
+    private boolean sonActive = true;
+    private Image sonOnImage;
+    private Image sonOffImage;
+    
+    @FXML
+    private void initialize() {
+    	// Charger les images au lancement
+        sonOnImage = new Image(getClass().getResource("/images/Son.png").toExternalForm());
+        sonOffImage = new Image(getClass().getResource("/images/Muet.png").toExternalForm());
+
+        // Créer un ImageView avec l'image
+        ImageView imageView = new ImageView(sonOnImage);
+        imageView.setFitWidth(32);  // ajuste selon ton besoin
+        imageView.setFitHeight(32);
+
+        // Affecter l'image au bouton
+        btnSon.setGraphic(imageView);
+
+        // Supprimer le texte si besoin
+        btnSon.setText("");
+        
+        // Rendre le fond et la bordure du bouton transparents
+        btnSon.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+
+        // Enlever le focus visuel quand on clique
+        btnSon.setFocusTraversable(false);
+    }
     @FXML
     private void modifierSon(ActionEvent event) {
-    	try {
-            if (btnSon.getText().equals("Couper le son")) {
-            	MusicManager.stop();
-            	btnSon.setText("Relancer le son");
+        try {
+            if (sonActive) {
+                MusicManager.stop();
+                ImageView muteView = new ImageView(sonOffImage);
+                muteView.setFitWidth(32);
+                muteView.setFitHeight(32);
+                btnSon.setGraphic(muteView);
             } else {
-            	MusicManager.play("/sons/Kahoot.mp3");
-            	btnSon.setText("Couper le son");
+                MusicManager.play("/sons/Kahoot.mp3");
+                ImageView soundView = new ImageView(sonOnImage);
+                soundView.setFitWidth(32);
+                soundView.setFitHeight(32);
+                btnSon.setGraphic(soundView);
             }
+            sonActive = !sonActive; // Inverser l'état
         } catch (Exception e) {
             e.printStackTrace();
         }

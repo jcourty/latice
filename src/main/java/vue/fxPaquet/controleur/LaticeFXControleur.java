@@ -272,18 +272,54 @@ public class LaticeFXControleur {
 	
 	@FXML
     private Button btnSon;
-    @FXML
-    private void modifierSon(ActionEvent event) {
-    	try {
-            if (btnSon.getText().equals("Couper le son")) {
-            	MusicManager.stop();
-            	btnSon.setText("relancer le son");
-            } else {
-            	MusicManager.play("/sons/Jeu.mp3");
-            	btnSon.setText("Couper le son");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	
+	
+	 private boolean sonActive = true;
+	    private Image sonOnImage;
+	    private Image sonOffImage;
+	    
+	    @FXML
+	    private void initializeSon() {
+	    	// Charger les images au lancement
+	        sonOnImage = new Image(getClass().getResource("/images/JeuSon.png").toExternalForm());
+	        sonOffImage = new Image(getClass().getResource("/images/JeuMuet.png").toExternalForm());
+
+	        // Créer un ImageView avec l'image
+	        ImageView imageView = new ImageView(sonOnImage);
+	        imageView.setFitWidth(32);  // ajuste selon ton besoin
+	        imageView.setFitHeight(32);
+
+	        // Affecter l'image au bouton
+	        btnSon.setGraphic(imageView);
+
+	        // Supprimer le texte si besoin
+	        btnSon.setText("");
+	        
+	        // Rendre le fond et la bordure du bouton transparents
+	        btnSon.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+
+	        // Enlever le focus visuel quand on clique
+	        btnSon.setFocusTraversable(false);
+	    }
+	    @FXML
+	    private void modifierSon(ActionEvent event) {
+	        try {
+	            if (sonActive) {
+	                MusicManager.stop();
+	                ImageView muteView = new ImageView(sonOffImage);
+	                muteView.setFitWidth(32);
+	                muteView.setFitHeight(32);
+	                btnSon.setGraphic(muteView);
+	            } else {
+	                MusicManager.play("/sons/Jeu.mp3");
+	                ImageView soundView = new ImageView(sonOnImage);
+	                soundView.setFitWidth(32);
+	                soundView.setFitHeight(32);
+	                btnSon.setGraphic(soundView);
+	            }
+	            sonActive = !sonActive; // Inverser l'état
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
 }
