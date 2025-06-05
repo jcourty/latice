@@ -90,8 +90,7 @@ public class DndImgControleur {
         return col >= 0 && col < NB_COL && ligne >= 0 && ligne < NB_LIGNE;
     }
 
-    private static boolean traiterDepotTuile(GridPane gridPane, Dragboard db, Tuile tuileADeplacer,
-                                            int colCible, int ligneCible, StatistiqueJeu statistique) {
+    private static boolean traiterDepotTuile(GridPane gridPane, Dragboard db, Tuile tuileADeplacer, int colCible, int ligneCible, StatistiqueJeu statistique) {
         ImageView imgViewCible = trouverImageViewCible(gridPane, colCible, ligneCible);
         
         if (imgViewCible == null) {

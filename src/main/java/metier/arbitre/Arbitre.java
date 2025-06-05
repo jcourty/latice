@@ -160,7 +160,7 @@ public class Arbitre {
 			} catch (InputMismatchException e) {
 				Console.ligne("Entrée non valide : veuillez entrer un nombre entier :");
 				scanner.nextLine();
-				throw new SaisieInvalideException("Le choix de tuile n'est pas un nombre entier.", e); // Lancer l'exception ici
+				throw new SaisieInvalideException("Le choix de tuile n'est pas un nombre entier.", e); 
 			}
 		}
 		return tuile;

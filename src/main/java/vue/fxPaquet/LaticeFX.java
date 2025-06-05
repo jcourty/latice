@@ -33,7 +33,7 @@ public class LaticeFX extends Application {
 		logoView.setScaleY(2.0);
 
 		// Ajout correct de l'icône à la fenêtre
-		stagePrincipale.getIcons().add(logo); 
+		stagePrincipale.getIcons().add(logo);
 		
 		MusicManager.play("/sons/Jeu.mp3");
 		

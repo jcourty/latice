@@ -8,7 +8,8 @@ public class LaticeConsoleApplication {
     public static void main(String[] args) {
 
         Console.titre("-- Bienvenue dans notre magnifique jeu de latice --");
-        Console.message("En jouant à Latice, vous n'avez qu'un seul objectif : être le premier à vider votre pioche en seulement dix tours."
+        Console.message(""
+        		+ "En jouant à Latice, vous n'avez qu'un seul objectif : être le premier à vider votre pioche en seulement dix tours."
         		+ "\r\n"
         		+ "Pour cela, rien de plus simple : il vous suffit de poser vos tuiles à côté de celles déjà sur le plateau."
         		+ "\r\n"
@@ -22,7 +23,8 @@ public class LaticeConsoleApplication {
         		+ "Un triple : la tuile jouée correspond par couleur ou symbole sur trois de ses côtés, vous gagnez 2 points\r\n"
         		+ "Un Latice : la tuile jouée correspond par couleur ou symbole sur quatre de ses côtés, vous gagnez 4 points\r\n"
         		+ "Placez votre tuile sur un soleil pour gagner 2 points\r\n"
-        		+ "Latice Pro ©");
+        		+ "Latice Pro ©"
+        		);
         Console.sautLigne();
         Arbitre arbitre = new Arbitre();
 		arbitre.lancementDePartie();

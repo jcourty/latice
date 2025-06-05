@@ -18,16 +18,16 @@ public class Console {
 		System.out.print(texte);
 	}
 
-	public static final String SEPARATOR_LINE = "---------------------------------------------------";
+	public static final String SEPARATEUR = "---------------------------------------------------";
 
 	public static void titre(String texte) {
-		message(SEPARATOR_LINE);
+		message(SEPARATEUR);
 		message(texte);
-		message(SEPARATOR_LINE);
+		message(SEPARATEUR);
 	}
 
 	public static void separateur() {
-		message(SEPARATOR_LINE);
+		message(SEPARATEUR);
 	}
 
 	public static void effacerConsole() {

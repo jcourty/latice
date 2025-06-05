@@ -83,7 +83,6 @@ public class StatistiqueJeu {
         actionTexteProperty.set(texte);
     }
 
-    // Méthode pour avancer au joueur suivant
     public void joueurSuivant() {
         indexJoueurActuel = (indexJoueurActuel + 1) % joueurs.size();
         resetActionsEffectuees();
@@ -114,5 +113,5 @@ public class StatistiqueJeu {
     public void majLabelActionAutomatique() {
 		actionTexteProperty.set("Nombre d'actions : " + actionsEffectuees + "/" + actionsMaxParTour);
 	}
-    // Etc., selon besoins...
+    
 }
