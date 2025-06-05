@@ -176,7 +176,7 @@ class ArbitreTest {
 	void test_choisirCoordonnee_plateauNonVide() {
 		Case uneCase = new Case(new Coordonnee(5, 5), Type.SIMPLE);
 		Tuile tuile = new Tuile(Symbole.GECKO, Couleur.ROUGE);
-		plateau.poserTuile(uneCase, tuile, joueur1);
+		plateau.poserTuile(uneCase, tuile);
 		transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("4\n5\n");
 		Coordonnee coordonnee = arbitre.choisirCoordonnee(plateau);
 
@@ -199,7 +199,7 @@ class ArbitreTest {
 
 	void test_choisirCoordonnee_entree_non_numerique_x_lance_exception() {
 		transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("abc\n5\n");
-		plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 5)), new Tuile(Symbole.TORTUE, Couleur.BLEU),joueur1);
+		plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 5)), new Tuile(Symbole.TORTUE, Couleur.BLEU));
 		SaisieInvalideException thrown = assertThrows(SaisieInvalideException.class, () -> {
 			arbitre.choisirCoordonnee(plateau);
 		});
@@ -211,7 +211,7 @@ class ArbitreTest {
 	@Test
 	void test_choisirCoordonnee_entree_non_numerique_y_lance_exception() {
 		transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("5\ndef\n");
-		plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 5)), new Tuile(Symbole.TORTUE, Couleur.BLEU),joueur1);
+		plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 5)), new Tuile(Symbole.TORTUE, Couleur.BLEU));
 		SaisieInvalideException thrown = assertThrows(SaisieInvalideException.class, () -> {
 			arbitre.choisirCoordonnee(plateau);
 		});
@@ -223,9 +223,8 @@ class ArbitreTest {
 	void test_peutPoserTuile_quand_valide() {
 		Case centre = plateau.caseSur(new Coordonnee(5, 5));
 		Case adjacente = plateau.caseSur(new Coordonnee(5, 4));
-		plateau.poserTuile(centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE), joueur1);
-		boolean resultat = Arbitre.peutPoserTuile(plateau, adjacente, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE),
-				joueur1);
+		plateau.poserTuile(centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE));
+		boolean resultat = Arbitre.peutPoserTuile(plateau, adjacente, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE));
 		
 		assertTrue(resultat);
 	}
@@ -233,7 +232,7 @@ class ArbitreTest {
 	@Test
 	void test_peutPoserTuile_quand_plateau_vide() {
 		Case centre = plateau.caseSur(new Coordonnee(5, 5));
-		boolean resultat = Arbitre.peutPoserTuile(plateau, centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE), joueur1);
+		boolean resultat = Arbitre.peutPoserTuile(plateau, centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE));
 		
 		assertTrue(resultat);
 	}
@@ -241,8 +240,8 @@ class ArbitreTest {
 	@Test
 	void test_ne_peut_pas_poser_quand_tuile_sur_case() {
 		Case centre = plateau.caseSur(new Coordonnee(5, 5));
-		plateau.poserTuile(centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE), joueur1);
-		boolean resultat = Arbitre.peutPoserTuile(plateau, centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE), joueur1);
+		plateau.poserTuile(centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE));
+		boolean resultat = Arbitre.peutPoserTuile(plateau, centre, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE));
 		
 		assertFalse(resultat);
 
@@ -314,7 +313,6 @@ class ArbitreTest {
 		private PlateauDeJeu plateau;
 		private Tuile tuileReference;
 		private Case centre;
-		private Joueur joueur1;
 		
 		@BeforeEach
 		void initialiser() {
@@ -327,7 +325,7 @@ class ArbitreTest {
 		@Test
 
 		void test_aucune_tuile_adjacente() {
-			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference, joueur1);
+			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference);
 
 			assertEquals(false, resultat);
 
@@ -337,8 +335,8 @@ class ArbitreTest {
 		void test_une_tuile_adjacente_similaire() {
 			Case adjacente = plateau.caseSur(new Coordonnee(4, 5));
 			Tuile nouvelleTuile = new Tuile(Symbole.DAUPHIN, Couleur.BLEU);
-			plateau.poserTuile(centre, tuileReference, joueur1);
-			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, adjacente, nouvelleTuile, joueur1);
+			plateau.poserTuile(centre, tuileReference);
+			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, adjacente, nouvelleTuile);
 
 			assertEquals(true, resultat);
 
@@ -348,30 +346,30 @@ class ArbitreTest {
 
 		void test_une_tuile_adjacente_differente() {
 			Case adjacente = plateau.caseSur(new Coordonnee(4, 5));
-			plateau.poserTuile(adjacente, new Tuile(Symbole.FLEUR, Couleur.ROUGE), joueur1);
-			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference, joueur1);
+			plateau.poserTuile(adjacente, new Tuile(Symbole.FLEUR, Couleur.ROUGE));
+			boolean resultat = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference);
 
 			assertEquals(false, resultat);
 		}
 
 		@Test
 		void test_trois_adjacentes_similaires_et_une_vide() {
-			plateau.poserTuile(centre, tuileReference, joueur1);
-			plateau.poserTuile(plateau.caseSur(new Coordonnee(4, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),joueur1);
-			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),joueur1);
-			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 4)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),joueur1);
-			boolean result = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference, joueur1);
+			plateau.poserTuile(centre, tuileReference);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(4, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU));
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU));
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 4)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU));
+			boolean result = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference);
 			
 			assertEquals(true, result);
 		}
 
 		@Test
 		void test_toutes_adjacentes_differentes() {
-			plateau.poserTuile(plateau.caseSur(new Coordonnee(4, 5)), new Tuile(Symbole.FLEUR, Couleur.ROUGE), joueur1);
-			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.TORTUE, Couleur.VERT), joueur1);
-			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 4)), new Tuile(Symbole.DAUPHIN, Couleur.JAUNE),joueur1);
-			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 6)), new Tuile(Symbole.FLEUR, Couleur.BLEU), joueur1);
-			boolean result = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference, joueur1);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(4, 5)), new Tuile(Symbole.FLEUR, Couleur.ROUGE));
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.TORTUE, Couleur.VERT));
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 4)), new Tuile(Symbole.DAUPHIN, Couleur.JAUNE));
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(5, 6)), new Tuile(Symbole.FLEUR, Couleur.BLEU));
+			boolean result = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference);
 
 			assertEquals(false, result);
 
@@ -379,10 +377,10 @@ class ArbitreTest {
 
 		@Test
 		void test_tuiles_adjacentes_partiellement_similaires() {
-			plateau.poserTuile(centre, tuileReference, joueur1);
-			plateau.poserTuile(plateau.caseSur(new Coordonnee(4, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU),joueur1);
-			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.FLEUR, Couleur.ROUGE), joueur1);
-			boolean result = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference, joueur1);
+			plateau.poserTuile(centre, tuileReference);
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(4, 5)), new Tuile(Symbole.DAUPHIN, Couleur.BLEU));
+			plateau.poserTuile(plateau.caseSur(new Coordonnee(6, 5)), new Tuile(Symbole.FLEUR, Couleur.ROUGE));
+			boolean result = Arbitre.tuileAdjacenteSimilaire(plateau, centre, tuileReference);
 
 			assertEquals(false, result);
 
@@ -408,7 +406,7 @@ class ArbitreTest {
 
 		@Test
 		void gagne_0_point_sans_adjacence() {
-			plateau.poserTuile(centre, tuileReference, joueur1);
+			plateau.poserTuile(centre, tuileReference);
 			Arbitre.calculeScore(joueur1, centre);
 			
 			assertEquals(0, joueur1.score());
@@ -416,9 +414,9 @@ class ArbitreTest {
 
 		@Test
 		void gagne_0_point_quand_pas_de_latice() {
-			plateau.poserTuile(centre, tuileReference, joueur1);
+			plateau.poserTuile(centre, tuileReference);
 			Case uneCase = plateau.caseSur(new Coordonnee(5, 6));
-			plateau.poserTuile(uneCase, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE), joueur1);
+			plateau.poserTuile(uneCase, new Tuile(Symbole.DAUPHIN, Couleur.ROUGE));
 			Arbitre.calculeScore(joueur1, uneCase);
 
 			assertEquals(0, joueur1.score());
@@ -486,30 +484,6 @@ class ArbitreTest {
 	}
 
 	@Test
-	void test_lancementDePartie_gestion_exception_choix_chevalet() throws InterruptedException {
-		StringBuilder inputBuilder = new StringBuilder();
-		inputBuilder.append("2\n");
-		inputBuilder.append("JoueurA\n");
-		inputBuilder.append("JoueurB\n");
-		inputBuilder.append("1\n");
-		inputBuilder.append("abc\n");
-		inputBuilder.append("1\n");
-		inputBuilder.append("5\n5\n");
-		inputBuilder.append("4\n");
-		inputBuilder.append("4\n");
-		for (int i = 1; i < 10; i++) {
-			inputBuilder.append("4\n");
-			inputBuilder.append("4\n");
-		}
-
-		transformeCeQuiEstEnParametreEnEntreeCommeAuClavier(inputBuilder.toString());
-		arbitre.lancementDePartie();
-		String output = donneesSorties.toString();
-
-		assertTrue(output.contains("Entrée non valide : veuillez entrer un nombre entier : "));
-	}
-
-	@Test
 	void test_echangerChevalet_vide_puis_rempli() {
 		joueur1.viderChevalet();
 		assertEquals(0, joueur1.tailleChevalet());
@@ -522,17 +496,18 @@ class ArbitreTest {
 		assertEquals(0, joueur1.tailleMain());
 	}
 
-	@Test
-	void test_menu_choix_invalide_puis_valide() throws InterruptedException {
-		transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("0\n4\n");
-		arbitre.menu(plateau, joueur1, 0);
-		String output = donneesSorties.toString();
-		
-		assertTrue(output.contains("Choix invalide ou Pas assez d'actions."));
-	}
+	 @Test
+	    void test_menu_choix_invalide_puis_valide() {
+	        transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("0\n4\n");
+	        arbitre.menu(plateau, joueur1, 0); 
+	        String output = donneesSorties.toString();
+	        
+	        assertTrue(output.contains("Choix invalide."));
+	    }
+
 
 	@Test
-	void test_menu_acheter_action_assez_de_points() throws InterruptedException {
+	void test_menu_acheter_action_assez_de_points() {
 		joueur1.setScore(5);
 		transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("3\n4\n");
 		arbitre.menu(plateau, joueur1, 0);
@@ -557,7 +532,7 @@ class ArbitreTest {
 		joueurs.add(joueur2);
 		int nombreTour = Arbitre.determinerNombreTour(joueurs);
 		
-		assertEquals(nombreTour,10);
+		assertEquals(10, nombreTour);
 	}
 	
 	@Test
@@ -568,7 +543,7 @@ class ArbitreTest {
 		joueurs.add(new Joueur("Didier"));
 		int nombreTour = Arbitre.determinerNombreTour(joueurs);
 		
-		assertEquals(nombreTour,8);
+		assertEquals(8, nombreTour);
 	}
 	
 	@Test
@@ -580,6 +555,6 @@ class ArbitreTest {
 		joueurs.add(new Joueur("Pedro"));
 		int nombreTour = Arbitre.determinerNombreTour(joueurs);
 		
-		assertEquals(nombreTour,6);
+		assertEquals(6,nombreTour);
 	}
 }

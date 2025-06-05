@@ -23,11 +23,7 @@ public class Tuile {
 	}
 
 	public String afficher() {
-		String affichage = null;
-		if (this != null) {
-			affichage = couleur.colorier(symbole.symbole());
-		}
-		return affichage;
+		return couleur.colorier(symbole.symbole());
 	}
 
 	public boolean estSimilaire(Tuile tuile) {

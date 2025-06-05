@@ -21,6 +21,8 @@ import metier.tuile.Tuile;
 public class DndImgControleur {
 
 	private static PlateauDeJeu plateau;
+    private static final int NB_COL = 9;
+    private static final int NB_LIGNE = 9;
 
 	public static void manageSourceDragAndDrop(ImageView imageView, Joueur joueur, Tuile tuile,
 			LaticeFXControleur controleur) {
@@ -54,79 +56,96 @@ public class DndImgControleur {
 	}
 
 	public static void dndPourGridPane(GridPane gridPane, StatistiqueJeu statistique, Button btnPasser) {
-		int nbCol = 9;
-		int nbLigne = 9;
-		plateau = statistique.plateau();
+        plateau = statistique.plateau();
 
-		gridPane.setOnDragOver(event -> {
-			if (event.getGestureSource() != gridPane && event.getDragboard().hasImage()) {
-				event.acceptTransferModes(TransferMode.MOVE);
-			}
-			event.consume();
-		});
+        gridPane.setOnDragOver(event -> {
+            if (event.getGestureSource() != gridPane && event.getDragboard().hasImage()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
 
-		gridPane.setOnDragDropped(event -> {
-			Dragboard db = event.getDragboard();
-			Integer colNoeud = null;
-			Integer ligneNoeud = null;
-			ImageView source = (ImageView) event.getGestureSource();
-			Tuile tuile = (Tuile) source.getUserData();
-			boolean succes = false;
+        gridPane.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean succes = false;
 
-			if (db.hasImage()) {
-				double largeurCase = gridPane.getWidth() / nbCol;
-				double hauteurCase = gridPane.getHeight() / nbLigne;
+            if (db.hasImage()) {
+                ImageView source = (ImageView) event.getGestureSource();
+                Tuile tuileADeplacer = (Tuile) source.getUserData();
 
-				int col = (int) (event.getX() / largeurCase);
-				int ligne = (int) (event.getY() / hauteurCase);
+                int colCible = (int) (event.getX() / (gridPane.getWidth() / NB_COL));
+                int ligneCible = (int) (event.getY() / (gridPane.getHeight() / NB_LIGNE));
 
-				if (col >= 0 && col < nbCol && ligne >= 0 && ligne < nbLigne) {
+                if (estCoordonneeValide(colCible, ligneCible)) {
+                    succes = traiterDepotTuile(gridPane, db, tuileADeplacer, colCible, ligneCible, statistique);
+                }
+            }
+            event.setDropCompleted(succes);
+            mettreAJourBoutonPasser(btnPasser, statistique);
+            event.consume();
+        });
+    }
 
-					ImageView imgViewCible = null;
-					for (Node noeud : gridPane.getChildren()) {
-						colNoeud = GridPane.getColumnIndex(noeud);
-						ligneNoeud = GridPane.getRowIndex(noeud);
+    private static boolean estCoordonneeValide(int col, int ligne) {
+        return col >= 0 && col < NB_COL && ligne >= 0 && ligne < NB_LIGNE;
+    }
 
-						int c = (colNoeud == null) ? 0 : colNoeud;
-						int l = (ligneNoeud == null) ? 0 : ligneNoeud;
+    private static boolean traiterDepotTuile(GridPane gridPane, Dragboard db, Tuile tuileADeplacer,
+                                            int colCible, int ligneCible, StatistiqueJeu statistique) {
+        ImageView imgViewCible = trouverImageViewCible(gridPane, colCible, ligneCible);
+        
+        if (imgViewCible == null) {
+            return ajouterNouvelleTuileAuGrid(gridPane, db, tuileADeplacer, colCible, ligneCible, statistique);
+        } else {
+            return remplacerTuileExistanteDansGrid(imgViewCible, db, tuileADeplacer, colCible, ligneCible, statistique);
+        }
+    }
 
-						if (c == col && l == ligne && noeud instanceof ImageView) {
-							imgViewCible = (ImageView) noeud;
-							break;
-						}
-					}
+    private static ImageView trouverImageViewCible(GridPane gridPane, int col, int ligne) {
+        for (Node noeud : gridPane.getChildren()) {
+            Integer colNoeud = GridPane.getColumnIndex(noeud);
+            Integer ligneNoeud = GridPane.getRowIndex(noeud);
+            int c = (colNoeud == null) ? 0 : colNoeud;
+            int l = (ligneNoeud == null) ? 0 : ligneNoeud;
+            if (c == col && l == ligne && noeud instanceof ImageView) {
+                return (ImageView) noeud;
+            }
+        }
+        return null;
+    }
 
-					if (imgViewCible == null) {
-						ImageView nouvImageView = new ImageView(db.getImage());
-						nouvImageView.setFitWidth(largeurCase);
-						nouvImageView.setFitHeight(hauteurCase);
-						nouvImageView.setUserData("tuile"); // on pose une vraie tuile
-						gridPane.add(nouvImageView, col, ligne);
-						succes = true;
-					} else {
-						Object tag = imgViewCible.getUserData();
-						if ((tag == null || "fond".equals(tag))
-								&& coupValide(plateau, tuile, colNoeud + 1, ligneNoeud + 1, statistique)) {
-							imgViewCible.setImage(db.getImage());
-							imgViewCible.setFitWidth(largeurCase);
-							imgViewCible.setFitHeight(hauteurCase);
-							imgViewCible.setUserData("tuile"); // devient une vraie tuile
-							succes = true;
-						}
-					}
-				}
-			}
+    private static boolean ajouterNouvelleTuileAuGrid(GridPane gridPane, Dragboard db, Tuile tuileADeplacer, int col, int ligne, StatistiqueJeu statistique) {
+        if (coupValide(plateau, tuileADeplacer, col + 1, ligne + 1, statistique)) {
+            ImageView nouvImageView = new ImageView(db.getImage());
+            nouvImageView.setFitWidth(gridPane.getWidth() / NB_COL);
+            nouvImageView.setFitHeight(gridPane.getHeight() / NB_LIGNE);
+            nouvImageView.setUserData("tuile");
+            gridPane.add(nouvImageView, col, ligne);
+            return true;
+        }
+        return false;
+    }
 
-			event.setDropCompleted(succes);
-			if (statistique.actionsEffectuees() >= statistique.actionsMaxParTour()) {
-				btnPasser.setText("Terminer");
-			} else {
-				btnPasser.setText("Passer le tour");
-			}
-			
-			event.consume();
-		});
-	}
+    private static boolean remplacerTuileExistanteDansGrid(ImageView imgViewCible, Dragboard db, Tuile tuileADeplacer,
+                                                          int col, int ligne, StatistiqueJeu statistique) {
+        Object tag = imgViewCible.getUserData();
+        if ((tag == null || "fond".equals(tag)) && coupValide(plateau, tuileADeplacer, col + 1, ligne + 1, statistique)) {
+            imgViewCible.setImage(db.getImage());
+            imgViewCible.setFitWidth(imgViewCible.getFitWidth());
+            imgViewCible.setFitHeight(imgViewCible.getFitHeight());
+            imgViewCible.setUserData("tuile");
+            return true;
+        }
+        return false;
+    }
+
+    private static void mettreAJourBoutonPasser(Button btnPasser, StatistiqueJeu statistique) {
+        if (statistique.actionsEffectuees() >= statistique.actionsMaxParTour()) {
+            btnPasser.setText("Terminer");
+        } else {
+            btnPasser.setText("Passer le tour");
+        }
+    }
 
 	public static boolean coupValide(PlateauDeJeu plateau, Tuile tuile, int col, int ligne,
 			StatistiqueJeu statistique) {
@@ -137,8 +156,8 @@ public class DndImgControleur {
 
 		Joueur joueur = statistique.joueurActuel();
 		Case uneCase = plateau.caseSur(new Coordonnee(col, ligne));
-		if (Arbitre.peutPoserTuile(plateau, uneCase, tuile, joueur)) {
-			plateau.poserTuile(uneCase, tuile, joueur);
+		if (Arbitre.peutPoserTuile(plateau, uneCase, tuile)) {
+			plateau.poserTuile(uneCase, tuile);
 			Arbitre.calculeScore(joueur, uneCase);
 			joueur.lblScore().setText("Score : " + joueur.score());
 			joueur.incrementerNbTuilePose();

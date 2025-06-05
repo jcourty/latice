@@ -23,7 +23,7 @@ public class RegleJeu extends Application {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("SB/RegleJeu.fxml"));
 		BorderPane root = loader.load();
 		Scene scene = new Scene(root);
-		Image image = new Image(Objects.requireNonNull(getClass().getResource("/images/regleJeu.png")).toExternalForm());;
+		Image image = new Image(Objects.requireNonNull(getClass().getResource("/images/regleJeu.png")).toExternalForm());
 		// Création du BackgroundImage
 		BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
 				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1,1,true,true,true,false));
