@@ -23,7 +23,8 @@ public class Arbitre {
 
 	private final Scanner scanner;
 	private static int nombreCaseAdjacente;
-
+	static int nbAction ;
+	
 	public Arbitre() {
 		scanner = new Scanner(System.in);
 	}
@@ -144,7 +145,8 @@ public class Arbitre {
 		boolean saisieValide = false;
 		Tuile tuile = null;
 		while (!saisieValide) {
-			Console.ligne("Quelle tuile voulez-vous poser ? (entre 1 et 5) : ");
+			Console.message("Quelle tuile voulez-vous poser ? (entre 1 et 5) : ");
+			Console.message("Pour un retour en arrière entrer 6 :");
 			joueur.afficherChevalet();
 			try {
 				int choix = scanner.nextInt();
@@ -153,7 +155,6 @@ public class Arbitre {
 					tuile = joueur.piocherDansChevalet(choix - 1);
 					saisieValide = true;
 				} else if (choix == 6){
-					Console.ligne("Retour au menu");
 					saisieValide = true;
 				} else {
 					Console.ligne("Index invalide : entrez un nombre entre 1 et 5 : ");
@@ -272,7 +273,6 @@ public class Arbitre {
 				try {
 					tuile = choixChevalet(joueurActuel);
 					if (tuile == null) {
-						menu(plateau, joueurActuel, 0);
 						return;
 					}
 					choixValide = true;
@@ -314,6 +314,8 @@ public class Arbitre {
 				Console.message("Tuile invalide : ");
 			}
 		}
+		nbAction++;
+		joueurActuel.incrementerNbTuilePose();
 	}
 
 	public void echangerChevalet(Joueur joueur) {
@@ -324,7 +326,7 @@ public class Arbitre {
 	public void menu(PlateauDeJeu plateau, Joueur joueur, int tour) {
 		int choix = 0;
 		boolean choix_valide = false;
-		int nbAction = 0;
+		nbAction = 0;
 		int nbActionMax = 1;
 
 		while (!choix_valide) {
@@ -358,8 +360,7 @@ public class Arbitre {
 
 					if (choix == 1 && nbAction < nbActionMax) {
 						poserTuileAvecValidation(plateau, joueur);
-						joueur.incrementerNbTuilePose();
-						nbAction++;
+		
 					} else if (choix == 2 && nbAction < nbActionMax) {
 						echangerChevalet(joueur);
 						nbAction++;
