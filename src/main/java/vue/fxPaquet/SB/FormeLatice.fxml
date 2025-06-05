@@ -11,56 +11,111 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="idLblAction" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@LaticeCss.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.fxPaquet.controleur.LaticeFXControleur">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@LaticeCss.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.fxPaquet.controleur.LaticeFXControleur">
 	<right>
-		<VBox fx:id="idChevalet2" alignment="CENTER" prefHeight="747.0" prefWidth="200.0" BorderPane.alignment="TOP_CENTER">
-			<children>
-				<Label fx:id="idLblChevalet2" contentDisplay="CENTER" text="Chevalet">
-					<font>
-						<Font size="36.0" />
-					</font>
-				</Label>
-				<GridPane fx:id="idGridPaneChevalet2" alignment="CENTER" maxHeight="496.0" maxWidth="-Infinity" prefHeight="400.0" prefWidth="89.0" styleClass="chevalet">
-					<columnConstraints>
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-					</columnConstraints>
-					<rowConstraints>
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-					</rowConstraints>
-				</GridPane>
-            <Label fx:id="idScore2" style="-fx-font-size: 25;" text="Score" />
-            <Label fx:id="idTuilesPosees2" style="-fx-font-size: 25;" text="Tuiles posées" />
-			</children>
-		</VBox>
+      <HBox maxWidth="400.0" minWidth="400.0" prefWidth="400.0" BorderPane.alignment="TOP_CENTER">
+         <children>
+      		<VBox fx:id="idChevalet4" alignment="CENTER" maxWidth="200.0" minWidth="200.0" prefWidth="200.0">
+      			<children>
+      				<Label fx:id="idLblChevalet4" contentDisplay="CENTER" text="Chevalet 4">
+      					<font>
+      						<Font size="36.0" />
+      					</font>
+      				</Label>
+      				<GridPane fx:id="idGridPaneChevalet4" alignment="CENTER" maxHeight="496.0" maxWidth="-Infinity" prefHeight="400.0" prefWidth="89.0" styleClass="chevalet">
+      					<columnConstraints>
+      						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      					</columnConstraints>
+      					<rowConstraints>
+      						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      					</rowConstraints>
+      				</GridPane>
+                  <Label fx:id="idScore4" style="-fx-font-size: 25;" text="Score" />
+                  <Label fx:id="idTuilesPosees4" style="-fx-font-size: 25;" text="Tuiles posées" />
+      			</children>
+      		</VBox>
+            <VBox fx:id="idChevalet2" alignment="CENTER" prefHeight="747.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="idLblChevalet2" contentDisplay="CENTER" text="Chevalet 2">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <GridPane fx:id="idGridPaneChevalet2" alignment="CENTER" maxHeight="496.0" maxWidth="-Infinity" prefHeight="400.0" prefWidth="89.0" style="-fx-border-image-width: 5;" styleClass="chevalet">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+                  <Label fx:id="idScore2" style="-fx-font-size: 25;" text="Score" />
+                  <Label fx:id="idTuilesPosees2" style="-fx-font-size: 25;" text="Tuiles posées" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
 	</right>
 	<left>
-		<VBox fx:id="idChevalet1" alignment="CENTER" prefHeight="747.0" prefWidth="200.0" BorderPane.alignment="TOP_CENTER">
-			<children>
-				<Label fx:id="idLblChevalet1" contentDisplay="CENTER" text="Chevalet">
-					<font>
-						<Font size="36.0" />
-					</font>
-				</Label>
-				<GridPane fx:id="idGridPaneChevalet1" alignment="CENTER" maxHeight="496.0" maxWidth="-Infinity" prefHeight="400.0" prefWidth="89.0" style="-fx-border-image-width: 5;" styleClass="chevalet">
-					<columnConstraints>
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-					</columnConstraints>
-					<rowConstraints>
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-					</rowConstraints>
-				</GridPane>
-            <Label fx:id="idScore1" style="-fx-font-size: 25;" text="Score" />
-            <Label fx:id="idTuilesPosees1" style="-fx-font-size: 25;" text="Tuiles posées" />
-			</children>
-		</VBox>
+	
+	<HBox maxWidth="400.0" minWidth="400.0" prefWidth="400.0" BorderPane.alignment="TOP_CENTER" alignment="CENTER">
+         <children>
+      		<VBox fx:id="idChevalet1" alignment="CENTER" prefHeight="747.0" prefWidth="200.0">
+      			<children>
+      				<Label fx:id="idLblChevalet1" contentDisplay="CENTER" text="Chevalet 1">
+      					<font>
+      						<Font size="36.0" />
+      					</font>
+      				</Label>
+      				<GridPane fx:id="idGridPaneChevalet1" alignment="CENTER" maxHeight="496.0" maxWidth="-Infinity" prefHeight="400.0" prefWidth="89.0" style="-fx-border-image-width: 5;" styleClass="chevalet">
+      					<columnConstraints>
+      						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      					</columnConstraints>
+      					<rowConstraints>
+      						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      					</rowConstraints>
+      				</GridPane>
+                  <Label fx:id="idScore1" style="-fx-font-size: 25;" text="Score" />
+                  <Label fx:id="idTuilesPosees1" style="-fx-font-size: 25;" text="Tuiles posées" />
+      			</children>
+      		</VBox>
+            <VBox fx:id="idChevalet3" alignment="CENTER" maxWidth="200.0" minWidth="200.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="idLblChevalet3" contentDisplay="CENTER" text="Chevalet 3">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <GridPane fx:id="idGridPaneChevalet3" alignment="CENTER" maxHeight="496.0" maxWidth="-Infinity" prefHeight="400.0" prefWidth="89.0" style="-fx-border-image-width: 5;" styleClass="chevalet">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+                  <Label fx:id="idScore3" style="-fx-font-size: 25;" text="Score" />
+                  <Label fx:id="idTuilesPosees3" style="-fx-font-size: 25;" text="Tuiles posées" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
 	</left>
 	<center>
 		<GridPane fx:id="idPlateauJeu" maxHeight="720.0" maxWidth="720.0" styleClass="gridpane" BorderPane.alignment="CENTER">

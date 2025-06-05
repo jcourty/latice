@@ -1,6 +1,7 @@
 package vue.fxPaquet.controleur;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -27,43 +28,17 @@ import vue.fxPaquet.metier.MusicManager;
 
 public class LaticeFXControleur {
 
-	@FXML
-	private Label idLblTour;
-	@FXML
-	private Label idLblNbTour;
-	@FXML
-	private VBox idChevalet1;
-	@FXML
-	private Label idScore1;
-	@FXML
-	private GridPane idGridPaneChevalet1;
-	@FXML
-	private Label idLblChevalet1;
-	@FXML
-	private VBox idChevalet2;
-	@FXML
-	private Label idScore2;
-	@FXML
-	private Label idLblChevalet2;
-	@FXML
-	private GridPane idGridPaneChevalet2;
-	@FXML
-	private GridPane idPlateauJeu;
-	@FXML
-	private Label idAction;
-	@FXML
-	private Button btnEchange;
-	@FXML
-	private Button btnPasser;
-	@FXML
-	private Button btnNouvAction;
-	@FXML
-	private Button btnQuitter;
-	@FXML
-	private Label idTuilesPosees1;
-	@FXML
-	private Label idTuilesPosees2;
+	@FXML private Label idLblTour, idLblNbTour,idAction;
+	@FXML private Label idScore1, idScore2, idScore3, idScore4;
+	@FXML private Label idLblChevalet1, idLblChevalet2,idLblChevalet3, idLblChevalet4;
+	@FXML private Label idTuilesPosees1, idTuilesPosees2,idTuilesPosees3,idTuilesPosees4;
 
+	@FXML private VBox idChevalet1, idChevalet2, idChevalet3, idChevalet4;
+
+	@FXML private GridPane idGridPaneChevalet1, idGridPaneChevalet2, idGridPaneChevalet4, idGridPaneChevalet3, idPlateauJeu;
+
+	@FXML private Button btnEchange, btnPasser, btnNouvAction, btnQuitter;
+	
 	private StatistiqueJeu statistique;
 
 	@FXML
@@ -82,36 +57,46 @@ public class LaticeFXControleur {
 	public void initialize() {
 		Arbitre arbitre = new Arbitre();
 		PlateauDeJeu plateau = new PlateauDeJeu();
+		TasDeTuile pioche = new TasDeTuile();
+		int nombreJoueur = arbitre.nombreJoueurFX();
+		
+		List<VBox> chevalets = Arrays.asList(idChevalet1, idChevalet2, idChevalet3, idChevalet4);
+		List<GridPane> listeGridPanes = Arrays.asList(idGridPaneChevalet1, idGridPaneChevalet2, idGridPaneChevalet3, idGridPaneChevalet4);
+		List<Label> listeLabels = Arrays.asList(idLblChevalet1, idLblChevalet2, idLblChevalet3, idLblChevalet4);
+		List<Label> listeScores = Arrays.asList(idScore1, idScore2, idScore3, idScore4);
+		List<Label> listeTuilesPosees = Arrays.asList(idTuilesPosees1, idTuilesPosees2, idTuilesPosees3, idTuilesPosees4);
 
-		List<GridPane> gridPanes = new ArrayList<>();
-		gridPanes.add(idGridPaneChevalet1);
-		gridPanes.add(idGridPaneChevalet2);
+	    List<GridPane> gridPanes = new ArrayList<>();
+	    List<Label> labels = new ArrayList<>();
+	    List<Label> scores = new ArrayList<>();
+	    List<Label> tuilesPosees = new ArrayList<>();
 
-		List<Label> labels = new ArrayList<>();
-		labels.add(idLblChevalet1);
-		labels.add(idLblChevalet2);
 
-		List<Label> scores = new ArrayList<>();
-		scores.add(idScore1);
-		scores.add(idScore2);
-
-		List<Label> tuileposees = new ArrayList<>();
-		tuileposees.add(idTuilesPosees1);
-		tuileposees.add(idTuilesPosees2);
-
-		statistique = new StatistiqueJeu(plateau,
-				arbitre.creationListeJoueurFX(2, gridPanes, labels, scores, tuileposees));
+		for (int i = 0; i < chevalets.size(); i++) {
+		    boolean joueurActif = i < nombreJoueur;
+		
+		    
+		    chevalets.get(i).setVisible(joueurActif);
+		    chevalets.get(i).setManaged(joueurActif); 
+		
+		    if (joueurActif) {
+		        gridPanes.add(listeGridPanes.get(i));
+		        labels.add(listeLabels.get(i));
+		        scores.add(listeScores.get(i));
+		        tuilesPosees.add(listeTuilesPosees.get(i));
+		        scores.get(i).setText("Score : 0");
+				tuilesPosees.get(i).setText("Tuiles posées : 0");
+		    }
+		}	  
+		
+		List<Joueur> joueurs = arbitre.creationListeJoueurFX(nombreJoueur, gridPanes, labels, scores, tuilesPosees) ;
+		statistique = new StatistiqueJeu(plateau,joueurs);
 		statistique.melangerListeJoueurs();
 		statistique.resetActionsEffectuees();
-
+		
 		majLabelsTour();
-		idScore1.setText("Score : 0");
-		idScore2.setText("Score : 0");
-		idTuilesPosees1.setText("Tuiles posées : 0");
-		idTuilesPosees2.setText("Tuiles posées : 0");
 		idAction.textProperty().bind(statistique.actionTexteProperty());
-
-		TasDeTuile pioche = new TasDeTuile();
+		
 		pioche.creerTasDeTuile();
 		arbitre.distribuerTuile(pioche, statistique.joueurs());
 		arbitre.distribuerDansChevalet(statistique.joueurs());
@@ -120,14 +105,13 @@ public class LaticeFXControleur {
 			afficherChevalet(joueur);
 		}
 
-		System.out.println(statistique.actionsEffectuees());
 		DndImgControleur.dndPourGridPane(gridPane(), statistique, btnPasser);
 		activerSon();
 	}
 
 	private void majLabelsTour() {
 		idLblTour.setText("Tour de " + joueurActuel().pseudo());
-		idLblNbTour.setText("Tour " + statistique.nbTour());
+		idLblNbTour.setText("Tour " + statistique.nombreTour());
 	}
 
 	public void afficherChevalet(Joueur joueur) {
@@ -228,7 +212,7 @@ public class LaticeFXControleur {
 				statistique.augmentationNombreTour();
 			}
 
-			if (statistique.nbTour() <= 10) {
+			if (statistique.nombreTour() <= statistique.nombreTourMaximum()) {
 				statistique.joueurSuivant();
 				btnPasser.setText("Passer tour");
 				majLabelsTour();
@@ -250,7 +234,7 @@ public class LaticeFXControleur {
 
 	@FXML
 	boolean partieFinie() {
-		return statistique.nbTour() > 10;
+		return statistique.nombreTour() > statistique.nombreTourMaximum();
 	}
 
 	private void finDePartie() {
@@ -266,7 +250,7 @@ public class LaticeFXControleur {
 
 	public void retourMenu(Node event) {
 		try {
-			MusicManager.stop();
+			couperSon();
 			MenuFx menu = new MenuFx();
 			Stage stage = new Stage();
 			menu.start(stage);
@@ -298,19 +282,13 @@ public class LaticeFXControleur {
 		btnSon.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
 		btnSon.setFocusTraversable(false);
 		sonOnImage = new Image(getClass().getResource("/images/JeuSon.png").toExternalForm());
-		MusicManager.play("/sons/Jeu.mp3");
-		ImageView soundView = new ImageView(sonOnImage);
-		soundView.setFitWidth(32);
-		soundView.setFitHeight(32);
-		btnSon.setGraphic(soundView);
+		ImageView sonView = new ImageView(sonOnImage);
+		MusicManager.play("/sons/Jeu.mp3",btnSon,sonView);
 	}
 
 	public void couperSon() {
 		sonOffImage = new Image(getClass().getResource("/images/JeuMuet.png").toExternalForm());
-		MusicManager.stop();
-		ImageView muteView = new ImageView(sonOffImage);
-		muteView.setFitWidth(32);
-		muteView.setFitHeight(32);
-		btnSon.setGraphic(muteView);
+		ImageView sonView = new ImageView(sonOffImage);
+		MusicManager.stop(btnSon,sonView);
 	}
 }

@@ -158,9 +158,7 @@ public class DndImgControleur {
 		if (Arbitre.peutPoserTuile(plateau, uneCase, tuile)) {
 			plateau.poserTuile(uneCase, tuile);
 			Arbitre.calculeScore(joueur, uneCase);
-			System.out.println(joueur.score());
 			joueur.lblScore().setText("Score : " + joueur.score());
-			System.out.println(joueur.score());
 			joueur.incrementerNbTuilePose();
 			joueur.lblTuilePose().setText("Tuiles posées : " + joueur.nbTuilePose());
 			statistique.augmentationActionsEffectuees();

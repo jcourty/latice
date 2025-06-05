@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import metier.arbitre.Arbitre;
 import metier.joueur.Joueur;
 import metier.plateau.Case;
 import metier.plateau.PlateauDeJeu;
@@ -17,16 +18,26 @@ public class StatistiqueJeu {
     private PlateauDeJeu plateau;
     private List<Joueur> joueurs;
     private int indexJoueurActuel = 0;
-    private int nbTour = 1;
+    private int nombreTour = 1;
     private int actionsEffectuees = 0;
     private int actionsMaxParTour = 1;
+    private int nombreTourMaximum ;
     private StringProperty actionTexteProperty = new SimpleStringProperty("Nombre d'actions : 0/1");
 
     public StatistiqueJeu(PlateauDeJeu plateau, List<Joueur> joueurs) {
         this.plateau = plateau;
         this.joueurs = joueurs;
+        indexJoueurActuel = 0;
+        nombreTour = 1;
+        actionsEffectuees = 0;
+        actionsMaxParTour = 1;
+        nombreTourMaximum = Arbitre.determinerNombreTour(joueurs);
     }
 
+    public int nombreTourMaximum() {
+    	return nombreTourMaximum;
+    }
+    
     public PlateauDeJeu plateau() {
         return plateau;
     }
@@ -51,12 +62,12 @@ public class StatistiqueJeu {
         this.indexJoueurActuel = index;
     }
 
-    public int nbTour() {
-        return nbTour;
+    public int nombreTour() {
+        return nombreTour;
     }
     
     public void augmentationNombreTour() {
-    	nbTour++;
+    	nombreTour++;
     }
 
     public int actionsEffectuees() {
