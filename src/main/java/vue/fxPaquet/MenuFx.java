@@ -19,7 +19,6 @@ import vue.fxPaquet.metier.MusicManager;
 public class MenuFx extends Application {
 
 	public void start(Stage primaryStage) throws Exception {
-		
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("SB/Menu.fxml"));
 		BorderPane root = loader.load();

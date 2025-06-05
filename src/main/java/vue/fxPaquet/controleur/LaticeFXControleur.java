@@ -279,7 +279,7 @@ public class LaticeFXControleur {
             	MusicManager.stop();
             	btnSon.setText("relancer le son");
             } else {
-            	MusicManager.play("/sons/Kahoot.mp3");
+            	MusicManager.play("/sons/Jeu.mp3");
             	btnSon.setText("Couper le son");
             }
         } catch (Exception e) {
