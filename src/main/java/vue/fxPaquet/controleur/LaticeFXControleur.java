@@ -214,7 +214,8 @@ public class LaticeFXControleur {
 			joueur.ajouterScore(-2);
 			statistique.augmentationMaxParTour();
 			statistique.majLabelActionAutomatique();
-			joueur.lblScore().setText("Score : " + joueur.score());
+			btnPasser.setText("Passer le tour");
+	        joueur.lblScore().setText("Score : " + joueur.score());
 		}
 	}
 
