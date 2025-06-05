@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 import exception.SaisieInvalideException;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
@@ -23,8 +25,8 @@ public class Arbitre {
 
 	private final Scanner scanner;
 	private static int nombreCaseAdjacente;
-	static int nbAction ;
-	
+	static int nbAction;
+
 	public Arbitre() {
 		scanner = new Scanner(System.in);
 	}
@@ -68,6 +70,40 @@ public class Arbitre {
 			}
 		}
 		return joueurs;
+	}
+
+	public int nombreJoueurFX() {
+	    int nbJoueurs = -1;
+
+	    while (nbJoueurs < 2 || nbJoueurs > 4) {
+	        TextInputDialog dialogue = new TextInputDialog();
+	        dialogue.setTitle("Nombre de joueurs");
+	        dialogue.setHeaderText(null);
+	        dialogue.setContentText("Entrez le nombre de joueurs (entre 2 et 4) :");
+
+	        Optional<String> result = dialogue.showAndWait();
+
+	        if (result.isPresent()) {
+	            try {
+	                nbJoueurs = Integer.parseInt(result.get());
+	            } catch (NumberFormatException e) {
+	                afficherErreur("Veuillez entrer un nombre entier valide.");
+	            }
+	        } else {
+	            afficherErreur("Saisie annulée. Veuillez entrer un nombre pour continuer.");
+	        }
+	    }
+
+	    return nbJoueurs;
+	}
+
+
+	private void afficherErreur(String message) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Erreur");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
 	}
 
 	public List<Joueur> creationListeJoueurFX(int nombreJoueur, List<GridPane> gridPanes, List<Label> labels,
@@ -154,7 +190,7 @@ public class Arbitre {
 				if (choix >= 1 && choix <= 5) {
 					tuile = joueur.piocherDansChevalet(choix - 1);
 					saisieValide = true;
-				} else if (choix == 6){
+				} else if (choix == 6) {
 					saisieValide = true;
 				} else {
 					Console.ligne("Index invalide : entrez un nombre entre 1 et 5 : ");
@@ -234,7 +270,7 @@ public class Arbitre {
 
 		List<Joueur> ordreDuTour = new ArrayList<>(joueurs);
 		Collections.shuffle(ordreDuTour);
-		
+
 		nbTourMax = determinerNombreTour(joueurs);
 
 		for (int tour = 0; tour < nbTourMax; tour++) {
@@ -250,14 +286,12 @@ public class Arbitre {
 		int nbTourMax;
 		if (joueurs.size() == 2) {
 			nbTourMax = 10;
-		}
-		else if (joueurs.size() == 3) {
+		} else if (joueurs.size() == 3) {
 			nbTourMax = 8;
-		}
-		else {
+		} else {
 			nbTourMax = 6;
 		}
-		
+
 		return nbTourMax;
 	}
 
@@ -348,7 +382,7 @@ public class Arbitre {
 			} else {
 				Console.message("4. Passer le tour");
 			}
-			
+
 			Console.sautLigne();
 			Console.ligne("Chevalet : ");
 			joueur.afficherChevalet();
@@ -360,7 +394,7 @@ public class Arbitre {
 
 					if (choix == 1 && nbAction < nbActionMax) {
 						poserTuileAvecValidation(plateau, joueur);
-		
+
 					} else if (choix == 2 && nbAction < nbActionMax) {
 						echangerChevalet(joueur);
 						nbAction++;

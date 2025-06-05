@@ -279,7 +279,7 @@ class ArbitreTest {
 
 		@Test
 		void test_changement_de_chevalet() {
-			transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("6\n2\n");
+			transformeCeQuiEstEnParametreEnEntreeCommeAuClavier("5\n2\n");
 			List<Tuile> ancienChevalet = new ArrayList<>(joueur.listeChevalet());
 			arbitre.choixChevalet(joueur);
 			List<Tuile> nouveauChevalet = joueur.listeChevalet();
