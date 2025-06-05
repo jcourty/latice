@@ -26,7 +26,7 @@ public class Console {
 		message(SEPARATEUR);
 	}
 
-	public static void separateur() {
+	public static void separation() {
 		message(SEPARATEUR);
 	}
 

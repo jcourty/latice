@@ -1,6 +1,8 @@
 package metier.plateau;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -11,8 +13,17 @@ import metier.tuile.Tuile;
 public class PlateauDeJeu {
 
 	private HashMap<Case, Tuile> plateau;
-	private String soleil = Type.SOLEIL.afficher();
-	private String lune = Type.LUNE.afficher();
+	private static final List<Coordonnee> CASES_SOLEIL = Arrays.asList(
+		    new Coordonnee(1, 1), new Coordonnee(2, 2), new Coordonnee(3, 3),
+		    new Coordonnee(7, 7), new Coordonnee(8, 8), new Coordonnee(9, 9),
+		    new Coordonnee(1, 9), new Coordonnee(2, 8), new Coordonnee(3, 7),
+		    new Coordonnee(9, 1), new Coordonnee(8, 2), new Coordonnee(7, 3),
+		    new Coordonnee(1, 5), new Coordonnee(5, 1), new Coordonnee(9, 5),
+		    new Coordonnee(5, 9)
+	);
+	private static final String SOLEIL = Type.SOLEIL.afficher();
+	private static final String LUNE = Type.LUNE.afficher();
+	private static final String BLANC = "\u001B[0m";
 
 	public PlateauDeJeu() {
 		plateau = new HashMap<>();
@@ -101,11 +112,7 @@ public class PlateauDeJeu {
 	}
 
 	private boolean estCaseSoleil(int ligne, int col) {
-	    return (ligne == 1 && col == 1) || (ligne == 2 && col == 2) || (ligne == 3 && col == 3) || (ligne == 7 && col == 7)
-	            || (ligne == 8 && col == 8) || (ligne == 9 && col == 9) || (ligne == 1 && col == 9)
-	            || (ligne == 2 && col == 8) || (ligne == 3 && col == 7) || (ligne == 9 && col == 1)
-	            || (ligne == 8 && col == 2) || (ligne == 7 && col == 3) || (ligne == 1 && col == 5)
-	            || (ligne == 5 && col == 1) || (ligne == 9 && col == 5) || (ligne == 5 && col == 9);
+	    return CASES_SOLEIL.contains(new Coordonnee(ligne, col));
 	}
 
 	private boolean estCaseLune(int ligne, int col) {
@@ -122,10 +129,10 @@ public class PlateauDeJeu {
 		plateauConsole.append("\n");
 
 		plateauConsole.append("   ");
-		plateauConsole.append(generationMultiple(Couleur.BLEU.codeCouleur() + "-----", 9) + "\n\u001B[0m");
+		plateauConsole.append(generationMultiple(Couleur.BLEU.codeCouleur() + "-----", 9) + "\n" + BLANC);
 
 		for (int ligne = 1; ligne <= 9; ligne++) {
-			plateauConsole.append(" " + ligne + " \u001B[34m|");
+			plateauConsole.append(" " + ligne + Couleur.BLEU.codeCouleur() + " |");
 
 			for (int col = 1; col <= 9; col++) {
 				Coordonnee coordonnee = new Coordonnee(ligne, col);
@@ -133,12 +140,12 @@ public class PlateauDeJeu {
 				Tuile tuile = this.tuileSur(c);
 
 				if (tuile != null) {
-					plateauConsole.append(" " + tuile.afficher() + " \u001B[34m|");
+					plateauConsole.append(" " + tuile.afficher() + Couleur.BLEU.codeCouleur() + " |");
 				} else {
 					if (c.type() == Type.SOLEIL) {
-						plateauConsole.append(Couleur.JAUNE.codeCouleur() + soleil + Couleur.BLEU.codeCouleur() + "|");
+						plateauConsole.append(Couleur.JAUNE.codeCouleur() + SOLEIL + Couleur.BLEU.codeCouleur() + "|");
 					} else if (c.type() == Type.LUNE) {
-						plateauConsole.append(Couleur.JAUNE.codeCouleur() + lune + Couleur.BLEU.codeCouleur() + "|");
+						plateauConsole.append(Couleur.JAUNE.codeCouleur() + LUNE + Couleur.BLEU.codeCouleur() + "|");
 					} else {
 						plateauConsole.append("    |");
 					}
@@ -146,7 +153,7 @@ public class PlateauDeJeu {
 			}
 			plateauConsole.append("\n");
 			plateauConsole.append("   ");
-			plateauConsole.append(generationMultiple(Couleur.BLEU.codeCouleur() + "-----", 9) + "\n\u001B[0m");
+			plateauConsole.append(generationMultiple(Couleur.BLEU.codeCouleur() + "-----", 9) + "\n" + BLANC);
 		}
 		return plateauConsole.toString();
 	}

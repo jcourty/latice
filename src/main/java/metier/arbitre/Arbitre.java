@@ -420,7 +420,7 @@ public class Arbitre {
 
     public void afficherMenu(PlateauDeJeu plateau, Joueur joueur, int tour, int nbActionMax) {
         Console.effacerConsole();
-        Console.separateur();
+        Console.separation();
         Console.message("Tour de : " + joueur.pseudo());
         Console.message((tour + 1) + " tour");
         Console.message(plateau.afficherConsole());
