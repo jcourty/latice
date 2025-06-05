@@ -152,6 +152,9 @@ public class Arbitre {
 				if (choix >= 1 && choix <= 5) {
 					tuile = joueur.piocherDansChevalet(choix - 1);
 					saisieValide = true;
+				} else if (choix == 6){
+					Console.ligne("Retour au menu");
+					saisieValide = true;
 				} else {
 					Console.ligne("Index invalide : entrez un nombre entre 1 et 5 : ");
 				}
@@ -268,6 +271,10 @@ public class Arbitre {
 			while (!choixValide) {
 				try {
 					tuile = choixChevalet(joueurActuel);
+					if (tuile == null) {
+						menu(plateau, joueurActuel, 0);
+						return;
+					}
 					choixValide = true;
 				} catch (SaisieInvalideException e) {
 					Console.message(e.getMessage());
@@ -328,11 +335,19 @@ public class Arbitre {
 			Console.message(plateau.afficherConsole());
 			Console.titre("Menu");
 			Console.message("Score de " + joueur.pseudo() + " : " + joueur.score());
-			Console.message("Nombre d'actions : " + nbAction + "/" + nbActionMax);
+			Console.message("Nombre d'actions effectuées : " + nbAction + "/" + nbActionMax);
+			Console.message("Nombre de tuiles posées : " + joueur.nbTuilePose());
+			Console.sautLigne();
 			Console.message("1. Jouer une tuile (1 action)");
 			Console.message("2. Echanger le chevalet (1 action)");
 			Console.message("3. Acheter une action (2 points)");
-			Console.message("4. Passer le tour");
+			if (nbAction >= nbActionMax) {
+				Console.message("4. Terminer le tour");
+			} else {
+				Console.message("4. Passer le tour");
+			}
+			
+			Console.sautLigne();
 			Console.ligne("Chevalet : ");
 			joueur.afficherChevalet();
 			Console.ligne("Saisir un choix : ");
@@ -343,6 +358,7 @@ public class Arbitre {
 
 					if (choix == 1 && nbAction < nbActionMax) {
 						poserTuileAvecValidation(plateau, joueur);
+						joueur.incrementerNbTuilePose();
 						nbAction++;
 					} else if (choix == 2 && nbAction < nbActionMax) {
 						echangerChevalet(joueur);

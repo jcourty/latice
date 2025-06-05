@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="idLblAction" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1400.0" stylesheets="@LaticeCss.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.fxPaquet.controleur.LaticeFXControleur">
+<BorderPane fx:id="idLblAction" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@LaticeCss.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vue.fxPaquet.controleur.LaticeFXControleur">
 	<right>
 		<VBox fx:id="idChevalet2" alignment="CENTER" prefHeight="747.0" prefWidth="200.0" BorderPane.alignment="TOP_CENTER">
 			<children>

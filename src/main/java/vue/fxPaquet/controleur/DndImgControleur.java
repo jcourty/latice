@@ -118,7 +118,12 @@ public class DndImgControleur {
 			}
 
 			event.setDropCompleted(succes);
-			btnPasser.setText("Terminer");
+			if (statistique.actionsEffectuees() >= statistique.actionsMaxParTour()) {
+				btnPasser.setText("Terminer");
+			} else {
+				btnPasser.setText("Passer le tour");
+			}
+			
 			event.consume();
 		});
 	}
