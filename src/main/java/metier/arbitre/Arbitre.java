@@ -231,18 +231,7 @@ public class Arbitre {
 		List<Joueur> ordreDuTour = new ArrayList<>(joueurs);
 		Collections.shuffle(ordreDuTour);
 		
-		if (joueurs.size() == 2) {
-			nbTourMax = 10;
-		}
-		else if (joueurs.size() == 3) {
-			nbTourMax = 8;
-		}
-		else if (joueurs.size() == 4) {
-			nbTourMax = 6;
-		}
-		else {
-			nbTourMax = 0;
-		}
+		nbTourMax = determinerNombreTour(joueurs);
 
 		for (int tour = 0; tour < nbTourMax; tour++) {
 			for (Joueur joueurActuel : ordreDuTour) {
@@ -251,6 +240,21 @@ public class Arbitre {
 		}
 		scanner.close();
 		Console.message(gestionVictoire(joueurGagnant(joueurs)));
+	}
+
+	public static int determinerNombreTour(List<Joueur> joueurs) {
+		int nbTourMax;
+		if (joueurs.size() == 2) {
+			nbTourMax = 10;
+		}
+		else if (joueurs.size() == 3) {
+			nbTourMax = 8;
+		}
+		else {
+			nbTourMax = 6;
+		}
+		
+		return nbTourMax;
 	}
 
 	private void poserTuileAvecValidation(PlateauDeJeu plateau, Joueur joueurActuel) {
