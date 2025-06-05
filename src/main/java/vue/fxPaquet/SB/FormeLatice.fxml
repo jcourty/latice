@@ -117,6 +117,7 @@
                         <Insets left="30.0" right="30.0" />
                      </HBox.margin>
                   </Button>
+                  <Button fx:id="btnSon" mnemonicParsing="false" onAction="#modifierSon" text="Couper le son" />
                </children>
             </HBox>
          </children>

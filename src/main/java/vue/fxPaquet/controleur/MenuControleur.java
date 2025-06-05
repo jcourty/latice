@@ -32,7 +32,6 @@ public class MenuControleur {
 
     @FXML
     private Button btnQuitter;
-    
     @FXML
 	void quitter(ActionEvent event) {
 		Platform.exit();
@@ -50,6 +49,21 @@ public class MenuControleur {
             e.printStackTrace();
         }
     }
-
-
+    
+    @FXML
+    private Button btnSon;
+    @FXML
+    private void modifierSon(ActionEvent event) {
+    	try {
+            if (btnSon.getText().equals("Couper le son")) {
+            	MusicManager.stop();
+            	btnSon.setText("Relancer le son");
+            } else {
+            	MusicManager.play("/sons/Kahoot.mp3");
+            	btnSon.setText("Couper le son");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

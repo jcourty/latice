@@ -24,7 +24,7 @@ public class MenuFx extends Application {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("SB/Menu.fxml"));
 		BorderPane root = loader.load();
 		Scene scene = new Scene(root);
-		Image image = new Image(Objects.requireNonNull(getClass().getResource("/images/menuFond.png")).toExternalForm());;
+		Image image = new Image(Objects.requireNonNull(getClass().getResource("/images/menuFond.png")).toExternalForm());
 		// Création du BackgroundImage
 		BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
 				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(1,1,true,true,true,false));

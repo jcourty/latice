@@ -114,7 +114,7 @@ public class LaticeFXControleur {
 		}
 
 		System.out.println(statistique.actionsEffectuees());
-		DndImgControleur.dndPourGridPane(gridPane(), statistique);
+		DndImgControleur.dndPourGridPane(gridPane(), statistique,btnPasser);
 	}
 
 	private void majLabelsTour() {
@@ -221,12 +221,13 @@ public class LaticeFXControleur {
 
 			if (statistique.nbTour() <= 10) {
 				statistique.joueurSuivant();
+				btnPasser.setText("Passer tour");
 				majLabelsTour();
 
 				for (Joueur joueur : statistique.joueurs()) {
 					afficherChevalet(joueur);
 				}
-				DndImgControleur.dndPourGridPane(gridPane(), statistique);
+				DndImgControleur.dndPourGridPane(gridPane(), statistique,btnPasser);
 			} else {
 				finDePartie();
 			}
@@ -268,4 +269,21 @@ public class LaticeFXControleur {
 	            e.printStackTrace();
 	        }
 	}
+	
+	@FXML
+    private Button btnSon;
+    @FXML
+    private void modifierSon(ActionEvent event) {
+    	try {
+            if (btnSon.getText().equals("Couper le son")) {
+            	MusicManager.stop();
+            	btnSon.setText("relancer le son");
+            } else {
+            	MusicManager.play("/sons/Kahoot.mp3");
+            	btnSon.setText("Couper le son");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

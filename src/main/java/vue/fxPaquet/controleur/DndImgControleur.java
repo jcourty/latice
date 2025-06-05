@@ -2,6 +2,7 @@ package vue.fxPaquet.controleur;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -52,7 +53,7 @@ public class DndImgControleur {
 		});
 	}
 
-	public static void dndPourGridPane(GridPane gridPane, StatistiqueJeu statistique) {
+	public static void dndPourGridPane(GridPane gridPane, StatistiqueJeu statistique, Button btnPasser) {
 		int nbCol = 9;
 		int nbLigne = 9;
 		plateau = statistique.plateau();
@@ -117,6 +118,7 @@ public class DndImgControleur {
 			}
 
 			event.setDropCompleted(succes);
+			btnPasser.setText("Terminer");
 			event.consume();
 		});
 	}
