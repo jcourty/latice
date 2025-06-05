@@ -23,6 +23,7 @@ public class Joueur {
 		this.chevalet = chevalet;
 		this.main = main;
 		this.idGridPane = idGridPane;
+		this.score = score;
 		this.lblScore = lblScore;
 		this.lblTuilePose=lblTuilePose;
 	}

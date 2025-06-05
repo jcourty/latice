@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import metier.joueur.Joueur;
 import metier.tuile.Couleur;
 import metier.tuile.Tuile;
 
@@ -44,7 +43,7 @@ public class PlateauDeJeu {
 	    return true;
 	}
 
-	public void poserTuile(Case uneCase, Tuile uneTuile,Joueur joueur) {
+	public void poserTuile(Case uneCase, Tuile uneTuile) {
 		plateau.put(uneCase, uneTuile);
 	}
 
@@ -80,34 +79,37 @@ public class PlateauDeJeu {
 	}
 
 	public void creationPlateau() {
-		for (int ligne = 1; ligne <= 9; ligne++) {
-			for (int col = 1; col <= 9; col++) {
-				Coordonnee coordonnee = new Coordonnee(ligne, col);
-				Type type;
-				Tuile tuile = null;
+	    for (int ligne = 1; ligne <= 9; ligne++) {
+	        for (int col = 1; col <= 9; col++) {
+	            Coordonnee coordonnee = new Coordonnee(ligne, col);
+	            Type type = recupererTypeCase(ligne, col);
+	            Tuile tuile = null;
+	            Case c = new Case(coordonnee, type);
+	            plateau.put(c, tuile);
+	        }
+	    }
+	}
 
-				// Cases soleils
-				if ((ligne == 1 && col == 1) || (ligne == 2 && col == 2) || (ligne == 3 && col == 3) || (ligne == 7 && col == 7)
-						|| (ligne == 8 && col == 8) || (ligne == 9 && col == 9) || (ligne == 1 && col == 9)
-						|| (ligne == 2 && col == 8) || (ligne == 3 && col == 7) || (ligne == 9 && col == 1)
-						|| (ligne == 8 && col == 2) || (ligne == 7 && col == 3) || (ligne == 1 && col == 5)
-						|| (ligne == 5 && col == 1) || (ligne == 9 && col == 5) || (ligne == 5 && col == 9)) {
-					type = Type.SOLEIL;
-				}
-				// Case lune
-				else if (ligne == 5 && col == 5) {
-					type = Type.LUNE;
-				}
-				// Cases simples
-				else {
-					type = Type.SIMPLE;
-				}
+	private Type recupererTypeCase(int ligne, int col) {
+	    if (estCaseSoleil(ligne, col)) {
+	        return Type.SOLEIL;
+	    } else if (estCaseLune(ligne, col)) {
+	        return Type.LUNE;
+	    } else {
+	        return Type.SIMPLE;
+	    }
+	}
 
-				Case c = new Case(coordonnee, type);
-				plateau.put(c, tuile);
+	private boolean estCaseSoleil(int ligne, int col) {
+	    return (ligne == 1 && col == 1) || (ligne == 2 && col == 2) || (ligne == 3 && col == 3) || (ligne == 7 && col == 7)
+	            || (ligne == 8 && col == 8) || (ligne == 9 && col == 9) || (ligne == 1 && col == 9)
+	            || (ligne == 2 && col == 8) || (ligne == 3 && col == 7) || (ligne == 9 && col == 1)
+	            || (ligne == 8 && col == 2) || (ligne == 7 && col == 3) || (ligne == 1 && col == 5)
+	            || (ligne == 5 && col == 1) || (ligne == 9 && col == 5) || (ligne == 5 && col == 9);
+	}
 
-			}
-		}
+	private boolean estCaseLune(int ligne, int col) {
+	    return ligne == 5 && col == 5;
 	}
 
 	public String afficherConsole() {

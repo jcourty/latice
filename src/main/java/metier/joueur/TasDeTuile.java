@@ -36,7 +36,7 @@ public class TasDeTuile {
 	public Tuile piocherTuile() {
 
 		if (estVide()) {
-			return null; // exception par la suite ?????
+			return null; 
 		} else {
 			int nombreAleatoire = (int) (Math.random() * listeTuiles.size());
 			Tuile tuile1 = listeTuiles.get(nombreAleatoire);

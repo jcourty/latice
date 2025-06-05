@@ -5,14 +5,14 @@ public enum Type {
     LUNE(" \uD83C\uDF19 "), 
     SIMPLE("simple");
 
-    private String type;
+    private String chaine;
 
     private Type(String type) {
-        this.type=type;
+        this.chaine=type;
     }
 
     public String afficher() {
-        return type;
+        return chaine;
     }
 
 }

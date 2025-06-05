@@ -25,6 +25,8 @@ public class LaticeConsoleApplication {
         		+ "Latice Pro ©");
         Console.sautLigne();
         Arbitre arbitre = new Arbitre();
-        arbitre.lancementDePartie();
+		arbitre.lancementDePartie();
+
     }
+
 }
