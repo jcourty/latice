@@ -72,6 +72,13 @@ public class LaticeFXControleur {
 	}
 
 	@FXML
+	private Button btnSon;
+
+	private boolean sonActive = true;
+	private Image sonOnImage;
+	private Image sonOffImage;
+
+	@FXML
 	public void initialize() {
 		Arbitre arbitre = new Arbitre();
 		PlateauDeJeu plateau = new PlateauDeJeu();
@@ -114,7 +121,8 @@ public class LaticeFXControleur {
 		}
 
 		System.out.println(statistique.actionsEffectuees());
-		DndImgControleur.dndPourGridPane(gridPane(), statistique,btnPasser);
+		DndImgControleur.dndPourGridPane(gridPane(), statistique, btnPasser);
+		activerSon();
 	}
 
 	private void majLabelsTour() {
@@ -206,7 +214,7 @@ public class LaticeFXControleur {
 			joueur.ajouterScore(-2);
 			statistique.augmentationMaxParTour();
 			statistique.majLabelActionAutomatique();
-	        joueur.lblScore().setText("Score : " + joueur.score());
+			joueur.lblScore().setText("Score : " + joueur.score());
 		}
 	}
 
@@ -227,7 +235,7 @@ public class LaticeFXControleur {
 				for (Joueur joueur : statistique.joueurs()) {
 					afficherChevalet(joueur);
 				}
-				DndImgControleur.dndPourGridPane(gridPane(), statistique,btnPasser);
+				DndImgControleur.dndPourGridPane(gridPane(), statistique, btnPasser);
 			} else {
 				finDePartie();
 			}
@@ -256,70 +264,52 @@ public class LaticeFXControleur {
 	}
 
 	public void retourMenu(Node event) {
-		 try {
-                MusicManager.stop();
-	            MenuFx menu = new MenuFx();
-	            Stage stage = new Stage();
-	            menu.start(stage);
-	            
-	            // Fermer le menu
-	            Stage menuStage = (Stage) ((Node) event).getScene().getWindow();
-	            menuStage.close();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
+		try {
+			MusicManager.stop();
+			MenuFx menu = new MenuFx();
+			Stage stage = new Stage();
+			menu.start(stage);
+
+			// Fermer le menu
+			Stage menuStage = (Stage) ((Node) event).getScene().getWindow();
+			menuStage.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	@FXML
-    private Button btnSon;
-	
-	
-	 private boolean sonActive = true;
-	    private Image sonOnImage;
-	    private Image sonOffImage;
-	    
-	    @FXML
-	    private void initializeSon() {
-	    	// Charger les images au lancement
-	        sonOnImage = new Image(getClass().getResource("/images/JeuSon.png").toExternalForm());
-	        sonOffImage = new Image(getClass().getResource("/images/JeuMuet.png").toExternalForm());
+	private void modifierSon(ActionEvent event) {
+		try {
+			if (sonActive) {
+				couperSon();
+			} else {
+				activerSon();
+			}
+			sonActive = !sonActive;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	        // Créer un ImageView avec l'image
-	        ImageView imageView = new ImageView(sonOnImage);
-	        imageView.setFitWidth(32);  // ajuste selon ton besoin
-	        imageView.setFitHeight(32);
+	public void activerSon() {
+		btnSon.setText("");
+		btnSon.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+		btnSon.setFocusTraversable(false);
+		sonOnImage = new Image(getClass().getResource("/images/JeuSon.png").toExternalForm());
+		MusicManager.play("/sons/Jeu.mp3");
+		ImageView soundView = new ImageView(sonOnImage);
+		soundView.setFitWidth(32);
+		soundView.setFitHeight(32);
+		btnSon.setGraphic(soundView);
+	}
 
-	        // Affecter l'image au bouton
-	        btnSon.setGraphic(imageView);
-
-	        // Supprimer le texte si besoin
-	        btnSon.setText("");
-	        
-	        // Rendre le fond et la bordure du bouton transparents
-	        btnSon.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
-
-	        // Enlever le focus visuel quand on clique
-	        btnSon.setFocusTraversable(false);
-	    }
-	    @FXML
-	    private void modifierSon(ActionEvent event) {
-	        try {
-	            if (sonActive) {
-	                MusicManager.stop();
-	                ImageView muteView = new ImageView(sonOffImage);
-	                muteView.setFitWidth(32);
-	                muteView.setFitHeight(32);
-	                btnSon.setGraphic(muteView);
-	            } else {
-	                MusicManager.play("/sons/Jeu.mp3");
-	                ImageView soundView = new ImageView(sonOnImage);
-	                soundView.setFitWidth(32);
-	                soundView.setFitHeight(32);
-	                btnSon.setGraphic(soundView);
-	            }
-	            sonActive = !sonActive; // Inverser l'état
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
+	public void couperSon() {
+		sonOffImage = new Image(getClass().getResource("/images/JeuMuet.png").toExternalForm());
+		MusicManager.stop();
+		ImageView muteView = new ImageView(sonOffImage);
+		muteView.setFitWidth(32);
+		muteView.setFitHeight(32);
+		btnSon.setGraphic(muteView);
+	}
 }
