@@ -256,7 +256,7 @@ public class LaticeFXControleur {
 			menu.start(stage);
 
 			// Fermer le menu
-			Stage menuStage = (Stage) ((Node) event).getScene().getWindow();
+			Stage menuStage = (Stage) (event).getScene().getWindow();
 			menuStage.close();
 		} catch (Exception e) {
 			e.printStackTrace();

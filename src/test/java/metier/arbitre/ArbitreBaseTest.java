@@ -34,8 +34,8 @@ public abstract class ArbitreBaseTest {
         System.setOut(System.out);
     }
     
-    protected void transformeCeQuiEstEnParametreEnEntreeCommeAuClavier(String data) {
-        donneesEntree = new ByteArrayInputStream(data.getBytes());
+    protected void transformeCeQuiEstEnParametreEnEntreeCommeAuClavier(String donnee) {
+        donneesEntree = new ByteArrayInputStream(donnee.getBytes());
         System.setIn(donneesEntree);
         arbitre = new Arbitre();
     }
